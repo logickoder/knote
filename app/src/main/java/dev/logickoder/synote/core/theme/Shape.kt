@@ -1,4 +1,4 @@
-package dev.logickoder.synote.ui.theme
+package dev.logickoder.synote.core.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes
