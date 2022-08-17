@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Synote</string>
+
+    <!-- Login Screen -->
+    <string name="dont_have_account">Don`t have an account yet?</string>
+    <string name="register">Register</string>
 </resources>

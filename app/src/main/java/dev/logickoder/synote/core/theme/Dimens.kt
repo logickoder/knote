@@ -7,8 +7,8 @@ import dev.logickoder.synote.R
 
 @Composable
 @ReadOnlyComposable
-fun secondaryPadding() = primaryPadding() / 4 * 2
+fun secondaryPadding() = padding() / 4 * 2
 
 @Composable
 @ReadOnlyComposable
-fun primaryPadding() = dimensionResource(id = R.dimen.padding)
+fun padding() = dimensionResource(id = R.dimen.padding)
