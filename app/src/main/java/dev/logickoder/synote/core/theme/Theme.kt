@@ -9,6 +9,8 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
+typealias AppTheme = MaterialTheme
+
 private val LightColorPalette = lightColors(
     primary = PrimaryColor,
     background = BackgroundLightColor,

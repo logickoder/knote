@@ -24,7 +24,7 @@ android {
 
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments += "room.schemaLocation" to "$projectDir/schemas".toString()
+                arguments += "room.schemaLocation" to "$projectDir/schemas"
             }
         }
     }
@@ -46,7 +46,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
-        freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
+        freeCompilerArgs = listOf("-opt-in=kotlin.RequiresOptIn")
     }
     buildFeatures {
         compose = true
@@ -98,7 +98,7 @@ dependencies {
     implementation("com.journeyapps:zxing-android-embedded:4.3.0") {
         isTransitive = false
     }
-    implementation ("com.google.zxing:core:3.3.0")
+    implementation("com.google.zxing:core:3.4.1")
 
     // lifecycle
     val lifecycleVersion = "2.6.0-alpha01"
