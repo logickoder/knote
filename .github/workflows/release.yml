@@ -31,13 +31,13 @@ jobs:
         run: ./gradlew assembleRelease --stacktrace
 
       - name: Upload debug apk
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: debug-apk
           path: app/build/outputs/apk/debug/app-debug.apk
 
       - name: Upload release apk
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: release-apk
           path: app/build/outputs/apk/release/app-release.apk
