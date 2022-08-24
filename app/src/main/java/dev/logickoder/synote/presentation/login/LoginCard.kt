@@ -7,14 +7,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.RemoveRedEye
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import dev.logickoder.synote.R
 import dev.logickoder.synote.core.theme.AppTheme
@@ -22,13 +19,14 @@ import dev.logickoder.synote.core.theme.padding
 import dev.logickoder.synote.core.theme.secondaryPadding
 import dev.logickoder.synote.presentation.shared.input.Input
 import dev.logickoder.synote.presentation.shared.input.InputState
+import dev.logickoder.synote.presentation.shared.input.PasswordInput
 import dev.logickoder.synote.utils.collectAsState
 
 @Composable
 internal fun LoginCard(
     uiState: LoginState,
 ) {
-    val cardType by uiState.cardType.collectAsState()
+    val isLogin by uiState.isLogin.collectAsState()
     val username by uiState.username.collectAsState()
     val password by uiState.password.collectAsState()
 
@@ -39,7 +37,6 @@ internal fun LoginCard(
         verticalArrangement = Arrangement.spacedBy(secondaryPadding()),
         horizontalAlignment = Alignment.CenterHorizontally,
         content = {
-            val isLogin = cardType == LoginCardType.Login
             Text(
                 text = stringResource(
                     if (isLogin) {
@@ -55,13 +52,10 @@ internal fun LoginCard(
                     onValueChanged = uiState.username::emit,
                 ),
             )
-            Input(
-                title = stringResource(id = R.string.password),
+            PasswordInput(
                 state = InputState(
                     value = password,
-                    onValueChanged = uiState.password::emit,
-                    visualTransformation = PasswordVisualTransformation(),
-                    icon = Alignment.End to Icons.Outlined.RemoveRedEye,
+                    onValueChanged = uiState.password::emit
                 )
             )
             Button(
@@ -91,6 +85,6 @@ private fun LoginCardLogin() {
 @Composable
 private fun LoginCardRegister() {
     val state = rememberLoginState()
-    state.cardType.emit(LoginCardType.Register)
+    state.isLogin.emit(false)
     LoginCard(state)
 }

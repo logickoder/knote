@@ -1,6 +1,7 @@
 package dev.logickoder.synote.presentation.shared.input
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.*
@@ -10,15 +11,20 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Visibility
+import androidx.compose.material.icons.outlined.VisibilityOff
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dev.logickoder.synote.R
 import dev.logickoder.synote.core.theme.AppTheme
 import dev.logickoder.synote.core.theme.padding
 import dev.logickoder.synote.core.theme.secondaryPadding
@@ -104,18 +110,22 @@ fun InputField(
                                     }
                                     val iconComposable = @Composable {
                                         if (icon != null) Icon(
-                                            modifier = Modifier.size(20.dp),
-                                            imageVector = icon.second,
+                                            modifier = Modifier.size(20.dp).run {
+                                                icon.onClick?.let {
+                                                    clickable { it() }
+                                                } ?: this
+                                            },
+                                            imageVector = icon.icon,
                                             contentDescription = null,
                                             tint = color.content(),
                                         )
                                     }
-                                    if (icon?.first == Alignment.Start) {
-                                        iconComposable()
+                                    if (icon?.alignEnd == true) {
                                         textField()
+                                        iconComposable()
                                     } else {
-                                        textField()
                                         iconComposable()
+                                        textField()
                                     }
                                 }
                             )
@@ -162,9 +172,45 @@ fun Input(
     )
 }
 
+@Composable
+fun PasswordInput(
+    state: InputState,
+    modifier: Modifier = Modifier,
+    title: String = stringResource(id = R.string.password),
+) {
+    var passwordVisible by remember {
+        mutableStateOf(false)
+    }
+
+    Input(
+        title = title,
+        modifier = modifier,
+        state = state.copy(
+            visualTransformation = if (passwordVisible) {
+                VisualTransformation.None
+            } else PasswordVisualTransformation(),
+            icon = IconData(
+                icon = if (passwordVisible) {
+                    Icons.Outlined.Visibility
+                } else Icons.Outlined.VisibilityOff,
+                onClick = {
+                    passwordVisible = !passwordVisible
+                }
+            ),
+        )
+    )
+}
+
 @Preview(showBackground = true)
 @Composable
 private fun InputPreview() = Input(
-    title = "Preview",
-    state = InputState(value = "Prev1ew")
+    title = "InputPreview",
+    state = InputState(value = "InputPreview")
+)
+
+@Preview(showBackground = true)
+@Composable
+private fun PasswordInputPreview() = PasswordInput(
+    title = "PasswordInputPreview",
+    state = InputState(value = "PasswordInputPreview")
 )
