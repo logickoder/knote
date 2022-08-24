@@ -4,6 +4,7 @@ buildscript {
         set("compose_version", "1.2.1")
         set("kotlin_version", "1.7.10")
         set("ktor_version", "2.1.0")
+        set("hilt_version", "2.43.2")
     }
     repositories {
         google()
@@ -15,6 +16,7 @@ buildscript {
         val kotlinVersion = rootProject.extra.get("kotlin_version") as String
         classpath(kotlin("gradle-plugin", version = kotlinVersion))
         classpath(kotlin("serialization", version = kotlinVersion))
+        classpath("com.google.dagger:hilt-android-gradle-plugin:${rootProject.extra.get("hilt_version")}")
     }
 }
 

@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.logickoder.synote.R
 import dev.logickoder.synote.core.theme.AppTheme
 import dev.logickoder.synote.core.theme.padding
@@ -24,11 +25,11 @@ import dev.logickoder.synote.utils.collectAsState
 
 @Composable
 internal fun LoginCard(
-    uiState: LoginState,
+    viewModel: LoginViewModel,
 ) {
-    val isLogin by uiState.isLogin.collectAsState()
-    val username by uiState.username.collectAsState()
-    val password by uiState.password.collectAsState()
+    val isLogin by viewModel.isLogin.collectAsState()
+    val username by viewModel.username.collectAsState()
+    val password by viewModel.password.collectAsState()
 
     Column(
         modifier = Modifier
@@ -49,18 +50,18 @@ internal fun LoginCard(
                 title = stringResource(id = R.string.username),
                 state = InputState(
                     value = username,
-                    onValueChanged = uiState.username::emit,
+                    onValueChanged = viewModel.username::emit,
                 ),
             )
             PasswordInput(
                 state = InputState(
                     value = password,
-                    onValueChanged = uiState.password::emit
+                    onValueChanged = viewModel.password::emit
                 )
             )
             Button(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = { },
+                onClick = viewModel::performAuth,
                 content = {
                     Text(
                         text = stringResource(
@@ -78,13 +79,13 @@ internal fun LoginCard(
 @Preview(showBackground = true)
 @Composable
 private fun LoginCardLogin() {
-    LoginCard(rememberLoginState())
+    LoginCard(viewModel())
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun LoginCardRegister() {
-    val state = rememberLoginState()
-    state.isLogin.emit(false)
-    LoginCard(state)
+    val viewModel: LoginViewModel = viewModel()
+    viewModel.isLogin.emit(false)
+    LoginCard(viewModel)
 }

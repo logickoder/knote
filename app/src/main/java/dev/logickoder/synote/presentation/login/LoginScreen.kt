@@ -15,6 +15,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.logickoder.synote.R
 import dev.logickoder.synote.core.theme.AppTheme
 import dev.logickoder.synote.core.theme.padding
@@ -24,8 +25,8 @@ import dev.logickoder.synote.utils.collectAsState
 @Preview(showBackground = true)
 @Composable
 fun LoginScreen() {
-    val uiState = rememberLoginState()
-    val isLogin by uiState.isLogin.collectAsState()
+    val viewModel: LoginViewModel = viewModel()
+    val isLogin by viewModel.isLogin.collectAsState()
 
     Column(
         modifier = Modifier
@@ -43,11 +44,11 @@ fun LoginScreen() {
             Spacer(
                 modifier = Modifier.height(padding() + secondaryPadding())
             )
-            LoginCard(uiState)
+            LoginCard(viewModel)
             Spacer(modifier = Modifier.height(secondaryPadding()))
             Text(
                 modifier = Modifier.clickable {
-                    uiState.isLogin.emit(!isLogin)
+                    viewModel.isLogin.emit(!isLogin)
                 },
                 text = buildAnnotatedString {
                     withStyle(style = AppTheme.typography.body2.toSpanStyle()) {
