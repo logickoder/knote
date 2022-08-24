@@ -9,16 +9,20 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
+typealias AppTheme = MaterialTheme
+
 private val LightColorPalette = lightColors(
-    primary = Primary,
-    background = BackgroundLight,
-    surface = SurfaceLight,
+    primary = PrimaryColor,
+    background = BackgroundLightColor,
+    surface = SurfaceLightColor,
+    onPrimary = Color.White,
 )
 
 private val DarkColorPalette = darkColors(
-    primary = Primary,
-    background = BackgroundDark,
-    surface = SurfaceDark,
+    primary = PrimaryColor,
+    background = BackgroundDarkColor,
+    surface = SurfaceDarkColor,
+    onPrimary = Color.White,
 )
 
 @Composable
@@ -41,7 +45,7 @@ fun SynoteTheme(
 
     SideEffect {
         systemUiController.setStatusBarColor(
-            color = Color.Transparent,
+            color = if (darkTheme) PrimaryColor else Color.Transparent,
             darkIcons = !darkTheme,
         )
     }
