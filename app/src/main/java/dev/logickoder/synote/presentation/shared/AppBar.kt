@@ -22,7 +22,7 @@ import dev.logickoder.synote.presentation.MainViewModel
 fun DefaultAppBar(modifier: Modifier = Modifier) {
     val viewModel: MainViewModel = viewModel()
     TopAppBar(
-        backgroundColor = AppTheme.colors.background,
+        backgroundColor = AppTheme.colors.surface,
         title = {
             Row(
                 modifier = modifier.fillMaxSize(),
@@ -43,6 +43,7 @@ fun DefaultAppBar(modifier: Modifier = Modifier) {
                                 Icons.Outlined.LightMode
                             } else Icons.Outlined.DarkMode
                         ),
+                        tint = AppTheme.colors.onBackground,
                         contentDescription = null,
                     )
                 }

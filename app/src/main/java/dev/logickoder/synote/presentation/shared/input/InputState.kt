@@ -19,6 +19,7 @@ data class InputState(
     val singleLine: Boolean = true,
     val required: Boolean = false,
     val visualTransformation: VisualTransformation = VisualTransformation.None,
+    val placeholder: String? = null,
 )
 
 data class IconData(

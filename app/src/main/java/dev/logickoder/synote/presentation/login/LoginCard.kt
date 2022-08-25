@@ -15,8 +15,8 @@ import dev.logickoder.synote.R
 import dev.logickoder.synote.core.theme.AppTheme
 import dev.logickoder.synote.core.theme.padding
 import dev.logickoder.synote.core.theme.secondaryPadding
+import dev.logickoder.synote.presentation.shared.AppButton
 import dev.logickoder.synote.presentation.shared.ErrorText
-import dev.logickoder.synote.presentation.shared.LoadingButton
 import dev.logickoder.synote.presentation.shared.input.Input
 import dev.logickoder.synote.presentation.shared.input.InputState
 import dev.logickoder.synote.presentation.shared.input.PasswordInput
@@ -62,7 +62,7 @@ fun LoginCard(
                     error = passwordError,
                 )
             )
-            LoadingButton(
+            AppButton(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = onLogin,
                 isLoading = isLoading,

@@ -1,7 +1,7 @@
 package dev.logickoder.synote.data.repository
 
 import dev.logickoder.synote.data.local.AuthDataStore
-import dev.logickoder.synote.data.model.User
+import dev.logickoder.synote.data.model.UserEntity
 import dev.logickoder.synote.data.remote.api.AuthService
 import dev.logickoder.synote.data.remote.dto.LoginRequest
 import dev.logickoder.synote.data.remote.dto.LoginResponse
@@ -14,7 +14,7 @@ class AuthRepository @Inject constructor(
     private val remote: AuthService,
     private val local: AuthDataStore,
 ) {
-    val currentUser: Flow<User?>
+    val currentUser: Flow<UserEntity?>
         get() = local.get()
 
     suspend fun login(username: String, password: String) = handleResponse(
@@ -33,7 +33,7 @@ class AuthRepository @Inject constructor(
     ): ResultWrapper<String> {
         return if (response is ResultWrapper.Success) {
             if (!response.data.error) {
-                val user = User(
+                val user = UserEntity(
                     id = response.data.userId!!,
                     name = username,
                 )

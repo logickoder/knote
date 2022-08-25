@@ -13,16 +13,18 @@ typealias AppTheme = MaterialTheme
 
 private val LightColorPalette = lightColors(
     primary = PrimaryColor,
+    onPrimary = OnPrimaryColor,
     background = BackgroundLightColor,
     surface = SurfaceLightColor,
-    onPrimary = Color.White,
+    onSurface = OnSurfaceColor,
 )
 
 private val DarkColorPalette = darkColors(
     primary = PrimaryColor,
+    onPrimary = OnPrimaryColor,
     background = BackgroundDarkColor,
     surface = SurfaceDarkColor,
-    onPrimary = Color.White,
+    onSurface = OnSurfaceColor,
 )
 
 @Composable

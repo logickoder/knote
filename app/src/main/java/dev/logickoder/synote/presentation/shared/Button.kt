@@ -11,9 +11,9 @@ import dev.logickoder.synote.R
 import dev.logickoder.synote.core.theme.AppTheme
 
 @Composable
-fun LoadingButton(
-    isLoading: Boolean,
+fun AppButton(
     modifier: Modifier = Modifier,
+    isLoading: Boolean = false,
     enabled: Boolean = true,
     color: Color? = null,
     onClick: () -> Unit,

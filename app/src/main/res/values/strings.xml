@@ -12,4 +12,8 @@
     <string name="create_your_account">Create your account</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
+
+    <!-- Notes Screen -->
+    <string name="new_note">New note</string>
+    <string name="search_notes">Search notes</string>
 </resources>

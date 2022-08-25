@@ -33,7 +33,7 @@ class Navigation(
     override fun resolve(routing: Route, buildContext: BuildContext): Node {
         return when (routing) {
             Route.Login -> LoginScreen(buildContext = buildContext, backStack = backStack)
-            Route.Notes -> NotesScreen(buildContext = buildContext)
+            Route.Notes -> NotesScreen(buildContext = buildContext, backStack = backStack)
         }
     }
 

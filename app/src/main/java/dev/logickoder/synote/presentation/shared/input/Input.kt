@@ -67,7 +67,7 @@ fun InputField(
     modifier: Modifier = Modifier,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
 ) = with(state) {
-    val color = state.color ?: AppTheme.colors.onSurface
+    val color = state.color ?: AppTheme.colors.onBackground
     Column(
         content = {
             BasicTextField(
@@ -88,38 +88,43 @@ fun InputField(
                 interactionSource = interactionSource,
                 keyboardOptions = keyboardOptions,
                 decorationBox = { innerTextField ->
+                    val iconComposable = @Composable {
+                        if (icon != null) Icon(
+                            modifier = Modifier.size(20.dp).run {
+                                icon.onClick?.let {
+                                    clickable { it() }
+                                } ?: this
+                            },
+                            imageVector = icon.icon,
+                            contentDescription = null,
+                            tint = color.content(),
+                        )
+                    }
+                    val textField = @Composable {
+                        Box(
+                            modifier = Modifier.weight(1f),
+                            content = {
+                                innerTextField()
+                            }
+                        )
+                    }
+                    val placeholder = @Composable {
+                        if (placeholder != null) Text(text = placeholder)
+                    }
+                    val padding = 2.dp
+
                     TextFieldDefaults.TextFieldDecorationBox(
                         value = value,
                         enabled = enabled,
                         singleLine = singleLine,
                         visualTransformation = visualTransformation,
                         isError = error != null,
+                        placeholder = placeholder,
                         innerTextField = {
-                            val padding = 2.dp
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.spacedBy(padding),
                                 content = {
-                                    val textField = @Composable {
-                                        Box(
-                                            modifier = Modifier.weight(1f),
-                                            content = {
-                                                innerTextField()
-                                            }
-                                        )
-                                    }
-                                    val iconComposable = @Composable {
-                                        if (icon != null) Icon(
-                                            modifier = Modifier.size(20.dp).run {
-                                                icon.onClick?.let {
-                                                    clickable { it() }
-                                                } ?: this
-                                            },
-                                            imageVector = icon.icon,
-                                            contentDescription = null,
-                                            tint = color.content(),
-                                        )
-                                    }
                                     if (icon?.alignEnd == true) {
                                         textField()
                                         iconComposable()
@@ -164,7 +169,7 @@ fun Input(
                 error = state.error != null,
                 required = state.required,
                 color = if (!focused) {
-                    (state.color ?: AppTheme.colors.onSurface).content()
+                    (state.color ?: AppTheme.colors.onBackground).content()
                 } else AppTheme.colors.primary.content(),
             )
             content(interactionSource, state)
@@ -213,4 +218,10 @@ private fun InputPreview() = Input(
 private fun PasswordInputPreview() = PasswordInput(
     title = "PasswordInputPreview",
     state = InputState(value = "PasswordInputPreview")
+)
+
+@Preview(showBackground = true)
+@Composable
+private fun PlaceholderInputPreview() = InputField(
+    state = InputState(value = "", placeholder = "PlaceholderInputPreview")
 )

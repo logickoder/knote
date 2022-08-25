@@ -13,6 +13,6 @@ import dev.logickoder.synote.core.theme.AppTheme
 fun AppLogo(modifier: Modifier = Modifier) = Image(
     modifier = modifier.fillMaxWidth(0.45f),
     painter = painterResource(id = R.drawable.ic_synote),
-    colorFilter = ColorFilter.tint(AppTheme.colors.onSurface),
+    colorFilter = ColorFilter.tint(AppTheme.colors.onBackground),
     contentDescription = null,
 )
