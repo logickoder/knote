@@ -24,21 +24,24 @@ class MainActivity : NodeActivity() {
         installSplashScreen()
 
         setContent {
-            SynoteTheme {
-                Surface(
-                    color = AppTheme.colors.background,
-                    content = {
-                        viewModel.startingRoute?.let { route ->
-                            NodeHost(integrationPoint = integrationPoint) {
-                                Navigation(
-                                    buildContext = it,
-                                    startingRoute = route,
-                                )
+            SynoteTheme(
+                darkTheme = viewModel.isDarkMode,
+                content = {
+                    Surface(
+                        color = AppTheme.colors.background,
+                        content = {
+                            viewModel.startingRoute?.let { route ->
+                                NodeHost(integrationPoint = integrationPoint) {
+                                    Navigation(
+                                        buildContext = it,
+                                        startingRoute = route,
+                                    )
+                                }
                             }
                         }
-                    }
-                )
-            }
+                    )
+                }
+            )
         }
     }
 }
