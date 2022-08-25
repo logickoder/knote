@@ -3,6 +3,7 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt")
     id("kotlinx-serialization")
+    id("kotlin-parcelize")
     id("dagger.hilt.android.plugin")
 }
 
@@ -99,6 +100,9 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
     debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
 
+    // Appyx Navigation
+    implementation("com.bumble.appyx:core:1.0-alpha05")
+
     // qrcode scanner
     implementation("com.journeyapps:zxing-android-embedded:4.3.0") {
         isTransitive = false
@@ -135,7 +139,6 @@ dependencies {
     // Hilt
     implementation("com.google.dagger:hilt-android:$hiltVersion")
     kapt("com.google.dagger:hilt-compiler:$hiltVersion")
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")

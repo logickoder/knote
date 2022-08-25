@@ -23,7 +23,7 @@ class AuthService @Inject constructor(
 
     suspend fun register(request: LoginRequest): ResultWrapper<LoginResponse> {
         return client.call {
-            post(HttpRoutes.LOGIN) {
+            post(HttpRoutes.REGISTER) {
                 setBody(request)
             }.body()
         }

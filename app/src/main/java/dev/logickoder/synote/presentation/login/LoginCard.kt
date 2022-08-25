@@ -5,32 +5,27 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.logickoder.synote.R
 import dev.logickoder.synote.core.theme.AppTheme
 import dev.logickoder.synote.core.theme.padding
 import dev.logickoder.synote.core.theme.secondaryPadding
+import dev.logickoder.synote.presentation.shared.ErrorText
+import dev.logickoder.synote.presentation.shared.LoadingButton
 import dev.logickoder.synote.presentation.shared.input.Input
 import dev.logickoder.synote.presentation.shared.input.InputState
 import dev.logickoder.synote.presentation.shared.input.PasswordInput
-import dev.logickoder.synote.utils.collectAsState
 
 @Composable
-internal fun LoginCard(
-    viewModel: LoginViewModel,
-) {
-    val isLogin by viewModel.isLogin.collectAsState()
-    val username by viewModel.username.collectAsState()
-    val password by viewModel.password.collectAsState()
-
+fun LoginCard(
+    uiState: LoginState,
+    onLogin: () -> Unit = {},
+) = with(uiState) {
     Column(
         modifier = Modifier
             .background(shape = AppTheme.shapes.medium, color = AppTheme.colors.surface)
@@ -50,18 +45,27 @@ internal fun LoginCard(
                 title = stringResource(id = R.string.username),
                 state = InputState(
                     value = username,
-                    onValueChanged = viewModel.username::emit,
+                    onValueChanged = {
+                        username = it
+                    },
+                    required = true,
+                    error = usernameError,
                 ),
             )
             PasswordInput(
                 state = InputState(
                     value = password,
-                    onValueChanged = viewModel.password::emit
+                    onValueChanged = {
+                        password = it
+                    },
+                    required = true,
+                    error = passwordError,
                 )
             )
-            Button(
+            LoadingButton(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = viewModel::performAuth,
+                onClick = onLogin,
+                isLoading = isLoading,
                 content = {
                     Text(
                         text = stringResource(
@@ -72,20 +76,23 @@ internal fun LoginCard(
                     )
                 }
             )
+            loginError?.let { ErrorText(error = it) }
         }
     )
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun LoginCardLogin() {
-    LoginCard(viewModel())
-}
+private fun LoginCardLogin() = LoginCard(LoginState())
 
 @Preview(showBackground = true)
 @Composable
-private fun LoginCardRegister() {
-    val viewModel: LoginViewModel = viewModel()
-    viewModel.isLogin.emit(false)
-    LoginCard(viewModel)
-}
+private fun LoginCardRegister() = LoginCard(LoginState().apply {
+    isLogin = false
+})
+
+@Preview(showBackground = true)
+@Composable
+private fun LoginCardWithError() = LoginCard(LoginState().apply {
+    loginError = "Login Error"
+})

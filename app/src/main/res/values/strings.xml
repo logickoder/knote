@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Synote</string>
+    <string name="please_wait">please wait…</string>
+    <string name="required_field">This field is required</string>
 
     <!-- Login Screen -->
     <string name="dont_have_account">Don`t have an account yet?</string>

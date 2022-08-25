@@ -4,10 +4,6 @@ package dev.logickoder.synote.utils
  * Represents the result of an api call
  */
 sealed class ResultWrapper<out T> {
-    /**
-     * No result has been received
-     * */
-    object Loading : ResultWrapper<Nothing>()
 
     /**
      * The call was a success
