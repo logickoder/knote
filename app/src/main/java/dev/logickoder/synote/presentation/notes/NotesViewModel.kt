@@ -41,17 +41,22 @@ class NotesViewModel @Inject constructor(
 
     }
 
-    fun search(text: String) {
+    fun deleteNote(noteId: String) {
         viewModelScope.launch {
-            repository.notes.take(1).flowOn(Dispatchers.Main).collectLatest { notes ->
-                val list = if (text.isNotBlank()) {
-                    notes.filter {
-                        it.title.contains(text, ignoreCase = true)
-                                || it.content.contains(text, ignoreCase = true)
-                    }
-                } else notes
-                _notes.emit(list)
+            val userId = authRepository.currentUser.first()?.id
+            repository.deleteNote(userId!!, noteId)
+        }
+    }
+
+    fun search(text: String) {
+        viewModelScope.launch(Dispatchers.Main) {
+            val notes = repository.notes.first().run {
+                if (text.isNotBlank()) filter {
+                    it.title.contains(text, ignoreCase = true)
+                            || it.content.contains(text, ignoreCase = true)
+                } else this
             }
+            _notes.emit(notes)
         }
     }
 }

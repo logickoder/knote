@@ -107,7 +107,10 @@ fun InputField(
                                     Text(
                                         text = placeholder,
                                         style = MaterialTheme.typography.subtitle1,
-                                        color = MaterialTheme.colors.onSurface,
+                                        color = TextFieldDefaults.textFieldColors()
+                                            .placeholderColor(
+                                                enabled = enabled
+                                            ).value,
                                     )
                                 }
                             }

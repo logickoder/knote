@@ -46,9 +46,12 @@ class NotesScreen(
             editNote = {
                 editNote(it, backStack)
             },
+            deleteNote = {
+                deleteNote(it)
+            },
             onSearch = {
                 search(it)
-            }
+            },
         )
     }
 }
@@ -58,6 +61,7 @@ private fun NotesScreenContent(
     modifier: Modifier = Modifier,
     notes: List<NoteEntity>,
     editNote: (String?) -> Unit,
+    deleteNote: (String) -> Unit,
     onSearch: (String) -> Unit,
 ) = Scaffold(
     modifier = modifier.fillMaxSize(),
@@ -79,7 +83,7 @@ private fun NotesScreenContent(
                     )
                 }
                 items(notes) { note ->
-                    Note(note = note)
+                    Note(note = note, deleteNote = deleteNote)
                     Spacer(modifier = Modifier.height(secondaryPadding()))
                 }
             }
@@ -136,5 +140,6 @@ private fun NotesSearchField(
 private fun NotesScreenPreview() = NotesScreenContent(
     notes = emptyList(),
     editNote = {},
-    onSearch = {}
+    onSearch = {},
+    deleteNote = {}
 )

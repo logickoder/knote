@@ -17,4 +17,8 @@
     <string name="new_note">New note</string>
     <string name="search_notes">Search notes</string>
     <string name="delete">Delete</string>
+    <string name="copy_confirmation">Note content copied to clipboard</string>
+    <string name="delete_confirmation">Are you sure you want to delete this note?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

@@ -1,9 +1,6 @@
 package dev.logickoder.synote.data.local
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import dev.logickoder.synote.data.model.NoteEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -15,4 +12,7 @@ abstract class NotesDao {
 
     @Query("SELECT * FROM notes")
     abstract fun getNotes(): Flow<List<NoteEntity>>
+
+    @Delete
+    abstract suspend fun delete(vararg notes: NoteEntity)
 }
