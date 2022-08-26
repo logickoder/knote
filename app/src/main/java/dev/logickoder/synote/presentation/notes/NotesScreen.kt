@@ -8,6 +8,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
@@ -24,6 +25,7 @@ import dev.logickoder.synote.core.theme.secondaryPadding
 import dev.logickoder.synote.data.model.NoteEntity
 import dev.logickoder.synote.presentation.shared.AppButton
 import dev.logickoder.synote.presentation.shared.DefaultAppBar
+import dev.logickoder.synote.presentation.shared.input.IconData
 import dev.logickoder.synote.presentation.shared.input.InputField
 import dev.logickoder.synote.presentation.shared.input.InputState
 
@@ -120,12 +122,16 @@ private fun NotesSearchField(
                 onSearch(it)
                 text = it
             },
+            icon = IconData(
+                icon = Icons.Outlined.Search,
+                alignEnd = false,
+            ),
             placeholder = stringResource(id = R.string.search_notes),
         )
     )
 }
 
-@Preview(showBackground = true)
+@Preview()
 @Composable
 private fun NotesScreenPreview() = NotesScreenContent(
     notes = emptyList(),

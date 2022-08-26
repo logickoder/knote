@@ -2,6 +2,7 @@ package dev.logickoder.synote.presentation.login
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,7 +19,6 @@ import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.navmodel.backstack.BackStack
 import dev.logickoder.synote.R
 import dev.logickoder.synote.core.Navigation
-import dev.logickoder.synote.core.theme.AppTheme
 import dev.logickoder.synote.core.theme.padding
 import dev.logickoder.synote.core.theme.secondaryPadding
 import dev.logickoder.synote.presentation.shared.AppLogo
@@ -76,8 +76,8 @@ private fun BottomLoginText(
         onIsLoginChanged(!isLogin)
     },
     text = buildAnnotatedString {
-        withStyle(style = AppTheme.typography.body2.toSpanStyle()) {
-            withStyle(style = SpanStyle(color = AppTheme.colors.onBackground)) {
+        withStyle(style = MaterialTheme.typography.body2.toSpanStyle()) {
+            withStyle(style = SpanStyle(color = MaterialTheme.colors.onBackground)) {
                 append(
                     stringResource(
                         id = if (isLogin) R.string.dont_have_account else R.string.already_have_an_account
@@ -85,7 +85,7 @@ private fun BottomLoginText(
                 )
             }
             append(" ")
-            withStyle(style = SpanStyle(color = AppTheme.colors.primary)) {
+            withStyle(style = SpanStyle(color = MaterialTheme.colors.primary)) {
                 append(
                     stringResource(id = if (isLogin) R.string.register else R.string.login)
                 )

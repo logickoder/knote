@@ -25,5 +25,5 @@ data class InputState(
 data class IconData(
     val icon: ImageVector,
     val alignEnd: Boolean = true,
-    val onClick: (() -> Unit)?,
+    val onClick: (() -> Unit)? = null,
 )

@@ -8,9 +8,8 @@ import dev.logickoder.synote.core.Navigation
 import dev.logickoder.synote.data.model.NoteEntity
 import dev.logickoder.synote.data.repository.AuthRepository
 import dev.logickoder.synote.data.repository.NotesRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,13 +18,21 @@ class NotesViewModel @Inject constructor(
     private val repository: NotesRepository,
     private val authRepository: AuthRepository,
 ) : ViewModel() {
+    private val _notes = MutableStateFlow(emptyList<NoteEntity>())
     val notes: Flow<List<NoteEntity>>
-        get() = repository.notes
+        get() = _notes
 
     fun getNotes() {
         viewModelScope.launch {
-            authRepository.currentUser.take(1).collectLatest {
-                repository.refreshNotes(it!!.id)
+            launch {
+                authRepository.currentUser.take(1).collectLatest {
+                    repository.refreshNotes(it!!.id)
+                }
+            }
+            launch {
+                repository.notes.collectLatest {
+                    _notes.emit(it)
+                }
             }
         }
     }
@@ -35,6 +42,16 @@ class NotesViewModel @Inject constructor(
     }
 
     fun search(text: String) {
-
+        viewModelScope.launch {
+            repository.notes.take(1).flowOn(Dispatchers.Main).collectLatest { notes ->
+                val list = if (text.isNotBlank()) {
+                    notes.filter {
+                        it.title.contains(text, ignoreCase = true)
+                                || it.content.contains(text, ignoreCase = true)
+                    }
+                } else notes
+                _notes.emit(list)
+            }
+        }
     }
 }

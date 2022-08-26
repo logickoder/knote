@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.DarkMode
@@ -15,14 +16,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import dev.logickoder.synote.core.theme.AppTheme
 import dev.logickoder.synote.presentation.MainViewModel
 
 @Composable
 fun DefaultAppBar(modifier: Modifier = Modifier) {
     val viewModel: MainViewModel = viewModel()
     TopAppBar(
-        backgroundColor = AppTheme.colors.surface,
+        backgroundColor = MaterialTheme.colors.surface,
         title = {
             Row(
                 modifier = modifier.fillMaxSize(),
@@ -43,7 +43,7 @@ fun DefaultAppBar(modifier: Modifier = Modifier) {
                                 Icons.Outlined.LightMode
                             } else Icons.Outlined.DarkMode
                         ),
-                        tint = AppTheme.colors.onBackground,
+                        tint = MaterialTheme.colors.onBackground,
                         contentDescription = null,
                     )
                 }
