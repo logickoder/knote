@@ -16,4 +16,5 @@
     <!-- Notes Screen -->
     <string name="new_note">New note</string>
     <string name="search_notes">Search notes</string>
+    <string name="delete">Delete</string>
 </resources>
