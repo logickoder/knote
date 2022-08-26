@@ -19,10 +19,11 @@ data class InputState(
     val singleLine: Boolean = true,
     val required: Boolean = false,
     val visualTransformation: VisualTransformation = VisualTransformation.None,
+    val placeholder: String? = null,
 )
 
 data class IconData(
     val icon: ImageVector,
     val alignEnd: Boolean = true,
-    val onClick: (() -> Unit)?,
+    val onClick: (() -> Unit)? = null,
 )

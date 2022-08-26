@@ -9,20 +9,18 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
-typealias AppTheme = MaterialTheme
-
 private val LightColorPalette = lightColors(
     primary = PrimaryColor,
+    onPrimary = OnPrimaryColor,
     background = BackgroundLightColor,
     surface = SurfaceLightColor,
-    onPrimary = Color.White,
 )
 
 private val DarkColorPalette = darkColors(
     primary = PrimaryColor,
+    onPrimary = OnPrimaryColor,
     background = BackgroundDarkColor,
     surface = SurfaceDarkColor,
-    onPrimary = Color.White,
 )
 
 @Composable

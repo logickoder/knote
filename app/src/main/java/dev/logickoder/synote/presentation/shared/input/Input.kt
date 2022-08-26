@@ -7,10 +7,7 @@ import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
@@ -25,7 +22,6 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.logickoder.synote.R
-import dev.logickoder.synote.core.theme.AppTheme
 import dev.logickoder.synote.core.theme.padding
 import dev.logickoder.synote.core.theme.secondaryPadding
 import dev.logickoder.synote.presentation.shared.ErrorText
@@ -38,7 +34,7 @@ private fun InputTitle(
     required: Boolean = false,
     color: Color,
 ) {
-    val contentColor = if (error) AppTheme.colors.error else color
+    val contentColor = if (error) MaterialTheme.colors.error else color
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
@@ -46,7 +42,7 @@ private fun InputTitle(
         content = {
             Text(
                 text = text,
-                style = AppTheme.typography.body2.copy(
+                style = MaterialTheme.typography.body2.copy(
                     fontWeight = FontWeight.Medium,
                     color = contentColor
                 )
@@ -67,18 +63,20 @@ fun InputField(
     modifier: Modifier = Modifier,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
 ) = with(state) {
-    val color = state.color ?: AppTheme.colors.onSurface
+    val color = state.color ?: MaterialTheme.colors.onBackground
     Column(
         content = {
             BasicTextField(
                 modifier = modifier
                     .background(
-                        color = (if (error == null) color else AppTheme.colors.error).copy(alpha = 0.1f),
-                        shape = AppTheme.shapes.medium,
+                        color = (if (error == null) color else MaterialTheme.colors.error).copy(
+                            alpha = 0.1f
+                        ),
+                        shape = MaterialTheme.shapes.medium,
                     ),
                 value = value,
                 onValueChange = onValueChanged,
-                textStyle = AppTheme.typography.body1.copy(
+                textStyle = MaterialTheme.typography.body1.copy(
                     color = color.content(),
                 ),
                 singleLine = singleLine,
@@ -88,6 +86,38 @@ fun InputField(
                 interactionSource = interactionSource,
                 keyboardOptions = keyboardOptions,
                 decorationBox = { innerTextField ->
+                    val iconComposable = @Composable {
+                        if (icon != null) Icon(
+                            modifier = Modifier.size(20.dp).run {
+                                icon.onClick?.let {
+                                    clickable { it() }
+                                } ?: this
+                            },
+                            imageVector = icon.icon,
+                            contentDescription = null,
+                            tint = color.content(),
+                        )
+                    }
+                    val textField = @Composable {
+                        Box(
+                            modifier = Modifier.weight(1f),
+                            content = {
+                                innerTextField()
+                                if (value.isBlank() && placeholder != null) {
+                                    Text(
+                                        text = placeholder,
+                                        style = MaterialTheme.typography.subtitle1,
+                                        color = TextFieldDefaults.textFieldColors()
+                                            .placeholderColor(
+                                                enabled = enabled
+                                            ).value,
+                                    )
+                                }
+                            }
+                        )
+                    }
+                    val padding = 2.dp
+
                     TextFieldDefaults.TextFieldDecorationBox(
                         value = value,
                         enabled = enabled,
@@ -95,31 +125,10 @@ fun InputField(
                         visualTransformation = visualTransformation,
                         isError = error != null,
                         innerTextField = {
-                            val padding = 2.dp
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.spacedBy(padding),
                                 content = {
-                                    val textField = @Composable {
-                                        Box(
-                                            modifier = Modifier.weight(1f),
-                                            content = {
-                                                innerTextField()
-                                            }
-                                        )
-                                    }
-                                    val iconComposable = @Composable {
-                                        if (icon != null) Icon(
-                                            modifier = Modifier.size(20.dp).run {
-                                                icon.onClick?.let {
-                                                    clickable { it() }
-                                                } ?: this
-                                            },
-                                            imageVector = icon.icon,
-                                            contentDescription = null,
-                                            tint = color.content(),
-                                        )
-                                    }
                                     if (icon?.alignEnd == true) {
                                         textField()
                                         iconComposable()
@@ -164,8 +173,8 @@ fun Input(
                 error = state.error != null,
                 required = state.required,
                 color = if (!focused) {
-                    (state.color ?: AppTheme.colors.onSurface).content()
-                } else AppTheme.colors.primary.content(),
+                    (state.color ?: MaterialTheme.colors.onBackground).content()
+                } else MaterialTheme.colors.primary.content(),
             )
             content(interactionSource, state)
         }
@@ -213,4 +222,10 @@ private fun InputPreview() = Input(
 private fun PasswordInputPreview() = PasswordInput(
     title = "PasswordInputPreview",
     state = InputState(value = "PasswordInputPreview")
+)
+
+@Preview(showBackground = true)
+@Composable
+private fun PlaceholderInputPreview() = InputField(
+    state = InputState(value = "", placeholder = "PlaceholderInputPreview")
 )

@@ -5,34 +5,30 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import dev.logickoder.synote.R
-import dev.logickoder.synote.core.theme.AppTheme
 import dev.logickoder.synote.core.theme.padding
 import dev.logickoder.synote.core.theme.secondaryPadding
+import dev.logickoder.synote.presentation.shared.AppButton
+import dev.logickoder.synote.presentation.shared.ErrorText
 import dev.logickoder.synote.presentation.shared.input.Input
 import dev.logickoder.synote.presentation.shared.input.InputState
 import dev.logickoder.synote.presentation.shared.input.PasswordInput
-import dev.logickoder.synote.utils.collectAsState
 
 @Composable
-internal fun LoginCard(
+fun LoginCard(
     uiState: LoginState,
-) {
-    val isLogin by uiState.isLogin.collectAsState()
-    val username by uiState.username.collectAsState()
-    val password by uiState.password.collectAsState()
-
+    onLogin: () -> Unit = {},
+) = with(uiState) {
     Column(
         modifier = Modifier
-            .background(shape = AppTheme.shapes.medium, color = AppTheme.colors.surface)
+            .background(shape = MaterialTheme.shapes.medium, color = MaterialTheme.colors.surface)
             .padding(padding()),
         verticalArrangement = Arrangement.spacedBy(secondaryPadding()),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -43,24 +39,33 @@ internal fun LoginCard(
                         R.string.login_to_your_account
                     } else R.string.create_your_account
                 ),
-                style = AppTheme.typography.body1,
+                style = MaterialTheme.typography.body1,
             )
             Input(
                 title = stringResource(id = R.string.username),
                 state = InputState(
                     value = username,
-                    onValueChanged = uiState.username::emit,
+                    onValueChanged = {
+                        username = it
+                    },
+                    required = true,
+                    error = usernameError,
                 ),
             )
             PasswordInput(
                 state = InputState(
                     value = password,
-                    onValueChanged = uiState.password::emit
+                    onValueChanged = {
+                        password = it
+                    },
+                    required = true,
+                    error = passwordError,
                 )
             )
-            Button(
+            AppButton(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = { },
+                onClick = onLogin,
+                isLoading = isLoading,
                 content = {
                     Text(
                         text = stringResource(
@@ -71,20 +76,23 @@ internal fun LoginCard(
                     )
                 }
             )
+            loginError?.let { ErrorText(error = it) }
         }
     )
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun LoginCardLogin() {
-    LoginCard(rememberLoginState())
-}
+private fun LoginCardLogin() = LoginCard(LoginState())
 
 @Preview(showBackground = true)
 @Composable
-private fun LoginCardRegister() {
-    val state = rememberLoginState()
-    state.isLogin.emit(false)
-    LoginCard(state)
-}
+private fun LoginCardRegister() = LoginCard(LoginState().apply {
+    isLogin = false
+})
+
+@Preview(showBackground = true)
+@Composable
+private fun LoginCardWithError() = LoginCard(LoginState().apply {
+    loginError = "Login Error"
+})
