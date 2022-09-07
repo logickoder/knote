@@ -101,7 +101,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
 
     // Appyx Navigation
-    implementation("com.bumble.appyx:core:1.0-alpha05")
+    implementation("com.bumble.appyx:core:1.0-alpha06")
 
     // qrcode scanner
     implementation("com.journeyapps:zxing-android-embedded:4.3.0") {
