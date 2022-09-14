@@ -25,9 +25,8 @@ class NotesViewModel @Inject constructor(
     fun getNotes() {
         viewModelScope.launch {
             launch {
-                authRepository.currentUser.take(1).collectLatest {
-                    repository.refreshNotes(it!!.id)
-                }
+                val user = authRepository.currentUser.first()
+                repository.refreshNotes(user!!.id)
             }
             launch {
                 repository.notes.collectLatest {
@@ -43,8 +42,8 @@ class NotesViewModel @Inject constructor(
 
     fun deleteNote(noteId: String) {
         viewModelScope.launch {
-            val userId = authRepository.currentUser.first()?.id
-            repository.deleteNote(userId!!, noteId)
+            val user = authRepository.currentUser.first()
+            repository.deleteNote(user!!.id, noteId)
         }
     }
 

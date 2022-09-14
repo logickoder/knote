@@ -15,12 +15,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import dev.logickoder.synote.presentation.MainViewModel
 
 @Composable
-fun DefaultAppBar(modifier: Modifier = Modifier) {
-    val viewModel: MainViewModel = viewModel()
+fun DefaultAppBar(
+    isDarkMode: Boolean,
+    modifier: Modifier = Modifier,
+    switchDarkMode: () -> Unit,
+) {
     TopAppBar(
         backgroundColor = MaterialTheme.colors.surface,
         title = {
@@ -35,11 +36,11 @@ fun DefaultAppBar(modifier: Modifier = Modifier) {
         },
         actions = {
             IconButton(
-                onClick = viewModel::switchDarkMode,
+                onClick = switchDarkMode,
                 content = {
                     Icon(
                         painter = rememberVectorPainter(
-                            if (viewModel.isDarkMode) {
+                            if (isDarkMode) {
                                 Icons.Outlined.LightMode
                             } else Icons.Outlined.DarkMode
                         ),

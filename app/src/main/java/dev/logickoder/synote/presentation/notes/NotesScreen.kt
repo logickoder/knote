@@ -14,12 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.bumble.appyx.core.modality.BuildContext
-import com.bumble.appyx.core.node.Node
-import com.bumble.appyx.navmodel.backstack.BackStack
 import dev.logickoder.synote.R
-import dev.logickoder.synote.core.Navigation
+import dev.logickoder.synote.core.theme.SynoteTheme
 import dev.logickoder.synote.core.theme.padding
 import dev.logickoder.synote.core.theme.secondaryPadding
 import dev.logickoder.synote.data.model.NoteEntity
@@ -28,45 +24,21 @@ import dev.logickoder.synote.presentation.shared.DefaultAppBar
 import dev.logickoder.synote.presentation.shared.input.IconData
 import dev.logickoder.synote.presentation.shared.input.InputField
 import dev.logickoder.synote.presentation.shared.input.InputState
-
-class NotesScreen(
-    buildContext: BuildContext,
-    val backStack: BackStack<Navigation.Route>,
-) : Node(
-    buildContext = buildContext
-) {
-    @Composable
-    override fun View(modifier: Modifier) = with(viewModel<NotesViewModel>()) {
-        LaunchedEffect(key1 = Unit, block = {
-            getNotes()
-        })
-        NotesScreenContent(
-            modifier = modifier,
-            notes = notes.collectAsState(initial = emptyList()).value,
-            editNote = {
-                editNote(it, backStack)
-            },
-            deleteNote = {
-                deleteNote(it)
-            },
-            onSearch = {
-                search(it)
-            },
-        )
-    }
-}
+import java.util.*
 
 @Composable
-private fun NotesScreenContent(
+fun NotesScreen(
     modifier: Modifier = Modifier,
     notes: List<NoteEntity>,
     editNote: (String?) -> Unit,
     deleteNote: (String) -> Unit,
     onSearch: (String) -> Unit,
+    isDarkMode: Boolean,
+    switchDarkMode: () -> Unit,
 ) = Scaffold(
     modifier = modifier.fillMaxSize(),
     topBar = {
-        DefaultAppBar()
+        DefaultAppBar(isDarkMode, switchDarkMode = switchDarkMode)
     },
     content = { scaffoldPadding ->
         LazyColumn(
@@ -135,11 +107,36 @@ private fun NotesSearchField(
     )
 }
 
-@Preview()
+@Preview
 @Composable
-private fun NotesScreenPreview() = NotesScreenContent(
-    notes = emptyList(),
-    editNote = {},
-    onSearch = {},
-    deleteNote = {}
-)
+private fun EmptyNotesScreenPreview() = SynoteTheme {
+    NotesScreen(
+        notes = emptyList(),
+        editNote = {},
+        onSearch = {},
+        deleteNote = {},
+        isDarkMode = false,
+        switchDarkMode = {}
+    )
+}
+
+@Preview
+@Composable
+private fun NotesScreenPreview() = SynoteTheme {
+    NotesScreen(
+        notes = (1..10).map {
+            NoteEntity(
+                id = it.toString(),
+                userId = "userId$it",
+                title = "Title $it",
+                content = "Content $it",
+                dateCreated = Date().toString(),
+            )
+        },
+        editNote = {},
+        onSearch = {},
+        deleteNote = {},
+        isDarkMode = true,
+        switchDarkMode = {}
+    )
+}
