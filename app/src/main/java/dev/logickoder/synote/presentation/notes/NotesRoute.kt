@@ -10,6 +10,7 @@ import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.navmodel.backstack.BackStack
 import dev.logickoder.synote.core.Navigation
 import dev.logickoder.synote.presentation.MainViewModel
+import dev.logickoder.synote.utils.state
 
 class NotesRoute(
     buildContext: BuildContext,
@@ -27,13 +28,13 @@ class NotesRoute(
         })
         NotesScreen(
             modifier = modifier,
-            notes = notesViewModel.notes.collectAsState(initial = emptyList()).value,
+            notes = notesViewModel.notes.state(emptyList()),
             editNote = {
                 notesViewModel.editNote(it, backStack)
             },
             deleteNote = notesViewModel::deleteNote,
             onSearch = notesViewModel::search,
-            isDarkMode = mainViewModel.isDarkMode,
+            isDarkMode = mainViewModel.darkMode.state(false),
             switchDarkMode = mainViewModel::switchDarkMode,
         )
     }

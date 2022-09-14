@@ -5,12 +5,14 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.runtime.collectAsState
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.bumble.appyx.core.integration.NodeHost
 import com.bumble.appyx.core.integrationpoint.NodeActivity
 import dagger.hilt.android.AndroidEntryPoint
 import dev.logickoder.synote.core.Navigation
 import dev.logickoder.synote.core.theme.SynoteTheme
+import dev.logickoder.synote.utils.state
 
 @AndroidEntryPoint
 class MainActivity : NodeActivity() {
@@ -25,7 +27,7 @@ class MainActivity : NodeActivity() {
 
         setContent {
             SynoteTheme(
-                darkTheme = viewModel.isDarkMode,
+                darkTheme = viewModel.darkMode.state(initial = false),
                 content = {
                     Surface(
                         color = MaterialTheme.colors.background,

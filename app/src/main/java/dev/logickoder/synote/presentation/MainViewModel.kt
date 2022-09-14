@@ -9,8 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.logickoder.synote.core.Navigation
 import dev.logickoder.synote.data.repository.AuthRepository
 import dev.logickoder.synote.data.repository.SettingsRepository
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,29 +21,20 @@ class MainViewModel @Inject constructor(
     var startingRoute: Navigation.Route? by mutableStateOf(null)
         private set
 
-    var isDarkMode by mutableStateOf(false)
-        private set
+    val darkMode = settingsRepository.darkMode
 
     init {
-        initStates()
-    }
-
-    private fun initStates() = viewModelScope.launch {
-        launch {
-            authRepository.currentUser.take(1).collectLatest { user ->
-                startingRoute = user?.let {
-                    Navigation.Route.Notes
-                } ?: Navigation.Route.Login
-            }
-        }
-        launch {
-            settingsRepository.darkMode.collectLatest { isDarkMode = it }
+        viewModelScope.launch {
+            val user = authRepository.currentUser.first()
+            startingRoute = user?.let {
+                Navigation.Route.Notes
+            } ?: Navigation.Route.Login
         }
     }
 
     fun switchDarkMode() {
         viewModelScope.launch {
-            settingsRepository.setDarkMode(!isDarkMode)
+            settingsRepository.toggleDarkMode()
         }
     }
 }

@@ -2,6 +2,7 @@ package dev.logickoder.synote.data.repository
 
 import dev.logickoder.synote.data.local.SettingsDataStore
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class SettingsRepository @Inject constructor(
@@ -10,5 +11,7 @@ class SettingsRepository @Inject constructor(
     val darkMode: Flow<Boolean>
         get() = local.getDarkMode()
 
-    suspend fun setDarkMode(data: Boolean) = local.setDarkMode(data)
+    suspend fun toggleDarkMode() {
+        local.setDarkMode(darkMode.first().not())
+    }
 }
