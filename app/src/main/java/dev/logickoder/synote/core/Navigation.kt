@@ -9,8 +9,8 @@ import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackSlider
-import dev.logickoder.synote.presentation.login.LoginScreen
-import dev.logickoder.synote.presentation.notes.NotesScreen
+import dev.logickoder.synote.presentation.login.LoginRoute
+import dev.logickoder.synote.presentation.notes.NotesRoute
 import kotlinx.parcelize.Parcelize
 
 class Navigation(
@@ -32,8 +32,8 @@ class Navigation(
 
     override fun resolve(routing: Route, buildContext: BuildContext): Node {
         return when (routing) {
-            Route.Login -> LoginScreen(buildContext = buildContext, backStack = backStack)
-            Route.Notes -> NotesScreen(buildContext = buildContext, backStack = backStack)
+            Route.Login -> LoginRoute(buildContext = buildContext, backStack = backStack)
+            Route.Notes -> NotesRoute(buildContext = buildContext, backStack = backStack)
         }
     }
 

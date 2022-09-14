@@ -7,45 +7,19 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.bumble.appyx.core.modality.BuildContext
-import com.bumble.appyx.core.node.Node
-import com.bumble.appyx.navmodel.backstack.BackStack
 import dev.logickoder.synote.R
-import dev.logickoder.synote.core.Navigation
+import dev.logickoder.synote.core.theme.SynoteTheme
 import dev.logickoder.synote.core.theme.padding
 import dev.logickoder.synote.core.theme.secondaryPadding
 import dev.logickoder.synote.presentation.shared.AppLogo
 
-
-class LoginScreen(
-    buildContext: BuildContext,
-    private val backStack: BackStack<Navigation.Route>,
-) : Node(
-    buildContext = buildContext
-) {
-    @Composable
-    override fun View(modifier: Modifier) {
-        val viewModel: LoginViewModel = viewModel()
-        val context = LocalContext.current
-        LoginScreenContent(
-            modifier = modifier,
-            uiState = viewModel.uiState,
-            onLogin = {
-                viewModel.performAuth(context, backStack)
-            }
-        )
-    }
-}
-
 @Composable
-private fun LoginScreenContent(
+fun LoginScreen(
     uiState: LoginState,
     modifier: Modifier = Modifier,
     onLogin: () -> Unit = {},
@@ -96,6 +70,8 @@ private fun BottomLoginText(
 
 @Preview(showBackground = true)
 @Composable
-private fun LoginScreenPreview() = LoginScreenContent(
-    uiState = LoginState(),
-)
+private fun LoginScreenPreview() = SynoteTheme {
+    LoginScreen(
+        uiState = LoginState(),
+    )
+}
