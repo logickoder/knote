@@ -9,6 +9,7 @@ import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackSlider
+import dev.logickoder.synote.presentation.edit_note.EditNoteRoute
 import dev.logickoder.synote.presentation.login.LoginRoute
 import dev.logickoder.synote.presentation.notes.NotesRoute
 import kotlinx.parcelize.Parcelize
@@ -34,14 +35,23 @@ class Navigation(
         return when (routing) {
             Route.Login -> LoginRoute(buildContext = buildContext, backStack = backStack)
             Route.Notes -> NotesRoute(buildContext = buildContext, backStack = backStack)
+            is Route.EditNote -> EditNoteRoute(
+                buildContext = buildContext,
+                backStack = backStack,
+                id = routing.id,
+            )
         }
     }
 
     sealed class Route : Parcelable {
+
         @Parcelize
         object Login : Route()
 
         @Parcelize
         object Notes : Route()
+
+        @Parcelize
+        data class EditNote(val id: String?) : Route()
     }
 }

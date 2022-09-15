@@ -17,8 +17,8 @@ class NotesRepository @Inject constructor(
     val notes: Flow<List<NoteEntity>>
         get() = local.getNotes()
 
-    suspend fun refreshNotes(userId: String) {
-        val result = remote.getNotes(GetNotesRequest(userId))
+    suspend fun refreshNotes(id: String) {
+        val result = remote.getNotes(GetNotesRequest(id))
         if (result is ResultWrapper.Success && !result.data.error) {
             val newNotes = result.data.data!!
             // filter out notes not found in the new notes

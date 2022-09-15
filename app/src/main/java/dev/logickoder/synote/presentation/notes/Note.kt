@@ -19,27 +19,36 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import dev.logickoder.synote.R
+import dev.logickoder.synote.core.theme.SynoteTheme
 import dev.logickoder.synote.core.theme.TextColor
 import dev.logickoder.synote.core.theme.padding
 import dev.logickoder.synote.core.theme.secondaryPadding
 import dev.logickoder.synote.data.model.NoteEntity
 import dev.logickoder.synote.presentation.shared.AppButton
+import java.time.LocalDateTime
 
 @Composable
 fun Note(
+    modifier: Modifier = Modifier,
     note: NoteEntity,
     deleteNote: (String) -> Unit,
+    editNote: (String) -> Unit,
 ) = Box(
-    modifier = Modifier
+    modifier = modifier
         .fillMaxWidth()
-        .background(MaterialTheme.colors.surface, shape = MaterialTheme.shapes.medium)
-        .padding(padding()),
+        .background(MaterialTheme.colors.surface, shape = MaterialTheme.shapes.medium),
     content = {
         val clipboardManager = LocalClipboardManager.current
         val context = LocalContext.current
 
         Column(
+            modifier = Modifier
+                .clickable {
+                    editNote(note.id)
+                }
+                .padding(padding()),
             verticalArrangement = Arrangement.spacedBy(secondaryPadding()),
             content = {
                 if (note.title.isNotBlank()) {
@@ -61,7 +70,9 @@ fun Note(
             }
         )
         NoteContextActions(
-            modifier = Modifier.align(Alignment.TopEnd),
+            modifier = Modifier
+                .padding(secondaryPadding())
+                .align(Alignment.TopEnd),
             deleteNote = {
                 deleteNote(note.id)
             },
@@ -82,13 +93,16 @@ private fun NoteContextActions(
     var showMenu by remember { mutableStateOf(false) }
     var showDeleteNoteDialog by remember { mutableStateOf(false) }
 
-    Icon(
-        modifier = Modifier
-            .clickable {
-                showMenu = true
-            },
-        painter = rememberVectorPainter(image = Icons.Outlined.MoreVert),
-        contentDescription = null,
+    IconButton(
+        onClick = {
+            showMenu = true
+        },
+        content = {
+            Icon(
+                painter = rememberVectorPainter(image = Icons.Outlined.MoreVert),
+                contentDescription = null,
+            )
+        }
     )
     DropdownMenu(
         expanded = showMenu,
@@ -165,3 +179,19 @@ private fun ConfirmDeleteNoteDialog(
         })
     }
 )
+
+@Preview
+@Composable
+fun NotePreview() = SynoteTheme {
+    Note(
+        note = NoteEntity(
+            id = "1",
+            userId = "1",
+            title = "Title",
+            content = "Content",
+            dateCreated = LocalDateTime.now().toString(),
+        ),
+        deleteNote = {},
+        editNote = {},
+    )
+}

@@ -20,7 +20,7 @@ import dev.logickoder.synote.core.theme.padding
 import dev.logickoder.synote.core.theme.secondaryPadding
 import dev.logickoder.synote.data.model.NoteEntity
 import dev.logickoder.synote.presentation.shared.AppButton
-import dev.logickoder.synote.presentation.shared.DefaultAppBar
+import dev.logickoder.synote.presentation.shared.SynoteAppBar
 import dev.logickoder.synote.presentation.shared.input.IconData
 import dev.logickoder.synote.presentation.shared.input.InputField
 import dev.logickoder.synote.presentation.shared.input.InputState
@@ -38,7 +38,7 @@ fun NotesScreen(
 ) = Scaffold(
     modifier = modifier.fillMaxSize(),
     topBar = {
-        DefaultAppBar(isDarkMode, switchDarkMode = switchDarkMode)
+        SynoteAppBar(isDarkMode, switchDarkMode = switchDarkMode)
     },
     content = { scaffoldPadding ->
         LazyColumn(
@@ -55,7 +55,7 @@ fun NotesScreen(
                     )
                 }
                 items(notes) { note ->
-                    Note(note = note, deleteNote = deleteNote)
+                    Note(note = note, deleteNote = deleteNote, editNote = editNote)
                     Spacer(modifier = Modifier.height(secondaryPadding()))
                 }
             }
