@@ -13,12 +13,12 @@ val ktorVersion = rootProject.extra.get("ktor_version") as String
 val hiltVersion = rootProject.extra.get("hilt_version") as String
 
 android {
-    compileSdk = 32
+    compileSdk = 33
 
     defaultConfig {
         applicationId = "dev.logickoder.synote"
         minSdk = 21
-        targetSdk = 32
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 
@@ -65,6 +65,7 @@ android {
             excludes.add("/META-INF/{AL2.0,LGPL2.1}")
         }
     }
+    namespace = "dev.logickoder.synote"
 }
 
 dependencies {
@@ -72,8 +73,8 @@ dependencies {
     //noinspection GradleDependency
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
 
-    implementation("androidx.core:core-ktx:1.8.0")
-    implementation("androidx.appcompat:appcompat:1.5.0")
+    implementation("androidx.core:core-ktx:1.9.0")
+    implementation("androidx.appcompat:appcompat:1.5.1")
 
     implementation("androidx.core:core-splashscreen:1.0.0")
 
@@ -120,6 +121,9 @@ dependencies {
 
     // kotlinx serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
+
+    // Rich Edit Text
+    implementation("jp.wasabeef:richeditor-android:2.0.0")
 
     // ktor
     implementation("io.ktor:ktor-client-core:$ktorVersion")
