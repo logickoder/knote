@@ -8,6 +8,7 @@ import dev.logickoder.synote.data.remote.dto.GetNotesRequest
 import dev.logickoder.synote.utils.ResultWrapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import java.util.*
 import javax.inject.Inject
 
 class NotesRepository @Inject constructor(
@@ -40,5 +41,19 @@ class NotesRepository @Inject constructor(
         if ((result is ResultWrapper.Success && result.data.error.not()).not()) {
             refreshNotes(userId)
         }
+    }
+
+    suspend fun createNote(): String {
+        val id = UUID.randomUUID().toString()
+        local.save(
+            NoteEntity(
+                id = id,
+                userId = "",
+                title = "",
+                content = "",
+                dateCreated = "",
+            )
+        )
+        return id
     }
 }

@@ -10,10 +10,7 @@ import dev.logickoder.synote.data.model.NoteEntity
 import dev.logickoder.synote.data.repository.AuthRepository
 import dev.logickoder.synote.data.repository.NotesRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,23 +19,22 @@ class NotesViewModel @Inject constructor(
     private val repository: NotesRepository,
     private val authRepository: AuthRepository,
 ) : ViewModel() {
-    private val _notes = MutableStateFlow(emptyList<NoteEntity>())
-    val notes: Flow<List<NoteEntity>>
-        get() = _notes
 
-    fun getNotes() {
+    init {
         viewModelScope.launch {
-            launch {
-                val user = authRepository.currentUser.first()
-                repository.refreshNotes(user!!.id)
-            }
-            launch {
-                repository.notes.collectLatest {
-                    _notes.emit(it)
-                }
+            authRepository.currentUser.collectLatest { user ->
+                user?.let { repository.refreshNotes(it.id) }
             }
         }
     }
+
+    private val filter = MutableStateFlow("")
+
+    val notes = combine(
+        repository.notes,
+        filter,
+        transform = { notes, filter -> notes.filter(filter) }
+    ).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
     fun editNote(id: String?, backStack: BackStack<Navigation.Route>) {
         backStack.push(Navigation.Route.EditNote(id))
@@ -53,13 +49,14 @@ class NotesViewModel @Inject constructor(
 
     fun search(text: String) {
         viewModelScope.launch(Dispatchers.Main) {
-            val notes = repository.notes.first().run {
-                if (text.isNotBlank()) filter {
-                    it.title.contains(text, ignoreCase = true)
-                            || it.content.contains(text, ignoreCase = true)
-                } else this
-            }
-            _notes.emit(notes)
+            filter.emit(text)
         }
+    }
+
+    private fun List<NoteEntity>.filter(text: String): List<NoteEntity> {
+        return if (text.isNotBlank()) filter {
+            it.title.contains(text, ignoreCase = true)
+                    || it.content.contains(text, ignoreCase = true)
+        } else this
     }
 }

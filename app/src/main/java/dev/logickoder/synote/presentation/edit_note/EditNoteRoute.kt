@@ -2,6 +2,8 @@ package dev.logickoder.synote.presentation.edit_note
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bumble.appyx.core.modality.BuildContext
@@ -23,23 +25,23 @@ class EditNoteRoute(
     override fun View(modifier: Modifier) {
         val viewModel = viewModel<EditNoteViewModel>()
         val mainViewModel = viewModel<MainViewModel>()
+        val note by viewModel.note.collectAsState()
 
-        LaunchedEffect(key1 = Unit, block = {
-            if (id == null) {
-                viewModel.createNote()
-            } else viewModel.getNote(id)
+        LaunchedEffect(key1 = id, block = {
+            viewModel.getNote(id)
         })
 
-        viewModel.note?.let {
-            EditNoteScreen(
-                modifier = modifier,
-                note = it,
-                isDarkMode = mainViewModel.darkMode.state(initial = false),
-                switchDarkMode = mainViewModel::switchDarkMode,
-                navigateBack = {
-                    backStack.pop()
-                },
-            )
-        }
+        EditNoteScreen(
+            modifier = modifier,
+            title = note?.title ?: "",
+            content = note?.content ?: "",
+            isDarkMode = mainViewModel.darkMode.state(initial = false),
+            switchDarkMode = mainViewModel::switchDarkMode,
+            navigateBack = {
+                backStack.pop()
+            },
+            onTitleChanged = {},
+            onContentChanged = {},
+        )
     }
 }

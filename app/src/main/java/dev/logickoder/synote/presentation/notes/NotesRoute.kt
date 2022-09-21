@@ -1,8 +1,8 @@
 package dev.logickoder.synote.presentation.notes
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bumble.appyx.core.modality.BuildContext
@@ -22,13 +22,11 @@ class NotesRoute(
     override fun View(modifier: Modifier) {
         val notesViewModel = viewModel<NotesViewModel>()
         val mainViewModel = viewModel<MainViewModel>()
+        val notes by notesViewModel.notes.collectAsState()
 
-        LaunchedEffect(key1 = Unit, block = {
-            notesViewModel.getNotes()
-        })
         NotesScreen(
             modifier = modifier,
-            notes = notesViewModel.notes.state(emptyList()),
+            notes = notes,
             editNote = {
                 notesViewModel.editNote(it, backStack)
             },

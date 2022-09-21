@@ -1,25 +1,31 @@
 package dev.logickoder.synote.presentation.edit_note
 
-import androidx.compose.material.Scaffold
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import dev.logickoder.synote.R
 import dev.logickoder.synote.core.theme.SynoteTheme
-import dev.logickoder.synote.data.model.NoteEntity
 import dev.logickoder.synote.presentation.shared.BrandAppBar
-import java.time.LocalDateTime
 
 @Composable
 fun EditNoteScreen(
-    note: NoteEntity,
+    title: String,
+    content: String,
     isDarkMode: Boolean,
     modifier: Modifier = Modifier,
     switchDarkMode: () -> Unit,
     navigateBack: () -> Unit,
+    onTitleChanged: (String) -> Unit,
+    onContentChanged: (String) -> Unit,
 ) {
     Scaffold(
         modifier = modifier,
@@ -32,7 +38,29 @@ fun EditNoteScreen(
             )
         },
         content = {
-            NoteEditor(note)
+            Column(
+                content = {
+                    TextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = title,
+                        onValueChange = onTitleChanged,
+                        textStyle = LocalTextStyle.current.copy(
+                            fontWeight = FontWeight.Black,
+                        ),
+                        colors = TextFieldDefaults.textFieldColors(
+                            backgroundColor = Color.Transparent,
+                        ),
+                    )
+                    OutlinedTextField(
+                        modifier = Modifier.fillMaxSize(),
+                        value = content,
+                        onValueChange = onContentChanged,
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            backgroundColor = Color.Transparent,
+                        ),
+                    )
+                }
+            )
         }
     )
 }
@@ -41,15 +69,12 @@ fun EditNoteScreen(
 @Composable
 fun EditNoteScreenPreview() = SynoteTheme {
     EditNoteScreen(
-        note = NoteEntity(
-            id = "1",
-            userId = "1111",
-            title = "Stub note",
-            content = "1111111111111111111",
-            dateCreated = LocalDateTime.now().toString(),
-        ),
+        title = "Stub note",
+        content = "111111111111111",
         isDarkMode = false,
         switchDarkMode = {},
-        navigateBack = {}
+        navigateBack = {},
+        onContentChanged = {},
+        onTitleChanged = {},
     )
 }
