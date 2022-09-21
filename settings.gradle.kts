@@ -14,3 +14,9 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Synote"
 include(":app")
+include(":features")
+include(":features:login")
+include(":features:notes")
+include(":features:edit-note")
+include(":common")
+include(":common:ui")
