@@ -1,11 +1,5 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    extra.apply{
-        set("compose_version", "1.2.1")
-        set("kotlin_version", "1.7.10")
-        set("ktor_version", "2.1.1")
-        set("hilt_version", "2.43.2")
-    }
     repositories {
         google()
         mavenCentral()
@@ -13,10 +7,11 @@ buildscript {
     dependencies {
         classpath("com.android.tools.build:gradle:7.3.0")
 
-        val kotlinVersion = rootProject.extra.get("kotlin_version") as String
-        classpath(kotlin("gradle-plugin", version = kotlinVersion))
-        classpath(kotlin("serialization", version = kotlinVersion))
-        classpath("com.google.dagger:hilt-android-gradle-plugin:${rootProject.extra.get("hilt_version")}")
+        val kotlin = libs.versions.kotlin.get()
+        val hilt = libs.versions.hilt.get()
+        classpath(kotlin("gradle-plugin", version = kotlin))
+        classpath(kotlin("serialization", version = kotlin))
+        classpath("com.google.dagger:hilt-android-gradle-plugin:$hilt")
     }
 }
 
