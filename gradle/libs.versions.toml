@@ -23,7 +23,7 @@ core-java8 = "com.android.tools:desugar_jdk_libs:1.1.5"
 core-material = "com.google.android.material:material:1.6.1"
 core-splashscreen = "androidx.core:core-splashscreen:1.0.0"
 # Compose
-compose-activity = "androidx.activity:activity-compose:1.5.1"
+compose-activity = "androidx.activity:activity-compose:1.6.0"
 compose-constraintlayout = "androidx.activity:activity-compose:1.5.1"
 compose-material = { module = "androidx.compose.material:material", version.ref = "compose" }
 compose-material-icons = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose" }
