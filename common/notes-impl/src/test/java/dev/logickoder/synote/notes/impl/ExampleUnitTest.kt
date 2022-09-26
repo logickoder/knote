@@ -1,6 +1,6 @@
-package dev.logickoder.login
+package dev.logickoder.synote.notes.impl
 
-import org.junit.Assert.assertEquals
+import org.junit.Assert.*
 import org.junit.Test
 
 /**
