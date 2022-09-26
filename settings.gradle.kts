@@ -12,11 +12,14 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "Synote"
+rootProject.name = "synote"
 include(":app")
-include(":features")
 include(":features:login")
 include(":features:notes")
 include(":features:edit-note")
-include(":common")
+include(":common:model")
 include(":common:ui")
+include(":common:notes-api")
+include(":common:notes-impl")
+include(":common:auth-api")
+include(":common:auth-impl")

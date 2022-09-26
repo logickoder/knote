@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_password">Password</string>
+    <string name="ui_required_field">This field is required</string>
+    <string name="ui_delete">delete</string>
+    <string name="ui_yes">Yes</string>
+    <string name="ui_no">No</string>
+    <string name="ui_delete_confirmation">Are you sure you want to delete this note?</string>
+    <string name="ui_copy_confirmation">Note content copied to clipboard</string>
+    <string name="ui_please_wait">please wait…</string>
+</resources>
