@@ -6,11 +6,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.logickoder.synote.notes.api.Note
 import dev.logickoder.synote.notes.api.NoteId
 import dev.logickoder.synote.notes.api.NotesRepository
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,13 +19,14 @@ internal class NotesViewModel @Inject constructor(
     private val repository: NotesRepository,
 ) : ViewModel() {
 
-    private val filter = MutableStateFlow("")
+    private val _search = MutableStateFlow("")
+    val search = _search.asStateFlow()
 
     val notes = combine(
         repository.notes,
-        filter,
+        _search,
         transform = { notes, filter -> notes.filter(filter) }
-    ).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+    ).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), persistentListOf())
 
     fun deleteNote(id: NoteId) {
         viewModelScope.launch {
@@ -35,14 +36,15 @@ internal class NotesViewModel @Inject constructor(
 
     fun search(text: String) {
         viewModelScope.launch(Dispatchers.Main) {
-            filter.emit(text)
+            _search.emit(text)
         }
     }
 
-    private fun List<Note>.filter(text: String): List<Note> {
-        return if (text.isNotBlank()) filter {
+    private fun List<Note>.filter(text: String): ImmutableList<Note> {
+        val result = if (text.isNotBlank()) filter {
             it.title.contains(text, ignoreCase = true)
                     || it.content.contains(text, ignoreCase = true)
         } else this
+        return result.toImmutableList()
     }
 }

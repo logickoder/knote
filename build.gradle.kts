@@ -23,6 +23,8 @@ tasks {
 }
 
 val features = listOf("edit-note", "notes", "login", "app", "ui", "notes-impl", "auth-impl")
+
+@Suppress("UnstableApiUsage")
 fun Project.feature() {
 
     fun com.android.build.gradle.BaseExtension.android(project: Project, isApp: Boolean) {
@@ -127,6 +129,8 @@ fun Project.feature() {
             // Hilt
             implementation(rootProject.libs.hilt.android)
             kapt(rootProject.libs.hilt.compiler)
+            // Kotlinx immutable
+            implementation(rootProject.libs.kotlinx.immutable)
             // Kotlinx serialization
             implementation(rootProject.libs.kotlinx.serialization.ktor)
             implementation(rootProject.libs.kotlinx.serialization.json)

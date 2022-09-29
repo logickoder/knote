@@ -6,9 +6,7 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.graphics.Color
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import dev.logickoder.synote.ui.theme.*
 
 private val LightColorPalette = lightColors(
     primary = PrimaryColor,
@@ -44,7 +42,7 @@ fun SynoteTheme(
 
     SideEffect {
         systemUiController.setStatusBarColor(
-            color = if (darkTheme) PrimaryColor else Color.Transparent,
+            color = colors.background,
             darkIcons = !darkTheme,
         )
     }
