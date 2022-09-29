@@ -32,7 +32,6 @@ internal fun NotesScreen(
     modifier: Modifier = Modifier,
     notes: List<Note>,
     editNote: (NoteId?) -> Unit,
-    deleteNote: (NoteId) -> Unit,
     onSearch: (String) -> Unit,
     isDarkMode: Boolean,
     switchDarkMode: () -> Unit,
@@ -56,7 +55,12 @@ internal fun NotesScreen(
                     )
                 }
                 items(notes) { note ->
-                    Note(note = note, deleteNote = deleteNote, editNote = editNote)
+                    Note(
+                        note = note,
+                        editNote = editNote,
+                        selected = false,
+                        selectedChanged = {},
+                    )
                     Spacer(modifier = Modifier.height(secondaryPadding()))
                 }
             }
@@ -115,10 +119,8 @@ private fun EmptyNotesScreenPreview() = SynoteTheme {
         notes = emptyList(),
         editNote = {},
         onSearch = {},
-        deleteNote = {},
-        isDarkMode = false,
-        switchDarkMode = {}
-    )
+        isDarkMode = false
+    ) {}
 }
 
 @Preview
@@ -135,8 +137,6 @@ private fun NotesScreenPreview() = SynoteTheme {
         },
         editNote = {},
         onSearch = {},
-        deleteNote = {},
-        isDarkMode = true,
-        switchDarkMode = {}
-    )
+        isDarkMode = true
+    ) {}
 }

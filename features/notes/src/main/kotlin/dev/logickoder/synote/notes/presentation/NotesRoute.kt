@@ -22,7 +22,6 @@ fun NotesRoute(
         modifier = modifier,
         notes = notes,
         editNote = onNoteClick,
-        deleteNote = viewModel::deleteNote,
         onSearch = viewModel::search,
         isDarkMode = isDarkMode,
         switchDarkMode = onSwitchDarkMode,

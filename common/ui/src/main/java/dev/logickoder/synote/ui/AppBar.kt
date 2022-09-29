@@ -1,6 +1,7 @@
 package dev.logickoder.synote.ui
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
@@ -13,7 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.logickoder.synote.ui.theme.SynoteTheme
@@ -41,7 +41,7 @@ fun SynoteAppBar(
 
 @Composable
 fun BrandAppBar(
-    text: String,
+    title: @Composable () -> Unit,
     isDarkMode: Boolean,
     modifier: Modifier = Modifier,
     switchDarkMode: () -> Unit,
@@ -49,14 +49,7 @@ fun BrandAppBar(
 ) = DefaultAppBar(
     modifier = modifier,
     isDarkMode = isDarkMode,
-    title = {
-        Text(
-            text = text,
-            style = MaterialTheme.typography.body1.copy(
-                fontWeight = FontWeight.W600,
-            )
-        )
-    },
+    title = title,
     switchDarkMode = switchDarkMode,
     navigation = navigation,
 )
@@ -72,8 +65,8 @@ fun DefaultAppBar(
     TopAppBar(
         modifier = modifier,
         backgroundColor = MaterialTheme.colors.surface,
-        navigationIcon = navigation?.let {
-            {
+        content = {
+            navigation?.let {
                 IconButton(
                     onClick = it.second,
                     content = {
@@ -81,9 +74,12 @@ fun DefaultAppBar(
                     }
                 )
             }
-        },
-        title = title,
-        actions = {
+            Box(
+                modifier = Modifier.weight(1f),
+                content = {
+                    title()
+                }
+            )
             IconButton(
                 onClick = switchDarkMode,
                 content = {
@@ -108,7 +104,7 @@ fun DefaultAppBar(
 fun BrandAppBarPreview() = SynoteTheme {
     BrandAppBar(
         isDarkMode = false,
-        text = "Edit Note",
+        title = { Text("Edit Note") },
         switchDarkMode = {}
     )
 }
@@ -118,7 +114,7 @@ fun BrandAppBarPreview() = SynoteTheme {
 fun BrandAppBarWithNavigationPreview() = SynoteTheme {
     BrandAppBar(
         isDarkMode = false,
-        text = "Edit Note",
+        title = { Text("Edit Note") },
         switchDarkMode = {},
         navigation = Icons.Default.KeyboardArrowLeft to {
 

@@ -19,12 +19,6 @@ internal class NotesViewModel @Inject constructor(
     private val repository: NotesRepository,
 ) : ViewModel() {
 
-    init {
-        viewModelScope.launch {
-            repository.refreshNotes()
-        }
-    }
-
     private val filter = MutableStateFlow("")
 
     val notes = combine(

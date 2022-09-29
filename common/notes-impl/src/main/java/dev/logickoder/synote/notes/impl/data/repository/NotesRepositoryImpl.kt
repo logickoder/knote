@@ -48,7 +48,12 @@ internal class NotesRepositoryImpl @Inject constructor(
         local.delete(notes.first { it.id == noteId })
     }
 
-    override suspend fun createNote(): NoteId {
-        return NoteId(local.save(NoteEntity()).first())
+    override suspend fun createNote(): Note {
+        return DomainMapper.toNote(NoteEntity())
+    }
+
+    override suspend fun saveNote(note: Note): NoteId {
+        val result = local.save(DomainMapper.toNoteEntity(note))
+        return NoteId(result.first())
     }
 }
