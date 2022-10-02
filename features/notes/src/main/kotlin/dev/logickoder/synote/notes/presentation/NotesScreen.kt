@@ -9,13 +9,15 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import dev.logickoder.synote.notes.api.Note
 import dev.logickoder.synote.notes.api.NoteId
 import dev.logickoder.synote.notes.data.domain.NoteDomain
+import dev.logickoder.synote.ui.NoteActionDialog
 import dev.logickoder.synote.ui.theme.SynoteTheme
 import dev.logickoder.synote.ui.theme.padding
 import dev.logickoder.synote.ui.theme.secondaryPadding
@@ -24,23 +26,58 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import java.time.LocalDateTime
 
+private enum class NotesScreenDialog {
+    Archive, Delete
+}
+
 @Composable
 internal fun NotesScreen(
     modifier: Modifier = Modifier,
     search: String,
     notes: ImmutableList<NoteDomain>,
-    inSelection: Boolean,
+    selected: Int,
     editNote: (NoteId?) -> Unit,
+    deleteNotes: () -> Unit,
+    archiveNotes: () -> Unit,
     onSearch: (String) -> Unit,
     onSelectedChanged: (NoteId) -> Unit,
+    cancelSelection: () -> Unit,
 ) = Scaffold(
     modifier = modifier.fillMaxSize(),
     topBar = {
-        NotesAppBar(
+        var showDialog by remember { mutableStateOf<NotesScreenDialog?>(null) }
+
+        if (selected > 0) {
+            NotesInSelectionAppBar(
+                selected = selected,
+                noteCount = notes.size,
+                modifier = Modifier.fillMaxWidth(),
+                deleteNotes = { showDialog = NotesScreenDialog.Delete },
+                archiveNotes = { showDialog = NotesScreenDialog.Archive },
+                cancelSelection = cancelSelection,
+            )
+        } else NotesAppBar(
             search = search,
             onSearch = onSearch,
             modifier = Modifier.fillMaxWidth(),
         )
+
+        showDialog?.let {
+            NoteActionDialog(
+                text = stringResource(
+                    id = dev.logickoder.synote.ui.R.string.ui_confirmation_multiple,
+                    it.name.lowercase()
+                ),
+                confirmAction = {
+                    when (it) {
+                        NotesScreenDialog.Archive -> archiveNotes()
+                        NotesScreenDialog.Delete -> deleteNotes()
+                    }
+                },
+                dismissDialog = { showDialog = null }
+            )
+
+        }
     },
     content = { scaffoldPadding ->
         LazyColumn(
@@ -52,7 +89,7 @@ internal fun NotesScreen(
                         domain = note,
                         editNote = editNote,
                         selectedChanged = onSelectedChanged,
-                        inSelection = inSelection,
+                        inSelection = selected > 0,
                     )
                     Spacer(modifier = Modifier.height(secondaryPadding()))
                 }
@@ -79,10 +116,13 @@ private fun EmptyNotesScreenPreview() = SynoteTheme {
     NotesScreen(
         notes = persistentListOf(),
         search = "",
-        inSelection = false,
+        selected = 0,
         editNote = {},
+        deleteNotes = {},
+        archiveNotes = {},
         onSearch = {},
-        onSelectedChanged = { }
+        onSelectedChanged = { },
+        cancelSelection = {}
     )
 }
 
@@ -102,9 +142,12 @@ private fun NotesScreenPreview() = SynoteTheme {
             )
         }.toImmutableList(),
         search = "My Note",
-        inSelection = false,
+        selected = 1,
         editNote = {},
+        deleteNotes = {},
+        archiveNotes = {},
         onSearch = {},
         onSelectedChanged = { },
+        cancelSelection = {}
     )
 }

@@ -10,7 +10,6 @@ import dev.logickoder.synote.notes.data.domain.NoteDomain
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,12 +20,20 @@ internal class NotesViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _search = MutableStateFlow("")
-    val search = _search.asStateFlow()
+    val search = _search.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = _search.value,
+    )
 
     private val _selected = MutableStateFlow(listOf<NoteId>())
-    val inSelection = _selected.map {
-        it.isNotEmpty()
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
+    val selected = _selected.map {
+        it.size
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = _selected.value.size,
+    )
 
     val notes = combine(
         repository.notes,
@@ -35,23 +42,37 @@ internal class NotesViewModel @Inject constructor(
         transform = { notes, filter, selected -> notes.filter(filter).map(selected) }
     ).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), persistentListOf())
 
-    fun deleteNote(id: NoteId) {
+    fun deleteNotes() {
         viewModelScope.launch {
-            repository.deleteNote(id)
+//            repository.deleteNote(id)
         }
+        cancelSelection()
+    }
+
+    fun archiveNotes() {
+        viewModelScope.launch {
+//            repository.deleteNote(id)
+        }
+        cancelSelection()
     }
 
     fun search(text: String) {
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.launch {
             _search.emit(text)
         }
     }
 
     fun toggleSelect(id: NoteId) {
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.launch {
             if (id in _selected.value) {
                 _selected.emit(_selected.value - id)
             } else _selected.emit(_selected.value + id)
+        }
+    }
+
+    fun cancelSelection() {
+        viewModelScope.launch {
+            _selected.emit(emptyList())
         }
     }
 

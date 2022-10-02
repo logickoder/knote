@@ -5,7 +5,7 @@
     <string name="ui_delete">delete</string>
     <string name="ui_yes">Yes</string>
     <string name="ui_no">No</string>
-    <string name="ui_delete_confirmation">Are you sure you want to delete this note?</string>
-    <string name="ui_copy_confirmation">Note content copied to clipboard</string>
+    <string name="ui_confirmation_single">Are you sure you want to %1$s this note?</string>
+    <string name="ui_confirmation_multiple">Are you sure you want to %1$s these note(s)?</string>
     <string name="ui_please_wait">please wait…</string>
 </resources>

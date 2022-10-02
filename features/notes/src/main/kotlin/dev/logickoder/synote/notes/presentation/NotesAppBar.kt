@@ -4,6 +4,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Archive
+import androidx.compose.material.icons.filled.Cancel
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.runtime.Composable
@@ -59,8 +62,69 @@ internal fun NotesAppBar(
 }
 
 
+@Composable
+internal fun NotesInSelectionAppBar(
+    selected: Int,
+    noteCount: Int,
+    modifier: Modifier = Modifier,
+    cancelSelection: () -> Unit,
+    deleteNotes: () -> Unit,
+    archiveNotes: () -> Unit,
+) {
+    TopAppBar(
+        modifier = modifier,
+        navigationIcon = {
+            IconButton(
+                onClick = cancelSelection,
+                content = {
+                    Icon(
+                        imageVector = Icons.Default.Cancel,
+                        contentDescription = stringResource(R.string.notes_cancel_selection)
+                    )
+                }
+            )
+        },
+        title = {
+            Text(text = "$selected/$noteCount")
+        },
+        actions = {
+            IconButton(
+                onClick = archiveNotes,
+                content = {
+                    Icon(
+                        imageVector = Icons.Default.Archive,
+                        contentDescription = stringResource(R.string.notes_archive_notes)
+                    )
+                }
+            )
+            IconButton(
+                onClick = deleteNotes,
+                content = {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = stringResource(R.string.notes_delete_notes)
+                    )
+                }
+            )
+        }
+    )
+}
+
 @Preview
 @Composable
 private fun NotesAppBarPreview() {
     NotesAppBar(search = "", onSearch = {}, modifier = Modifier.fillMaxWidth())
+}
+
+@Preview
+@Composable
+private fun NotesInSelectionAppBarPreview() {
+    NotesInSelectionAppBar(
+        selected = 1,
+        noteCount = 18,
+        modifier = Modifier.fillMaxWidth(),
+        cancelSelection = { /*TODO*/ },
+        deleteNotes = { /*TODO*/ }) {
+
+    }
 }
