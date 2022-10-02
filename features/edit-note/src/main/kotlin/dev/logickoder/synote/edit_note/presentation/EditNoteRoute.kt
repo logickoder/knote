@@ -1,7 +1,6 @@
 package dev.logickoder.synote.edit_note.presentation
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -16,8 +15,6 @@ import dev.logickoder.synote.ui.OnLifecycleEvent
 fun EditNoteRoute(
     id: NoteId?,
     modifier: Modifier = Modifier,
-    isDarkMode: Boolean = isSystemInDarkTheme(),
-    switchDarkMode: () -> Unit,
     navigateBack: () -> Unit,
 ) {
     val viewModel = viewModel<EditNoteViewModel>()
@@ -44,10 +41,13 @@ fun EditNoteRoute(
         modifier = modifier,
         title = viewModel.title,
         content = viewModel.content,
-        isDarkMode = isDarkMode,
-        switchDarkMode = switchDarkMode,
+        editedAt = viewModel.editedAt,
         navigateBack = goBack,
         onTitleChanged = viewModel::updateTitle,
         onContentChanged = viewModel::updateContent,
+        performAction = { action, reverse ->
+            viewModel.performAction(action, reverse)
+            goBack()
+        },
     )
 }

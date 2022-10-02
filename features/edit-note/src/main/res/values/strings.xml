@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="edit_note">Edit Note</string>
+    <string name="edit_note_perform_action">%1$s note</string>
+    <string name="edit_note_edited_at">Edited %1$s</string>
+    <string name="edit_note_note">Note</string>
+    <string name="edit_note_title">Title</string>
+    <string name="edit_note_action_performed">This note has been</string>
+    <string name="edit_note_undo">Undo</string>
 </resources>

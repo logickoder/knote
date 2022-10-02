@@ -7,10 +7,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.logickoder.synote.notes.api.Note
+import dev.logickoder.synote.notes.api.NoteAction
 import dev.logickoder.synote.notes.api.NoteId
 import dev.logickoder.synote.notes.api.NotesRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,6 +26,9 @@ internal class EditNoteViewModel @Inject constructor(
     var content by mutableStateOf("")
         private set
 
+    var editedAt: LocalDateTime by mutableStateOf(LocalDateTime.now())
+        private set
+
     private var note: Note? = null
 
     fun getNote(id: NoteId?) {
@@ -33,6 +38,7 @@ internal class EditNoteViewModel @Inject constructor(
             } ?: repository.createNote()
             title = note?.title ?: ""
             content = note?.content ?: ""
+            editedAt = note?.dateModified ?: LocalDateTime.now()
         }
     }
 
@@ -42,6 +48,12 @@ internal class EditNoteViewModel @Inject constructor(
 
     fun updateContent(content: String) {
         this.content = content
+    }
+
+    fun performAction(action: NoteAction, reverse: Boolean) {
+        viewModelScope.launch {
+            repository.performAction(action, reverse, note!!.id)
+        }
     }
 
     fun save() {
