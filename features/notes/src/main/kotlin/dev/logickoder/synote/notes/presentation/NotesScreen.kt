@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.tooling.preview.Preview
 import dev.logickoder.synote.notes.api.Note
 import dev.logickoder.synote.notes.api.NoteId
+import dev.logickoder.synote.notes.data.domain.NoteDomain
 import dev.logickoder.synote.ui.theme.SynoteTheme
 import dev.logickoder.synote.ui.theme.padding
 import dev.logickoder.synote.ui.theme.secondaryPadding
@@ -27,9 +28,11 @@ import java.time.LocalDateTime
 internal fun NotesScreen(
     modifier: Modifier = Modifier,
     search: String,
-    notes: ImmutableList<Note>,
+    notes: ImmutableList<NoteDomain>,
+    inSelection: Boolean,
     editNote: (NoteId?) -> Unit,
     onSearch: (String) -> Unit,
+    onSelectedChanged: (NoteId) -> Unit,
 ) = Scaffold(
     modifier = modifier.fillMaxSize(),
     topBar = {
@@ -46,10 +49,10 @@ internal fun NotesScreen(
             content = {
                 items(notes) { note ->
                     Note(
-                        note = note,
+                        domain = note,
                         editNote = editNote,
-                        selected = false,
-                        selectedChanged = {},
+                        selectedChanged = onSelectedChanged,
+                        inSelection = inSelection,
                     )
                     Spacer(modifier = Modifier.height(secondaryPadding()))
                 }
@@ -76,8 +79,10 @@ private fun EmptyNotesScreenPreview() = SynoteTheme {
     NotesScreen(
         notes = persistentListOf(),
         search = "",
+        inSelection = false,
         editNote = {},
         onSearch = {},
+        onSelectedChanged = { }
     )
 }
 
@@ -85,16 +90,21 @@ private fun EmptyNotesScreenPreview() = SynoteTheme {
 @Composable
 private fun NotesScreenPreview() = SynoteTheme {
     NotesScreen(
-        notes = (1L..10L).map {
-            Note(
-                id = NoteId(it),
-                title = "Title $it",
-                content = "Content $it",
-                dateCreated = LocalDateTime.now(),
+        notes = (1..10).map {
+            NoteDomain(
+                note = Note(
+                    id = NoteId(it.toLong()),
+                    title = "Title $it",
+                    content = "Content $it",
+                    dateCreated = LocalDateTime.now(),
+                ),
+                selected = it % 2 == 0,
             )
         }.toImmutableList(),
         search = "My Note",
+        inSelection = false,
         editNote = {},
         onSearch = {},
+        onSelectedChanged = { },
     )
 }

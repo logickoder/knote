@@ -15,12 +15,15 @@ fun NotesRoute(
     val viewModel = viewModel<NotesViewModel>()
     val search by viewModel.search.collectAsState()
     val notes by viewModel.notes.collectAsState()
+    val inSelection by viewModel.inSelection.collectAsState()
 
     NotesScreen(
         modifier = modifier,
         notes = notes,
         search = search,
+        inSelection = inSelection,
         editNote = onNoteClick,
         onSearch = viewModel::search,
+        onSelectedChanged = viewModel::toggleSelect
     )
 }

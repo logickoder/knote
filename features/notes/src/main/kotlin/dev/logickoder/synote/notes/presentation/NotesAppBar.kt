@@ -58,8 +58,9 @@ internal fun NotesAppBar(
     )
 }
 
+
 @Preview
 @Composable
-internal fun NotesAppBar() {
+private fun NotesAppBarPreview() {
     NotesAppBar(search = "", onSearch = {}, modifier = Modifier.fillMaxWidth())
 }
