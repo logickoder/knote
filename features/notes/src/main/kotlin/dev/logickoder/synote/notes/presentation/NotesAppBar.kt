@@ -5,10 +5,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
-import androidx.compose.material.icons.outlined.Archive
-import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.Restore
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -16,13 +15,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import dev.logickoder.synote.notes.R
 import dev.logickoder.synote.notes.api.NoteAction
+import dev.logickoder.synote.ui.theme.SynoteTheme
 import dev.logickoder.synote.ui.theme.padding
 
 @Composable
 internal fun NotesAppBar(
     search: String,
     modifier: Modifier = Modifier,
-    onSearch: (String) -> Unit
+    onSearch: (String) -> Unit,
+    openDrawer: () -> Unit,
 ) {
     OutlinedTextField(
         modifier = modifier.padding(horizontal = padding()),
@@ -39,7 +40,7 @@ internal fun NotesAppBar(
         },
         leadingIcon = {
             IconButton(
-                onClick = { /*TODO*/ },
+                onClick = openDrawer,
                 content = {
                     Icon(
                         imageVector = Icons.Outlined.Menu,
@@ -67,9 +68,10 @@ internal fun NotesAppBar(
 internal fun NotesInSelectionAppBar(
     selected: Int,
     noteCount: Int,
+    screen: NotesDrawerItem,
     modifier: Modifier = Modifier,
     cancelSelection: () -> Unit,
-    performAction: (NoteAction) -> Unit,
+    performAction: (NoteAction?) -> Unit,
 ) {
     TopAppBar(
         modifier = modifier,
@@ -88,24 +90,36 @@ internal fun NotesInSelectionAppBar(
             Text(text = "$selected/$noteCount")
         },
         actions = {
-            NoteAction.values().forEach { action ->
+            if (screen != NotesDrawerItem.Notes) {
                 IconButton(
                     onClick = {
-                        performAction(action)
+                        performAction(null)
                     },
                     content = {
                         Icon(
-                            imageVector = when (action) {
-                                NoteAction.Archive -> Icons.Outlined.Archive
-                                NoteAction.Delete -> Icons.Outlined.Delete
-                            },
-                            contentDescription = stringResource(
-                                R.string.notes_perform_action,
-                                action.name
-                            )
+                            imageVector = Icons.Outlined.Restore,
+                            contentDescription = "Restore"
                         )
                     }
                 )
+            }
+            NoteAction.values().forEach { action ->
+                if (action == NoteAction.Trash || action.name != screen.name) {
+                    IconButton(
+                        onClick = {
+                            performAction(action)
+                        },
+                        content = {
+                            Icon(
+                                imageVector = NotesDrawerItem.valueOf(action.name).icon,
+                                contentDescription = stringResource(
+                                    R.string.notes_perform_action,
+                                    action.name
+                                )
+                            )
+                        }
+                    )
+                }
             }
         }
     )
@@ -113,20 +127,35 @@ internal fun NotesInSelectionAppBar(
 
 @Preview
 @Composable
-private fun NotesAppBarPreview() {
+private fun NotesAppBarPreview() = SynoteTheme {
     NotesAppBar(
         search = "",
         onSearch = {},
+        openDrawer = {},
         modifier = Modifier.fillMaxWidth()
     )
 }
 
 @Preview
 @Composable
-private fun NotesInSelectionAppBarPreview() {
+private fun NotesInSelectionAppBarPreview() = SynoteTheme {
     NotesInSelectionAppBar(
         selected = 1,
         noteCount = 18,
+        screen = NotesDrawerItem.Notes,
+        modifier = Modifier.fillMaxWidth(),
+        cancelSelection = { /*TODO*/ },
+        performAction = { /*TODO*/ }
+    )
+}
+
+@Preview
+@Composable
+private fun NotesInReverseSelectionAppBarPreview() = SynoteTheme {
+    NotesInSelectionAppBar(
+        selected = 1,
+        noteCount = 18,
+        screen = NotesDrawerItem.Trash,
         modifier = Modifier.fillMaxWidth(),
         cancelSelection = { /*TODO*/ },
         performAction = { /*TODO*/ }

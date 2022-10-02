@@ -42,7 +42,7 @@ internal fun EditNoteAppBar(
                         Icon(
                             imageVector = when (action) {
                                 NoteAction.Archive -> Icons.Outlined.Archive
-                                NoteAction.Delete -> Icons.Outlined.Delete
+                                NoteAction.Trash -> Icons.Outlined.Delete
                             },
                             contentDescription = stringResource(
                                 R.string.edit_note_perform_action,

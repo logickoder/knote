@@ -45,8 +45,8 @@ fun EditNoteRoute(
         navigateBack = goBack,
         onTitleChanged = viewModel::updateTitle,
         onContentChanged = viewModel::updateContent,
-        performAction = { action, reverse ->
-            viewModel.performAction(action, reverse)
+        performAction = { action ->
+            viewModel.performAction(action)
             goBack()
         },
     )

@@ -9,7 +9,7 @@ interface NotesRepository {
 
     suspend fun refreshNotes()
 
-    suspend fun performAction(action: NoteAction, reverse: Boolean, vararg noteId: NoteId)
+    suspend fun performAction(action: NoteAction?, vararg noteId: NoteId)
 
 
     suspend fun createNote(): Note

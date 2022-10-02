@@ -50,9 +50,9 @@ internal class EditNoteViewModel @Inject constructor(
         this.content = content
     }
 
-    fun performAction(action: NoteAction, reverse: Boolean) {
+    fun performAction(action: NoteAction?) {
         viewModelScope.launch {
-            repository.performAction(action, reverse, note!!.id)
+            repository.performAction(action, note!!.id)
         }
     }
 

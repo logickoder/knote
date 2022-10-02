@@ -24,7 +24,7 @@ internal fun EditNoteScreen(
     editedAt: LocalDateTime,
     modifier: Modifier = Modifier,
     navigateBack: () -> Unit,
-    performAction: (NoteAction, Boolean) -> Unit,
+    performAction: (NoteAction?) -> Unit,
     onTitleChanged: (String) -> Unit,
     onContentChanged: (String) -> Unit,
 ) {
@@ -49,11 +49,11 @@ internal fun EditNoteScreen(
                             SnackbarResult.Dismissed -> {
                             }
                             SnackbarResult.ActionPerformed -> {
-                                performAction(it, true)
+                                performAction(null)
                             }
                         }
                     }
-                    performAction(it, false)
+                    performAction(it)
                 }
             )
         },
@@ -114,6 +114,6 @@ private fun EditNoteScreenPreview() = SynoteTheme {
         navigateBack = {},
         onContentChanged = {},
         onTitleChanged = {},
-        performAction = { _, _ -> }
+        performAction = { }
     )
 }

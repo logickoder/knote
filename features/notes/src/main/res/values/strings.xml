@@ -4,4 +4,5 @@
     <string name="notes_search">Search notes</string>
     <string name="notes_perform_action">%1$s Note(s)</string>
     <string name="notes_cancel_selection">Cancel Selection</string>
+    <string name="notes_app_name">kNote</string>
 </resources>

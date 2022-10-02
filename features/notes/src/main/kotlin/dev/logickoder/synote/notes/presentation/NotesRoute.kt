@@ -5,7 +5,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import dev.logickoder.synote.notes.api.NoteAction
 import dev.logickoder.synote.notes.api.NoteId
 
 @Composable
@@ -17,21 +16,21 @@ fun NotesRoute(
     val search by viewModel.search.collectAsState()
     val notes by viewModel.notes.collectAsState()
     val selected by viewModel.selected.collectAsState()
+    val screen by viewModel.screen.collectAsState()
 
     NotesScreen(
         modifier = modifier,
         notes = notes,
         search = search,
         selected = selected,
+        screen = screen,
         editNote = onNoteClick,
-        archiveNotes = {
-            viewModel.performAction(NoteAction.Archive)
-        },
-        deleteNotes = {
-            viewModel.performAction(NoteAction.Delete)
+        performAction = {
+            viewModel.performAction(it)
         },
         onSearch = viewModel::search,
         onSelectedChanged = viewModel::toggleSelect,
+        onScreenChanged = viewModel::changeScreen,
         cancelSelection = viewModel::cancelSelection
     )
 }

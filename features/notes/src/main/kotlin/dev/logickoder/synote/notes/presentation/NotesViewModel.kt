@@ -36,20 +36,33 @@ internal class NotesViewModel @Inject constructor(
         initialValue = _selected.value.size,
     )
 
+    private val _screen = MutableStateFlow(NotesDrawerItem.Notes)
+    val screen = _screen.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = _screen.value,
+    )
+
     val notes = combine(
         repository.notes,
         _search,
         _selected,
-        transform = { notes, filter, selected ->
-            notes.filter {
-                it.action == null
-            }.filter(filter).map(selected)
+        _screen,
+        transform = { notes, filter, selected, screen ->
+            notes.screen(screen).search(filter).map(selected)
         }
     ).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), persistentListOf())
 
-    fun performAction(action: NoteAction) {
+    fun performAction(action: NoteAction?) {
         viewModelScope.launch {
-            repository.performAction(action, false, *_selected.value.toTypedArray())
+            val notes = _selected.value.toTypedArray()
+            // completely delete the note if the action is delete in the delete screen
+            if (action == NoteAction.Trash && _screen.value == NotesDrawerItem.Trash) {
+                repository.deleteNotes(*notes)
+            } else {
+                // else put the note in the trash
+                repository.performAction(action, *notes)
+            }
             cancelSelection()
         }
     }
@@ -68,18 +81,36 @@ internal class NotesViewModel @Inject constructor(
         }
     }
 
+    fun changeScreen(screen: NotesDrawerItem) {
+        if (screen != _screen.value) {
+            viewModelScope.launch {
+                _screen.emit(screen)
+            }
+        }
+    }
+
     fun cancelSelection() {
         viewModelScope.launch {
             _selected.emit(emptyList())
         }
     }
 
-    private fun List<Note>.filter(text: String): List<Note> {
+    private fun List<Note>.search(text: String): List<Note> {
         val result = if (text.isNotBlank()) filter {
             it.title.contains(text, ignoreCase = true)
                     || it.content.contains(text, ignoreCase = true)
         } else this
         return result.toImmutableList()
+    }
+
+    private fun List<Note>.screen(screen: NotesDrawerItem): List<Note> {
+        return filter {
+            it.action == when (screen) {
+                NotesDrawerItem.Archive -> NoteAction.Archive
+                NotesDrawerItem.Trash -> NoteAction.Trash
+                NotesDrawerItem.Notes -> null
+            }
+        }
     }
 
     private fun List<Note>.map(selected: List<NoteId>): ImmutableList<NoteDomain> {

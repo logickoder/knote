@@ -3,10 +3,8 @@ package dev.logickoder.synote.notes.presentation
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.runtime.*
@@ -14,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import dev.logickoder.synote.notes.api.Note
 import dev.logickoder.synote.notes.api.NoteAction
 import dev.logickoder.synote.notes.api.NoteId
@@ -25,6 +24,7 @@ import dev.logickoder.synote.ui.theme.secondaryPadding
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
 @Composable
@@ -33,78 +33,108 @@ internal fun NotesScreen(
     search: String,
     notes: ImmutableList<NoteDomain>,
     selected: Int,
+    screen: NotesDrawerItem,
     editNote: (NoteId?) -> Unit,
-    deleteNotes: () -> Unit,
-    archiveNotes: () -> Unit,
+    performAction: (NoteAction?) -> Unit,
     onSearch: (String) -> Unit,
     onSelectedChanged: (NoteId) -> Unit,
+    onScreenChanged: (NotesDrawerItem) -> Unit,
     cancelSelection: () -> Unit,
-) = Scaffold(
-    modifier = modifier.fillMaxSize(),
-    topBar = {
-        var showDialog by remember { mutableStateOf<NoteAction?>(null) }
+) {
+    val scaffoldState = rememberScaffoldState()
+    val coroutineScope = rememberCoroutineScope()
 
-        if (selected > 0) {
-            NotesInSelectionAppBar(
-                selected = selected,
-                noteCount = notes.size,
-                modifier = Modifier.fillMaxWidth(),
-                performAction = { showDialog = it },
-                cancelSelection = cancelSelection,
-            )
-        } else NotesAppBar(
-            search = search,
-            onSearch = onSearch,
-            modifier = Modifier.fillMaxWidth(),
-        )
+    Scaffold(
+        modifier = modifier.fillMaxSize(),
+        scaffoldState = scaffoldState,
+        topBar = {
+            var showDialog by remember { mutableStateOf<NoteAction?>(null) }
 
-        showDialog?.let {
-            NoteActionDialog(
-                text = stringResource(
-                    id = dev.logickoder.synote.ui.R.string.ui_confirmation_multiple,
-                    it.name.lowercase()
-                ),
-                confirmAction = {
-                    when (it) {
-                        NoteAction.Archive -> archiveNotes()
-                        NoteAction.Delete -> deleteNotes()
+            if (selected > 0) {
+                NotesInSelectionAppBar(
+                    selected = selected,
+                    noteCount = notes.size,
+                    screen = screen,
+                    modifier = Modifier.fillMaxWidth(),
+                    performAction = {
+                        if (screen == NotesDrawerItem.Notes || it == NoteAction.Trash) {
+                            showDialog = it
+                        } else performAction(it)
+                    },
+                    cancelSelection = cancelSelection,
+                )
+            } else NotesAppBar(
+                search = search,
+                onSearch = onSearch,
+                openDrawer = {
+                    coroutineScope.launch {
+                        scaffoldState.drawerState.open()
                     }
                 },
-                dismissDialog = { showDialog = null }
+                modifier = Modifier.fillMaxWidth(),
             )
 
-        }
-    },
-    content = { scaffoldPadding ->
-        LazyColumn(
-            modifier = Modifier.padding(scaffoldPadding),
-            contentPadding = PaddingValues(padding()),
-            content = {
-                items(notes) { note ->
-                    Note(
-                        domain = note,
-                        editNote = editNote,
-                        selectedChanged = onSelectedChanged,
-                        inSelection = selected > 0,
-                    )
-                    Spacer(modifier = Modifier.height(secondaryPadding()))
-                }
-            }
-        )
-    },
-    floatingActionButton = {
-        FloatingActionButton(
-            onClick = { editNote(null) },
-            backgroundColor = MaterialTheme.colors.primary,
-            content = {
-                Icon(
-                    painter = rememberVectorPainter(image = Icons.Outlined.Add),
-                    contentDescription = null
+            showDialog?.let {
+                NoteActionDialog(
+                    text = stringResource(
+                        id = dev.logickoder.synote.ui.R.string.ui_confirmation_multiple,
+                        it.name.lowercase()
+                    ),
+                    confirmAction = {
+                        performAction(it)
+                    },
+                    dismissDialog = { showDialog = null }
                 )
+
             }
-        )
-    }
-)
+        },
+        drawerContent = {
+            NotesDrawer(
+                scope = this,
+                selected = screen,
+                itemClicked = {
+                    coroutineScope.launch {
+                        launch {
+                            onScreenChanged(it)
+                        }
+                        scaffoldState.drawerState.close()
+                    }
+                }
+            )
+        },
+        drawerShape = RoundedCornerShape(topEnd = 15.dp, bottomEnd = 15.dp),
+        drawerBackgroundColor = MaterialTheme.colors.background,
+        content = { scaffoldPadding ->
+            LazyColumn(
+                modifier = Modifier.padding(scaffoldPadding),
+                contentPadding = PaddingValues(padding()),
+                content = {
+                    items(notes) { note ->
+                        Note(
+                            domain = note,
+                            editNote = editNote,
+                            selectedChanged = onSelectedChanged,
+                            inSelection = selected > 0,
+                        )
+                        Spacer(modifier = Modifier.height(secondaryPadding()))
+                    }
+                }
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = { editNote(null) },
+                backgroundColor = MaterialTheme.colors.primary,
+                content = {
+                    Icon(
+                        painter = rememberVectorPainter(image = Icons.Outlined.Add),
+                        contentDescription = null
+                    )
+                }
+            )
+        }
+    )
+}
 
 @Preview
 @Composable
@@ -113,11 +143,12 @@ private fun EmptyNotesScreenPreview() = SynoteTheme {
         notes = persistentListOf(),
         search = "",
         selected = 0,
+        screen = NotesDrawerItem.Notes,
         editNote = {},
-        deleteNotes = {},
-        archiveNotes = {},
+        performAction = {},
         onSearch = {},
         onSelectedChanged = { },
+        onScreenChanged = {},
         cancelSelection = {}
     )
 }
@@ -140,11 +171,12 @@ private fun NotesScreenPreview() = SynoteTheme {
         }.toImmutableList(),
         search = "My Note",
         selected = 1,
+        screen = NotesDrawerItem.Notes,
         editNote = {},
-        deleteNotes = {},
-        archiveNotes = {},
+        performAction = {},
         onSearch = {},
         onSelectedChanged = { },
+        onScreenChanged = { },
         cancelSelection = {}
     )
 }

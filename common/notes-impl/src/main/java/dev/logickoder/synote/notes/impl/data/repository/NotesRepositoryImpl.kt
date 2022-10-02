@@ -48,19 +48,14 @@ internal class NotesRepositoryImpl @Inject constructor(
     }
 
     override suspend fun performAction(
-        action: NoteAction,
-        reverse: Boolean,
+        action: NoteAction?,
         vararg noteId: NoteId
     ) {
         val notes = notes.map { notes ->
             notes.filter {
                 it.id in noteId
             }.map { note ->
-                note.copy(
-                    action = if (reverse) {
-                        null
-                    } else action
-                )
+                note.copy(action = action)
             }
         }.first()
         save(*notes.toTypedArray())

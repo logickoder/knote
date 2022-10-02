@@ -50,8 +50,7 @@ internal fun Note(
                     .fillMaxWidth(),
                 singleLineSecondaryText = true,
                 overlineText = {
-                    val date = note.dateModified ?: note.dateCreated
-                    Text(date.formatted)
+                    Text(note.dateModified.formatted)
                 },
                 text = {
                     Text(
