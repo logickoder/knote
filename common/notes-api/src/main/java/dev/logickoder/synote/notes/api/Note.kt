@@ -7,5 +7,6 @@ data class Note(
     val title: String,
     val content: String,
     val dateCreated: LocalDateTime,
-    val dateModified: LocalDateTime? = null,
+    val dateModified: LocalDateTime = dateCreated,
+    val action: NoteAction?,
 )

@@ -2,7 +2,6 @@
 <resources>
     <string name="notes_new">New note</string>
     <string name="notes_search">Search notes</string>
-    <string name="notes_delete_notes">Delete Note(s)</string>
-    <string name="notes_archive_notes">Archive Note(s)</string>
+    <string name="notes_perform_action">%1$s Note(s)</string>
     <string name="notes_cancel_selection">Cancel Selection</string>
 </resources>

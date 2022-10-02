@@ -1,6 +1,7 @@
 package dev.logickoder.synote.notes.impl.data.local
 
 import androidx.room.TypeConverter
+import dev.logickoder.synote.notes.api.NoteAction
 import dev.logickoder.synote.notes.api.NoteId
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -9,19 +10,29 @@ internal object Converters {
 
     @TypeConverter
     @JvmStatic
-    fun toNoteIdString(noteId: NoteId?) = noteId?.id
+    fun NoteId?.toLong() = this?.id
 
     @TypeConverter
     @JvmStatic
-    fun fromNoteIdString(noteId: Long?) = noteId?.let { NoteId(it) }
+    fun Long?.toNoteId() = this?.let { NoteId(it) }
 
     @TypeConverter
     @JvmStatic
-    fun toDateLong(date: LocalDateTime?) = date?.toEpochSecond(ZoneOffset.UTC)
+    fun LocalDateTime?.toLong() = this?.toEpochSecond(ZoneOffset.UTC)
 
     @TypeConverter
     @JvmStatic
-    fun fromDateLong(date: Long?) = date?.let {
+    fun Long?.toDate() = this?.let {
         LocalDateTime.ofEpochSecond(it, 0, ZoneOffset.UTC)
+    }
+
+    @TypeConverter
+    @JvmStatic
+    fun NoteAction?.toText() = this?.name
+
+    @TypeConverter
+    @JvmStatic
+    fun String?.toNoteAction() = this?.let { data ->
+        NoteAction.valueOf(data)
     }
 }

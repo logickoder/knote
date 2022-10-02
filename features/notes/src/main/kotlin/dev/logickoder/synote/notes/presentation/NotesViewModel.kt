@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.logickoder.synote.notes.api.Note
+import dev.logickoder.synote.notes.api.NoteAction
 import dev.logickoder.synote.notes.api.NoteId
 import dev.logickoder.synote.notes.api.NotesRepository
 import dev.logickoder.synote.notes.data.domain.NoteDomain
@@ -39,21 +40,18 @@ internal class NotesViewModel @Inject constructor(
         repository.notes,
         _search,
         _selected,
-        transform = { notes, filter, selected -> notes.filter(filter).map(selected) }
+        transform = { notes, filter, selected ->
+            notes.filter {
+                it.action == null
+            }.filter(filter).map(selected)
+        }
     ).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), persistentListOf())
 
-    fun deleteNotes() {
+    fun performAction(action: NoteAction) {
         viewModelScope.launch {
-//            repository.deleteNote(id)
+            repository.performAction(action, false, *_selected.value.toTypedArray())
+            cancelSelection()
         }
-        cancelSelection()
-    }
-
-    fun archiveNotes() {
-        viewModelScope.launch {
-//            repository.deleteNote(id)
-        }
-        cancelSelection()
     }
 
     fun search(text: String) {

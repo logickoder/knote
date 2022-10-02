@@ -9,9 +9,12 @@ interface NotesRepository {
 
     suspend fun refreshNotes()
 
-    suspend fun deleteNote(noteId: NoteId)
+    suspend fun performAction(action: NoteAction, reverse: Boolean, vararg noteId: NoteId)
+
 
     suspend fun createNote(): Note
 
-    suspend fun saveNote(note: Note): NoteId
+    suspend fun deleteNotes(vararg noteId: NoteId)
+
+    suspend fun save(vararg note: Note): Array<NoteId>
 }

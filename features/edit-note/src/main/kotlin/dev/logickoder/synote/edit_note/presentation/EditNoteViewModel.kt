@@ -47,11 +47,13 @@ internal class EditNoteViewModel @Inject constructor(
     fun save() {
         note ?: return
         viewModelScope.launch {
-            val id = repository.saveNote(
-                note!!.copy(title = title, content = content)
-            )
-            note = repository.getNote(id).first()
-
+            // only save the note if it contains changes
+            if (note?.title != title || note?.content != content) {
+                val id = repository.save(
+                    note!!.copy(title = title, content = content)
+                ).firstOrNull() ?: return@launch
+                note = repository.getNote(id).first()
+            }
         }
     }
 }

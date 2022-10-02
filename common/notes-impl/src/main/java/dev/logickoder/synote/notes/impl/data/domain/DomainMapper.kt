@@ -3,20 +3,20 @@ package dev.logickoder.synote.notes.impl.data.domain
 import dev.logickoder.synote.notes.api.Note
 import dev.logickoder.synote.notes.impl.data.model.NoteEntity
 
-internal object DomainMapper {
-    fun toNote(note: NoteEntity) = Note(
-        id = note.id,
-        title = note.title,
-        content = note.content,
-        dateCreated = note.dateCreated,
-        dateModified = note.dateModified,
-    )
+internal fun NoteEntity.toNote() = Note(
+    id = id,
+    title = title,
+    content = content,
+    dateCreated = dateCreated,
+    dateModified = dateModified,
+    action = action,
+)
 
-    fun toNoteEntity(note: Note) = NoteEntity(
-        id = note.id,
-        title = note.title,
-        content = note.content,
-        dateCreated = note.dateCreated,
-        dateModified = note.dateModified,
-    )
-}
+internal fun Note.toEntity() = NoteEntity(
+    id = id,
+    title = title,
+    content = content,
+    dateCreated = dateCreated,
+    dateModified = dateModified,
+    action = action,
+)

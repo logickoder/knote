@@ -2,6 +2,7 @@ package dev.logickoder.synote.notes.impl.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import dev.logickoder.synote.notes.api.NoteAction
 import dev.logickoder.synote.notes.api.NoteId
 import java.time.LocalDateTime
 
@@ -12,5 +13,6 @@ internal data class NoteEntity(
     val title: String = "",
     val content: String = "",
     val dateCreated: LocalDateTime = LocalDateTime.now(),
-    val dateModified: LocalDateTime? = null,
+    val dateModified: LocalDateTime = dateCreated,
+    val action: NoteAction? = null,
 )

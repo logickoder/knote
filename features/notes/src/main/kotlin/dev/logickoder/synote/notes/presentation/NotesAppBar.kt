@@ -4,9 +4,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Archive
 import androidx.compose.material.icons.filled.Cancel
-import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.outlined.Archive
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.runtime.Composable
@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import dev.logickoder.synote.notes.R
+import dev.logickoder.synote.notes.api.NoteAction
 import dev.logickoder.synote.ui.theme.padding
 
 @Composable
@@ -68,8 +69,7 @@ internal fun NotesInSelectionAppBar(
     noteCount: Int,
     modifier: Modifier = Modifier,
     cancelSelection: () -> Unit,
-    deleteNotes: () -> Unit,
-    archiveNotes: () -> Unit,
+    performAction: (NoteAction) -> Unit,
 ) {
     TopAppBar(
         modifier = modifier,
@@ -88,24 +88,25 @@ internal fun NotesInSelectionAppBar(
             Text(text = "$selected/$noteCount")
         },
         actions = {
-            IconButton(
-                onClick = archiveNotes,
-                content = {
-                    Icon(
-                        imageVector = Icons.Default.Archive,
-                        contentDescription = stringResource(R.string.notes_archive_notes)
-                    )
-                }
-            )
-            IconButton(
-                onClick = deleteNotes,
-                content = {
-                    Icon(
-                        imageVector = Icons.Default.Delete,
-                        contentDescription = stringResource(R.string.notes_delete_notes)
-                    )
-                }
-            )
+            NoteAction.values().forEach { action ->
+                IconButton(
+                    onClick = {
+                        performAction(action)
+                    },
+                    content = {
+                        Icon(
+                            imageVector = when (action) {
+                                NoteAction.Archive -> Icons.Outlined.Archive
+                                NoteAction.Delete -> Icons.Outlined.Delete
+                            },
+                            contentDescription = stringResource(
+                                R.string.notes_perform_action,
+                                action.name
+                            )
+                        )
+                    }
+                )
+            }
         }
     )
 }
@@ -113,7 +114,11 @@ internal fun NotesInSelectionAppBar(
 @Preview
 @Composable
 private fun NotesAppBarPreview() {
-    NotesAppBar(search = "", onSearch = {}, modifier = Modifier.fillMaxWidth())
+    NotesAppBar(
+        search = "",
+        onSearch = {},
+        modifier = Modifier.fillMaxWidth()
+    )
 }
 
 @Preview
@@ -124,7 +129,6 @@ private fun NotesInSelectionAppBarPreview() {
         noteCount = 18,
         modifier = Modifier.fillMaxWidth(),
         cancelSelection = { /*TODO*/ },
-        deleteNotes = { /*TODO*/ }) {
-
-    }
+        performAction = { /*TODO*/ }
+    )
 }

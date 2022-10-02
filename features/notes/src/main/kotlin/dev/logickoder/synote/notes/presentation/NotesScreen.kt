@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import dev.logickoder.synote.notes.api.Note
+import dev.logickoder.synote.notes.api.NoteAction
 import dev.logickoder.synote.notes.api.NoteId
 import dev.logickoder.synote.notes.data.domain.NoteDomain
 import dev.logickoder.synote.ui.NoteActionDialog
@@ -25,10 +26,6 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import java.time.LocalDateTime
-
-private enum class NotesScreenDialog {
-    Archive, Delete
-}
 
 @Composable
 internal fun NotesScreen(
@@ -45,15 +42,14 @@ internal fun NotesScreen(
 ) = Scaffold(
     modifier = modifier.fillMaxSize(),
     topBar = {
-        var showDialog by remember { mutableStateOf<NotesScreenDialog?>(null) }
+        var showDialog by remember { mutableStateOf<NoteAction?>(null) }
 
         if (selected > 0) {
             NotesInSelectionAppBar(
                 selected = selected,
                 noteCount = notes.size,
                 modifier = Modifier.fillMaxWidth(),
-                deleteNotes = { showDialog = NotesScreenDialog.Delete },
-                archiveNotes = { showDialog = NotesScreenDialog.Archive },
+                performAction = { showDialog = it },
                 cancelSelection = cancelSelection,
             )
         } else NotesAppBar(
@@ -70,8 +66,8 @@ internal fun NotesScreen(
                 ),
                 confirmAction = {
                     when (it) {
-                        NotesScreenDialog.Archive -> archiveNotes()
-                        NotesScreenDialog.Delete -> deleteNotes()
+                        NoteAction.Archive -> archiveNotes()
+                        NoteAction.Delete -> deleteNotes()
                     }
                 },
                 dismissDialog = { showDialog = null }
@@ -137,6 +133,7 @@ private fun NotesScreenPreview() = SynoteTheme {
                     title = "Title $it",
                     content = "Content $it",
                     dateCreated = LocalDateTime.now(),
+                    action = null,
                 ),
                 selected = it % 2 == 0,
             )

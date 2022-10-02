@@ -5,6 +5,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
+import dev.logickoder.synote.notes.api.NoteAction
 import dev.logickoder.synote.notes.api.NoteId
 
 @Composable
@@ -23,8 +24,12 @@ fun NotesRoute(
         search = search,
         selected = selected,
         editNote = onNoteClick,
-        archiveNotes = viewModel::archiveNotes,
-        deleteNotes = viewModel::deleteNotes,
+        archiveNotes = {
+            viewModel.performAction(NoteAction.Archive)
+        },
+        deleteNotes = {
+            viewModel.performAction(NoteAction.Delete)
+        },
         onSearch = viewModel::search,
         onSelectedChanged = viewModel::toggleSelect,
         cancelSelection = viewModel::cancelSelection
