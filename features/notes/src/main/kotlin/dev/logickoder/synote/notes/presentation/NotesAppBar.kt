@@ -98,29 +98,43 @@ internal fun NotesInSelectionAppBar(
                     content = {
                         Icon(
                             imageVector = Icons.Outlined.Restore,
-                            contentDescription = "Restore"
+                            contentDescription = stringResource(R.string.notes_restore),
                         )
                     }
                 )
             }
             NoteAction.values().forEach { action ->
-                if (action == NoteAction.Trash || action.name != screen.name) {
-                    IconButton(
-                        onClick = {
-                            performAction(action)
-                        },
-                        content = {
-                            Icon(
-                                imageVector = NotesDrawerItem.valueOf(action.name).icon,
-                                contentDescription = stringResource(
-                                    R.string.notes_perform_action,
-                                    action.name
-                                )
-                            )
-                        }
-                    )
+                when {
+                    action == NoteAction.Archive && screen == NotesDrawerItem.Notes -> {
+                        action.Button(performAction = performAction)
+                    }
+                    action == NoteAction.Trash && screen != NotesDrawerItem.Archive -> {
+                        action.Button(performAction = performAction)
+                    }
                 }
             }
+        }
+    )
+}
+
+@Composable
+private fun NoteAction.Button(
+    modifier: Modifier = Modifier,
+    performAction: (NoteAction) -> Unit,
+) {
+    IconButton(
+        modifier = modifier,
+        onClick = {
+            performAction(this)
+        },
+        content = {
+            Icon(
+                imageVector = NotesDrawerItem.valueOf(name).icon,
+                contentDescription = stringResource(
+                    R.string.notes_perform_action,
+                    name
+                ),
+            )
         }
     )
 }
