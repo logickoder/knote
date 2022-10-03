@@ -29,6 +29,10 @@ internal fun SettingsToggleItem(
                 onCheckedChange = {
                     onToggle()
                 },
+                colors = SwitchDefaults.colors(
+                    checkedThumbColor = MaterialTheme.colors.primary,
+                    checkedTrackColor = MaterialTheme.colors.primary,
+                ),
             )
         },
         onClick = onToggle
