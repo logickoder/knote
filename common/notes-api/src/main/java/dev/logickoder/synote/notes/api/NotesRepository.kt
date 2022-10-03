@@ -11,7 +11,6 @@ interface NotesRepository {
 
     suspend fun performAction(action: NoteAction?, vararg noteId: NoteId)
 
-
     suspend fun createNote(): Note
 
     suspend fun deleteNotes(vararg noteId: NoteId)

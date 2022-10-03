@@ -55,10 +55,10 @@ internal class NotesRepositoryImpl @Inject constructor(
             notes.filter {
                 it.id in noteId
             }.map { note ->
-                note.copy(action = action)
+                note.copy(action = action).toEntity()
             }
         }.first()
-        save(*notes.toTypedArray())
+        local.save(*notes.toTypedArray())
     }
 
     override suspend fun deleteNotes(vararg noteId: NoteId) {
