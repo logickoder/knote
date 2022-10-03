@@ -90,7 +90,6 @@ internal fun NotesScreen(
         },
         drawerContent = {
             NotesDrawer(
-                scope = this,
                 selected = screen,
                 itemClicked = {
                     coroutineScope.launch {

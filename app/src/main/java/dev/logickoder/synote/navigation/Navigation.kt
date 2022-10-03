@@ -10,6 +10,7 @@ import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackSlider
 import dev.logickoder.synote.notes.api.NoteId
+import dev.logickoder.synote.notes.presentation.NotesDrawerItem
 import kotlinx.parcelize.Parcelize
 
 class Navigation(
@@ -38,6 +39,7 @@ class Navigation(
                 backStack = backStack,
                 id = navTarget.id?.let { NoteId(it) },
             )
+            Route.Settings -> SettingsRoute(buildContext = buildContext, backStack = backStack)
         }
     }
 
@@ -51,5 +53,16 @@ class Navigation(
 
         @Parcelize
         data class EditNote(val id: Long?) : Route()
+
+        @Parcelize
+        object Settings : Route()
     }
 }
+
+val NotesDrawerItem.route: Navigation.Route
+    get() = when (this) {
+        NotesDrawerItem.Notes,
+        NotesDrawerItem.Archive,
+        NotesDrawerItem.Trash -> Navigation.Route.Notes
+        NotesDrawerItem.Settings -> Navigation.Route.Settings
+    }

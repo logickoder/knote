@@ -3,7 +3,6 @@ package dev.logickoder.synote.notes.presentation
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -11,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Archive
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Notes
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,15 +28,15 @@ import dev.logickoder.synote.ui.theme.secondaryPadding
 enum class NotesDrawerItem(val icon: ImageVector) {
     Notes(Icons.Outlined.Notes),
     Archive(Icons.Outlined.Archive),
-    Trash(Icons.Outlined.Delete)
+    Trash(Icons.Outlined.Delete),
+    Settings(Icons.Outlined.Settings),
 }
 
 @Composable
 internal fun NotesDrawer(
-    scope: ColumnScope,
     selected: NotesDrawerItem,
     itemClicked: (NotesDrawerItem) -> Unit,
-) = with(scope) {
+) = Column {
     Text(
         modifier = Modifier
             .padding(vertical = secondaryPadding())
@@ -96,9 +96,5 @@ private fun NotesDrawerItem(
 @Preview(showBackground = true)
 @Composable
 private fun NotesDrawerPreview() = SynoteTheme {
-    Column(
-        content = {
-            NotesDrawer(scope = this, itemClicked = {}, selected = NotesDrawerItem.Notes)
-        }
-    )
+    NotesDrawer(itemClicked = {}, selected = NotesDrawerItem.Notes)
 }

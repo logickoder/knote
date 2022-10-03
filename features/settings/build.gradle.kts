@@ -1,8 +1,6 @@
 dependencies {
-    api(project(":common:notes-api"))
     api(project(":common:settings-api"))
     api(project(":common:ui"))
-
     // Compose
     implementation(libs.compose.activity)
     implementation(libs.compose.constraintlayout)
@@ -12,4 +10,6 @@ dependencies {
     implementation(libs.compose.ui.tooling.preview)
     debugImplementation(libs.compose.ui.tooling)
     androidTestImplementation(libs.compose.ui.test.junit)
+    // Preferences datastore
+    implementation(libs.datastore)
 }

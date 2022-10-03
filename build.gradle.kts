@@ -22,7 +22,9 @@ tasks {
     }
 }
 
-val features = listOf("edit-note", "notes", "login", "app", "ui", "notes-impl", "auth-impl")
+val features = listOf(
+    "edit-note", "notes", "login", "app", "ui", "notes-impl", "auth-impl", "settings"
+)
 
 @Suppress("UnstableApiUsage")
 fun Project.feature() {

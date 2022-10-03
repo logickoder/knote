@@ -108,7 +108,7 @@ internal class NotesViewModel @Inject constructor(
             it.action == when (screen) {
                 NotesDrawerItem.Archive -> NoteAction.Archive
                 NotesDrawerItem.Trash -> NoteAction.Trash
-                NotesDrawerItem.Notes -> null
+                else -> null
             }
         }
     }

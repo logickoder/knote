@@ -8,6 +8,7 @@ dependencies {
     implementation(project(":features:edit-note"))
     implementation(project(":features:login"))
     implementation(project(":features:notes"))
+    implementation(project(":features:settings"))
     // Core
     implementation(libs.core.splashscreen)
     // Accompanist
