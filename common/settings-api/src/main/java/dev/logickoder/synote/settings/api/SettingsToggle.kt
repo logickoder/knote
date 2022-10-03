@@ -1,7 +1,7 @@
 package dev.logickoder.synote.settings.api
 
 enum class SettingsToggle {
-    AddNewItemsToBottom;
+    AddNewNotesToBottom;
 
     val text: String = buildString {
         name.forEach { char ->

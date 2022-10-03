@@ -134,7 +134,7 @@ private fun SettingsThemeItemPreview() = SynoteTheme {
 @Composable
 private fun SettingsToggleItemCheckedPreview() = SynoteTheme {
     SettingsToggleItem(
-        toggle = SettingsToggle.AddNewItemsToBottom,
+        toggle = SettingsToggle.AddNewNotesToBottom,
         checked = true,
         onToggle = {},
     )
@@ -144,7 +144,7 @@ private fun SettingsToggleItemCheckedPreview() = SynoteTheme {
 @Composable
 private fun SettingsToggleItemUncheckedPreview() = SynoteTheme {
     SettingsToggleItem(
-        toggle = SettingsToggle.AddNewItemsToBottom,
+        toggle = SettingsToggle.AddNewNotesToBottom,
         checked = false,
         onToggle = {},
     )
