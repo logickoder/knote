@@ -8,6 +8,8 @@ import dev.logickoder.synote.notes.api.NoteAction
 import dev.logickoder.synote.notes.api.NoteId
 import dev.logickoder.synote.notes.api.NotesRepository
 import dev.logickoder.synote.notes.data.domain.NoteDomain
+import dev.logickoder.synote.settings.api.SettingsRepository
+import dev.logickoder.synote.settings.api.SettingsToggle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -18,6 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 internal class NotesViewModel @Inject constructor(
     private val repository: NotesRepository,
+    settings: SettingsRepository,
 ) : ViewModel() {
 
     private val _search = MutableStateFlow("")
@@ -48,8 +51,9 @@ internal class NotesViewModel @Inject constructor(
         _search,
         _selected,
         _screen,
-        transform = { notes, filter, selected, screen ->
-            notes.screen(screen).search(filter).map(selected)
+        settings.toggles,
+        transform = { notes, filter, selected, screen, settings ->
+            notes.screen(screen).search(filter).sort(settings).map(selected)
         }
     ).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), persistentListOf())
 
@@ -121,4 +125,11 @@ internal class NotesViewModel @Inject constructor(
             )
         }.toImmutableList()
     }
+
+    private fun List<Note>.sort(settings: Map<SettingsToggle, Boolean>): List<Note> {
+        return if (settings[SettingsToggle.AddNewNotesToBottom] == true) {
+            sortedBy { it.dateModified }
+        } else sortedByDescending { it.dateModified }
+    }
 }
+
