@@ -123,6 +123,7 @@ fun Project.feature() {
         dependencies {
             val coreLibraryDesugaring by configurations
             val implementation by configurations
+            val androidTestImplementation by configurations
             val kapt by configurations
             // Core
             coreLibraryDesugaring(rootProject.libs.core.java8)
@@ -135,6 +136,7 @@ fun Project.feature() {
             kapt(rootProject.libs.hilt.compiler)
             // JUnit
             implementation(rootProject.libs.junit4)
+            androidTestImplementation(rootProject.libs.junit4.androidx)
             // Kotlinx immutable
             implementation(rootProject.libs.kotlinx.immutable)
             // Kotlinx serialization
