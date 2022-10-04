@@ -9,7 +9,7 @@ internal object DomainMapper {
     fun toUserEntity(user: FirebaseUser) = UserEntity(
         id = user.uid,
         name = user.displayName ?: "User",
-        email = user.email ?: "user@synote.com",
+        email = user.email ?: "user@knote.com",
     )
 
     fun toUser(user: UserEntity) = User(

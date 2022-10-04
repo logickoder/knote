@@ -38,7 +38,9 @@ fun Project.feature() {
 
         namespace = "dev.logickoder.knote$name"
 
-        resourcePrefix = "${name.replace(".", "")}_"
+        if (!isApp) {
+            resourcePrefix = "${name.replace(".", "")}_"
+        }
 
         defaultConfig.apply {
             minSdk = 21

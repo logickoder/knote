@@ -11,7 +11,7 @@ import androidx.compose.ui.res.painterResource
 @Composable
 fun AppLogo(modifier: Modifier = Modifier) = Image(
     modifier = modifier.fillMaxWidth(0.45f),
-    painter = painterResource(id = R.drawable.ui_ic_synote),
+    painter = painterResource(id = R.drawable.ui_ic_knote),
     colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground),
     contentDescription = null,
 )

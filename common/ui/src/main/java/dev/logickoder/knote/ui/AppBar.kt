@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import dev.logickoder.knote.ui.theme.KNoteTheme
 
 @Composable
-fun SynoteAppBar(
+fun knoteAppBar(
     isDarkMode: Boolean,
     modifier: Modifier = Modifier,
     switchDarkMode: () -> Unit,
@@ -124,8 +124,8 @@ fun BrandAppBarWithNavigationPreview() = KNoteTheme {
 
 @Preview
 @Composable
-fun SynoteAppBarPreview() = KNoteTheme {
-    SynoteAppBar(isDarkMode = false) {
+fun knoteAppBarPreview() = KNoteTheme {
+    knoteAppBar(isDarkMode = false) {
 
     }
 }

@@ -17,6 +17,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("dev.logickoder.synote.ui.test", appContext.packageName)
+        assertEquals("dev.logickoder.knote.ui.test", appContext.packageName)
     }
 }
