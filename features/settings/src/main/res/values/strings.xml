@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_go_back">Go back</string>
+    <string name="settings">Settings</string>
+    <string name="settings_cancel">Cancel</string>
+    <string name="settings_choose_theme">Choose Theme</string>
+</resources>

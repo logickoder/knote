@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notes_new">New note</string>
+    <string name="notes_search">Search notes</string>
+    <string name="notes_perform_action">%1$s Note(s)</string>
+    <string name="notes_cancel_selection">Cancel Selection</string>
+    <string name="notes_app_name">kNote</string>
+    <string name="notes_restore">Restore</string>
+</resources>

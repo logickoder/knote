@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "638424848672",
+    "project_id": "synote-mobile",
+    "storage_bucket": "synote-mobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:638424848672:android:00480592f0a29d29dbdf45",
+        "android_client_info": {
+          "package_name": "dev.logickoder.synote"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "638424848672-v28pfohsce6u9ap482v2sq8chfapch92.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-qKMdQUNGi_k3JVBs5WOIlQSON7IVB84"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "638424848672-v28pfohsce6u9ap482v2sq8chfapch92.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -3,16 +3,18 @@ package dev.logickoder.synote.presentation
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.bumble.appyx.core.integration.NodeHost
 import com.bumble.appyx.core.integrationpoint.NodeActivity
 import dagger.hilt.android.AndroidEntryPoint
-import dev.logickoder.synote.core.Navigation
-import dev.logickoder.synote.core.theme.SynoteTheme
-import dev.logickoder.synote.utils.state
+import dev.logickoder.synote.navigation.Navigation
+import dev.logickoder.synote.settings.api.Theme
+import dev.logickoder.synote.ui.theme.SynoteTheme
 
 @AndroidEntryPoint
 class MainActivity : NodeActivity() {
@@ -26,13 +28,19 @@ class MainActivity : NodeActivity() {
         installSplashScreen()
 
         setContent {
+            val theme by viewModel.theme.collectAsState()
+            val startingRoute by viewModel.startingRoute.collectAsState()
             SynoteTheme(
-                darkTheme = viewModel.darkMode.state(initial = false),
+                darkTheme = when (theme) {
+                    Theme.Light -> false
+                    Theme.Dark -> true
+                    Theme.System -> isSystemInDarkTheme()
+                },
                 content = {
                     Surface(
                         color = MaterialTheme.colors.background,
                         content = {
-                            viewModel.startingRoute?.let { route ->
+                            startingRoute?.let { route ->
                                 NodeHost(integrationPoint = integrationPoint) {
                                     Navigation(
                                         buildContext = it,
