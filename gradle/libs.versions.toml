@@ -37,6 +37,8 @@ firebase-firestore = "com.google.firebase:firebase-firestore-ktx:24.3.1"
 # Hilt
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
+# JUnit
+junit4 = "junit:junit:4.13.2"
 # Kotlinx Coroutines
 kotlinx-coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
 # Kotlinx Immutable

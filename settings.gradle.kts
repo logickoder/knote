@@ -12,7 +12,7 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "synote"
+rootProject.name = "kNote"
 include(":app")
 include(":features:login")
 include(":features:notes")

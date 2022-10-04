@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "638424848672",
-    "project_id": "synote-mobile",
-    "storage_bucket": "synote-mobile.appspot.com"
+    "project_number": "582788748932",
+    "project_id": "knote-mobile",
+    "storage_bucket": "knote-mobile.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:638424848672:android:00480592f0a29d29dbdf45",
+        "mobilesdk_app_id": "1:582788748932:android:d0bd9290eb1f446a8154d1",
         "android_client_info": {
-          "package_name": "dev.logickoder.synote"
+          "package_name": "dev.logickoder.knote"
         }
       },
       "oauth_client": [
         {
-          "client_id": "638424848672-v28pfohsce6u9ap482v2sq8chfapch92.apps.googleusercontent.com",
+          "client_id": "582788748932-6g4b7c2e9b7tbpd4r04go27c2lrpdth1.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD-qKMdQUNGi_k3JVBs5WOIlQSON7IVB84"
+          "current_key": "AIzaSyA2Htna2ym_qfT1BbufxPhQVbcIziudw_Q"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "638424848672-v28pfohsce6u9ap482v2sq8chfapch92.apps.googleusercontent.com",
+              "client_id": "582788748932-6g4b7c2e9b7tbpd4r04go27c2lrpdth1.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
