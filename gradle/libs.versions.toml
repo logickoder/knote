@@ -24,7 +24,7 @@ core-material = "com.google.android.material:material:1.6.1"
 core-splashscreen = "androidx.core:core-splashscreen:1.0.0"
 # Compose
 compose-activity = "androidx.activity:activity-compose:1.6.0"
-compose-constraintlayout = "androidx.activity:activity-compose:1.5.1"
+compose-constraintlayout = "androidx.activity:activity-compose:1.6.0"
 compose-material = { module = "androidx.compose.material:material", version.ref = "compose" }
 compose-material-icons = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose" }
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }

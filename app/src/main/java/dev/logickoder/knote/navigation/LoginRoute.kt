@@ -5,7 +5,7 @@ import androidx.compose.ui.Modifier
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.navmodel.backstack.BackStack
-import com.bumble.appyx.navmodel.backstack.operation.push
+import com.bumble.appyx.navmodel.backstack.operation.newRoot
 import dev.logickoder.knote.login.presentation.LoginRoute
 
 class LoginRoute(
@@ -18,7 +18,7 @@ class LoginRoute(
         LoginRoute(
             modifier = modifier,
             onLogin = {
-                backStack.push(Navigation.Route.Notes)
+                backStack.newRoot(Navigation.Route.Notes)
             }
         )
     }
