@@ -65,4 +65,5 @@ val NotesDrawerItem.route: Navigation.Route
         NotesDrawerItem.Archive,
         NotesDrawerItem.Trash -> Navigation.Route.Notes
         NotesDrawerItem.Settings -> Navigation.Route.Settings
+        NotesDrawerItem.Logout -> Navigation.Route.Login
     }

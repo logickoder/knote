@@ -7,10 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Archive
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.Notes
-import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,6 +27,7 @@ enum class NotesDrawerItem(val icon: ImageVector) {
     Archive(Icons.Outlined.Archive),
     Trash(Icons.Outlined.Delete),
     Settings(Icons.Outlined.Settings),
+    Logout(Icons.Outlined.Logout)
 }
 
 @Composable

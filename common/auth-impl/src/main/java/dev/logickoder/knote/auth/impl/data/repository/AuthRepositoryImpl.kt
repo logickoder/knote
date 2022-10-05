@@ -35,6 +35,8 @@ internal class AuthRepositoryImpl @Inject constructor(
         remote.register(email, password, username)
     )
 
+    override suspend fun logout() = local.clear()
+
 
     private suspend fun handleResponse(
         response: ResultWrapper<UserEntity>

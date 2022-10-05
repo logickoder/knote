@@ -11,7 +11,7 @@ import dev.logickoder.knote.notes.api.NoteId
 fun NotesRoute(
     modifier: Modifier = Modifier,
     onNoteClick: (NoteId?) -> Unit,
-    onScreenChanged: (NotesDrawerItem) -> Unit,
+    onDrawerItemClicked: (NotesDrawerItem) -> Unit,
 ) {
     val viewModel = viewModel<NotesViewModel>()
     val search by viewModel.search.collectAsState()
@@ -33,10 +33,10 @@ fun NotesRoute(
         onSelectedChanged = viewModel::toggleSelect,
         onScreenChanged = {
             when (it) {
-                NotesDrawerItem.Notes, NotesDrawerItem.Archive, NotesDrawerItem.Trash -> {
-                    viewModel.changeScreen(it)
-                }
-                else -> onScreenChanged(it)
+                NotesDrawerItem.Notes,
+                NotesDrawerItem.Archive,
+                NotesDrawerItem.Trash -> viewModel.changeScreen(it)
+                else -> onDrawerItemClicked(it)
             }
         },
         cancelSelection = viewModel::cancelSelection

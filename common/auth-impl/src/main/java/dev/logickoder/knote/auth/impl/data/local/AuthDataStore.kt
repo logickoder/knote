@@ -31,6 +31,12 @@ internal class AuthDataStore @Inject constructor(
         }
     }
 
+    suspend fun clear() {
+        context.local.edit { preferences ->
+            preferences.clear()
+        }
+    }
+
     companion object {
         private val USER = stringPreferencesKey("user")
         private val Context.local by preferencesDataStore(name = "auth")
