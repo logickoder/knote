@@ -1,2 +1,2 @@
-# synote
+# knote
 A simple note saving app

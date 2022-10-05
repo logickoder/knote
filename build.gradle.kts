@@ -36,9 +36,11 @@ fun Project.feature() {
             ""
         } else ".${project.name.replace("-", "_")}"
 
-        namespace = "dev.logickoder.synote$name"
+        namespace = "dev.logickoder.knote$name"
 
-        resourcePrefix = "${name.replace(".", "")}_"
+        if (!isApp) {
+            resourcePrefix = "${name.replace(".", "")}_"
+        }
 
         defaultConfig.apply {
             minSdk = 21
@@ -46,7 +48,7 @@ fun Project.feature() {
             versionCode = 1
             versionName = "1.0"
             if (isApp) {
-                applicationId = "dev.logickoder.synote"
+                applicationId = "dev.logickoder.knote"
             }
 
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -121,6 +123,7 @@ fun Project.feature() {
         dependencies {
             val coreLibraryDesugaring by configurations
             val implementation by configurations
+            val androidTestImplementation by configurations
             val kapt by configurations
             // Core
             coreLibraryDesugaring(rootProject.libs.core.java8)
@@ -131,6 +134,9 @@ fun Project.feature() {
             // Hilt
             implementation(rootProject.libs.hilt.android)
             kapt(rootProject.libs.hilt.compiler)
+            // JUnit
+            implementation(rootProject.libs.junit4)
+            androidTestImplementation(rootProject.libs.junit4.androidx)
             // Kotlinx immutable
             implementation(rootProject.libs.kotlinx.immutable)
             // Kotlinx serialization
