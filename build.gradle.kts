@@ -23,7 +23,7 @@ tasks {
 }
 
 val features = listOf(
-    "edit-note", "notes", "login", "app", "ui", "notes-impl", "auth-impl", "settings"
+    "edit-note", "notes", "login", "app", "ui", "notes-impl", "auth", "settings"
 )
 
 @Suppress("UnstableApiUsage")

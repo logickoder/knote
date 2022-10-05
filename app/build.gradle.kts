@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":common:auth-impl"))
+    implementation(project(":common:auth"))
     implementation(project(":common:notes-impl"))
     implementation(project(":features:edit-note"))
     implementation(project(":features:login"))

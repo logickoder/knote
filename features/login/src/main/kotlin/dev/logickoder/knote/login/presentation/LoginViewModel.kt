@@ -5,7 +5,6 @@ import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.logickoder.knote.auth.api.AuthRepository
 import dev.logickoder.knote.model.ResultWrapper
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -13,7 +12,7 @@ import javax.inject.Inject
 @HiltViewModel
 internal class LoginViewModel @Inject constructor(
     app: Application,
-    private val repository: AuthRepository,
+    private val repository: dev.logickoder.knote.auth.api.AuthRepository,
 ) : AndroidViewModel(app) {
 
     private val context: Context

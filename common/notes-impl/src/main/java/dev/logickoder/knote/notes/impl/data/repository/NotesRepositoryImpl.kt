@@ -1,6 +1,5 @@
 package dev.logickoder.knote.notes.impl.data.repository
 
-import dev.logickoder.knote.auth.api.AuthRepository
 import dev.logickoder.knote.model.ResultWrapper
 import dev.logickoder.knote.notes.api.Note
 import dev.logickoder.knote.notes.api.NoteAction
@@ -22,7 +21,7 @@ import javax.inject.Inject
 internal class NotesRepositoryImpl @Inject constructor(
     private val remote: NotesService,
     private val local: NotesDao,
-    private val authRepository: AuthRepository,
+    private val authRepository: dev.logickoder.knote.auth.api.AuthRepository,
 ) : NotesRepository {
     override val notes: Flow<List<Note>>
         get() = local.getNotes().map { notes ->

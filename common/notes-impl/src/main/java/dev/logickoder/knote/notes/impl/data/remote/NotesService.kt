@@ -3,7 +3,6 @@ package dev.logickoder.knote.notes.impl.data.remote
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import dev.logickoder.knote.auth.api.UserId
 import dev.logickoder.knote.model.ResultWrapper
 import dev.logickoder.knote.notes.impl.data.model.NoteEntity
 import dev.logickoder.knote.notes.impl.data.remote.dto.Notes
@@ -14,11 +13,11 @@ import kotlin.coroutines.suspendCoroutine
 
 internal class NotesService @Inject constructor() {
 
-    private val UserId.notesPath: DocumentReference
+    private val dev.logickoder.knote.auth.api.UserId.notesPath: DocumentReference
         get() = Firebase.firestore.collection("notes").document(id)
 
     suspend fun getNotes(
-        userId: UserId
+        userId: dev.logickoder.knote.auth.api.UserId
     ): ResultWrapper<List<NoteEntity>> = suspendCoroutine { cont ->
         userId.notesPath.get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -33,7 +32,7 @@ internal class NotesService @Inject constructor() {
     }
 
     suspend fun updateNotes(
-        userId: UserId,
+        userId: dev.logickoder.knote.auth.api.UserId,
         notes: List<NoteEntity>,
     ): ResultWrapper<Unit> = suspendCoroutine { cont ->
         userId.notesPath.set(Notes(notes)).addOnCompleteListener { task ->
