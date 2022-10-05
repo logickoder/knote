@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":common:auth"))
+    api(project(":common:auth-api"))
     api(project(":common:notes-api"))
     // Firebase Firestore
     implementation(libs.firebase.firestore)
