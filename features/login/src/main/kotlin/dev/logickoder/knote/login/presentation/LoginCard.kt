@@ -23,9 +23,9 @@ import dev.logickoder.knote.ui.theme.secondaryPadding
 
 @Composable
 internal fun LoginCard(
-    uiState: LoginState,
-    onLogin: () -> Unit = {},
-) = with(uiState) {
+    state: LoginState,
+    onLogin: () -> Unit,
+) = with(state) {
     Column(
         modifier = Modifier
             .background(shape = MaterialTheme.shapes.medium, color = MaterialTheme.colors.surface)
@@ -50,7 +50,7 @@ internal fun LoginCard(
                             email = it
                         },
                         required = true,
-                        error = email,
+                        error = emailError,
                     ),
                 )
             }
@@ -77,7 +77,9 @@ internal fun LoginCard(
             )
             AppButton(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = onLogin,
+                onClick = {
+                    login(onLogin)
+                },
                 isLoading = isLoading,
                 content = {
                     Text(
@@ -89,6 +91,21 @@ internal fun LoginCard(
                     )
                 }
             )
+            Text(stringResource(R.string.login_or))
+            GoogleSignInButton(
+                loading = isGoogleLoading,
+                modifier = Modifier.fillMaxWidth(),
+                onClick = {
+                    isGoogleLoading = true
+                },
+                onError = {
+                    loginError = it
+                    isGoogleLoading = false
+                },
+                login = { credentials ->
+                    googleLogin(credentials, onLogin)
+                }
+            )
             loginError?.let { ErrorText(error = it) }
         }
     )
@@ -96,16 +113,25 @@ internal fun LoginCard(
 
 @Preview(showBackground = true)
 @Composable
-private fun LoginCardLogin() = LoginCard(LoginState())
+private fun LoginCardLogin() = LoginCard(
+    state = LoginState(),
+    onLogin = {},
+)
 
 @Preview(showBackground = true)
 @Composable
-private fun LoginCardRegister() = LoginCard(LoginState().apply {
-    isLogin = false
-})
+private fun LoginCardRegister() = LoginCard(
+    state = LoginState().apply {
+        isLogin = false
+    },
+    onLogin = {},
+)
 
 @Preview(showBackground = true)
 @Composable
-private fun LoginCardWithError() = LoginCard(LoginState().apply {
-    loginError = "Login Error"
-})
+private fun LoginCardWithError() = LoginCard(
+    state = LoginState().apply {
+        loginError = "Login Error"
+    },
+    onLogin = {},
+)

@@ -20,7 +20,7 @@ import dev.logickoder.knote.ui.theme.secondaryPadding
 
 @Composable
 internal fun LoginScreen(
-    uiState: LoginState,
+    state: LoginState,
     modifier: Modifier = Modifier,
     onLogin: () -> Unit = {},
 ) = Column(
@@ -32,11 +32,11 @@ internal fun LoginScreen(
     content = {
         AppLogo()
         Spacer(modifier = Modifier.height(padding() + secondaryPadding()))
-        LoginCard(uiState, onLogin)
+        LoginCard(state, onLogin)
         Spacer(modifier = Modifier.height(secondaryPadding()))
         BottomLoginText(
-            isLogin = uiState.isLogin,
-            onIsLoginChanged = { uiState.isLogin = it }
+            isLogin = state.isLogin,
+            onIsLoginChanged = { state.isLogin = it }
         )
     }
 )
@@ -78,6 +78,6 @@ private fun BottomLoginText(
 @Composable
 private fun LoginScreenPreview() = KNoteTheme {
     LoginScreen(
-        uiState = LoginState(),
+        state = LoginState(),
     )
 }

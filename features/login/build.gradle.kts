@@ -11,4 +11,9 @@ dependencies {
     implementation(libs.compose.ui.tooling.preview)
     debugImplementation(libs.compose.ui.tooling)
     androidTestImplementation(libs.compose.ui.test.junit)
+
+    // Firebase Auth
+    implementation(libs.firebase.auth)
+    // Google Sign In
+    implementation(libs.firebase.auth.google)
 }

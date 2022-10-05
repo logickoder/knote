@@ -19,22 +19,29 @@ internal class LoginViewModel @Inject constructor(
     private val context: Context
         get() = getApplication()
 
-    val uiState = LoginState()
-
-    fun performAuth(
-        onLogin: () -> Unit,
-    ): Unit = with(uiState) {
-        if (isValidInput()) {
-            viewModelScope.launch {
-                isLoading = true
-                val result = if (isLogin) {
-                    repository.login(email, password)
-                } else repository.register(email, username, password)
-                when (result) {
-                    is ResultWrapper.Failure -> loginError = result.error.message
-                    is ResultWrapper.Success -> onLogin.invoke()
+    val uiState = LoginState().apply {
+        login = { onLogin ->
+            if (isValidInput()) {
+                viewModelScope.launch {
+                    isLoading = true
+                    val result = if (isLogin) {
+                        repository.login(email, password)
+                    } else repository.register(email, username, password)
+                    when (result) {
+                        is ResultWrapper.Failure -> loginError = result.error.message
+                        is ResultWrapper.Success -> onLogin()
+                    }
+                    isLoading = false
                 }
-                isLoading = false
+            }
+        }
+        googleLogin = { credential, onLogin ->
+            viewModelScope.launch {
+                when (val result = repository.signInWithCredential(credential)) {
+                    is ResultWrapper.Failure -> loginError = result.error.message
+                    is ResultWrapper.Success -> onLogin()
+                }
+                isGoogleLoading = false
             }
         }
     }

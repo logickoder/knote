@@ -12,9 +12,7 @@ fun LoginRoute(
     val viewModel: LoginViewModel = viewModel()
     LoginScreen(
         modifier = modifier,
-        uiState = viewModel.uiState,
-        onLogin = {
-            viewModel.performAuth(onLogin)
-        }
+        state = viewModel.uiState,
+        onLogin = onLogin
     )
 }
