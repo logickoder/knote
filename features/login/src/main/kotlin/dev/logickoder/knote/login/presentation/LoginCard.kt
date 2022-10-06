@@ -41,30 +41,30 @@ internal fun LoginCard(
                 ),
                 style = MaterialTheme.typography.body1,
             )
+            Input(
+                title = stringResource(id = R.string.login_email),
+                state = InputState(
+                    value = email,
+                    onValueChanged = {
+                        email = it
+                    },
+                    required = true,
+                    error = emailError,
+                ),
+            )
             if (isLogin.not()) {
                 Input(
-                    title = stringResource(id = R.string.login_email),
+                    title = stringResource(id = R.string.login_username),
                     state = InputState(
-                        value = email,
+                        value = username,
                         onValueChanged = {
-                            email = it
+                            username = it
                         },
                         required = true,
-                        error = emailError,
+                        error = usernameError,
                     ),
                 )
             }
-            Input(
-                title = stringResource(id = R.string.login_username),
-                state = InputState(
-                    value = username,
-                    onValueChanged = {
-                        username = it
-                    },
-                    required = true,
-                    error = usernameError,
-                ),
-            )
             PasswordInput(
                 state = InputState(
                     value = password,

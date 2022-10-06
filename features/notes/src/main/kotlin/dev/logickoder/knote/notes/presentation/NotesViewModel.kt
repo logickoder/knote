@@ -8,6 +8,7 @@ import dev.logickoder.knote.notes.api.NoteAction
 import dev.logickoder.knote.notes.api.NoteId
 import dev.logickoder.knote.notes.api.NotesRepository
 import dev.logickoder.knote.notes.data.domain.NoteDomain
+import dev.logickoder.knote.notes.data.domain.NoteScreen
 import dev.logickoder.knote.settings.api.SettingsRepository
 import dev.logickoder.knote.settings.api.SettingsToggle
 import kotlinx.collections.immutable.ImmutableList
@@ -39,12 +40,7 @@ internal class NotesViewModel @Inject constructor(
         initialValue = _selected.value.size,
     )
 
-    private val _screen = MutableStateFlow(NotesDrawerItem.Notes)
-    val screen = _screen.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = _screen.value,
-    )
+    private val _screen = MutableStateFlow(NoteScreen.Notes)
 
     val notes = combine(
         repository.notes,
@@ -61,7 +57,7 @@ internal class NotesViewModel @Inject constructor(
         viewModelScope.launch {
             val notes = _selected.value.toTypedArray()
             // completely delete the note if the action is delete in the delete screen
-            if (action == NoteAction.Trash && _screen.value == NotesDrawerItem.Trash) {
+            if (action == NoteAction.Trash && _screen.value == NoteScreen.Trash) {
                 repository.deleteNotes(*notes)
             } else {
                 // else put the note in the trash
@@ -85,11 +81,9 @@ internal class NotesViewModel @Inject constructor(
         }
     }
 
-    fun changeScreen(screen: NotesDrawerItem) {
-        if (screen != _screen.value) {
-            viewModelScope.launch {
-                _screen.emit(screen)
-            }
+    fun setScreen(screen: NoteScreen) {
+        viewModelScope.launch {
+            _screen.emit(screen)
         }
     }
 
@@ -107,12 +101,12 @@ internal class NotesViewModel @Inject constructor(
         return result.toImmutableList()
     }
 
-    private fun List<Note>.screen(screen: NotesDrawerItem): List<Note> {
+    private fun List<Note>.screen(screen: NoteScreen): List<Note> {
         return filter {
             it.action == when (screen) {
-                NotesDrawerItem.Archive -> NoteAction.Archive
-                NotesDrawerItem.Trash -> NoteAction.Trash
-                else -> null
+                NoteScreen.Archive -> NoteAction.Archive
+                NoteScreen.Trash -> NoteAction.Trash
+                NoteScreen.Notes -> null
             }
         }
     }

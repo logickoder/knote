@@ -4,8 +4,6 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -29,7 +27,8 @@ class MainActivity : NodeActivity() {
 
         setContent {
             val theme by viewModel.theme.collectAsState()
-            val startingRoute by viewModel.startingRoute.collectAsState()
+            val screen by viewModel.startScreen.collectAsState()
+
             KNoteTheme(
                 darkTheme = when (theme) {
                     Theme.Light -> false
@@ -37,19 +36,18 @@ class MainActivity : NodeActivity() {
                     Theme.System -> isSystemInDarkTheme()
                 },
                 content = {
-                    Surface(
-                        color = MaterialTheme.colors.background,
-                        content = {
-                            startingRoute?.let { route ->
-                                NodeHost(integrationPoint = integrationPoint) {
-                                    Navigation(
-                                        buildContext = it,
-                                        startingRoute = route,
-                                    )
-                                }
+                    screen?.let {
+                        NodeHost(
+                            integrationPoint = integrationPoint,
+                            factory = { context ->
+                                Navigation(
+                                    buildContext = context,
+                                    startingRoute = it,
+                                    viewModel = viewModel,
+                                )
                             }
-                        }
-                    )
+                        )
+                    }
                 }
             )
         }
