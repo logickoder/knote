@@ -1,5 +1,6 @@
 package dev.logickoder.knote.auth.impl.data.repository
 
+import com.google.firebase.auth.AuthCredential
 import dev.logickoder.knote.auth.api.AuthRepository
 import dev.logickoder.knote.auth.api.User
 import dev.logickoder.knote.auth.impl.data.domain.DomainMapper
@@ -35,8 +36,17 @@ internal class AuthRepositoryImpl @Inject constructor(
         remote.register(email, password, username)
     )
 
-    override suspend fun logout() = local.clear()
+    override suspend fun signInWithCredential(credential: Any): ResultWrapper<String> {
+        return when (credential) {
+            is AuthCredential -> handleResponse(remote.loginWithCredential(credential))
+            else -> throw UnsupportedOperationException("Only Firebase AuthCredentials are supported")
+        }
+    }
 
+    override suspend fun logout() {
+        remote.logout()
+        local.clear()
+    }
 
     private suspend fun handleResponse(
         response: ResultWrapper<UserEntity>

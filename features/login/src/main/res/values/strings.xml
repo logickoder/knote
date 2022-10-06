@@ -8,4 +8,9 @@
     <string name="login_create_your_account">Create your account</string>
     <string name="login_username">Username</string>
     <string name="login_email">Email</string>
+    <string name="login_gcp_id">582788748932-6g4b7c2e9b7tbpd4r04go27c2lrpdth1.apps.googleusercontent.com</string>
+    <string name="login_google">Sign in with Google</string>
+    <string name="login_or">Or</string>
+    <string name="login_credentials_error">Error when retrieving user credentials</string>
+    <string name="login_no_data">No data returned</string>
 </resources>

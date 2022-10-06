@@ -1,4 +1,4 @@
-package dev.logickoder.knote.notes.presentation
+package dev.logickoder.knote.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -22,7 +22,7 @@ import dev.logickoder.knote.ui.theme.KNoteTheme
 import dev.logickoder.knote.ui.theme.padding
 import dev.logickoder.knote.ui.theme.secondaryPadding
 
-enum class NotesDrawerItem(val icon: ImageVector) {
+enum class DrawerItem(val icon: ImageVector) {
     Notes(Icons.Outlined.Notes),
     Archive(Icons.Outlined.Archive),
     Trash(Icons.Outlined.Delete),
@@ -31,9 +31,9 @@ enum class NotesDrawerItem(val icon: ImageVector) {
 }
 
 @Composable
-internal fun NotesDrawer(
-    selected: NotesDrawerItem,
-    itemClicked: (NotesDrawerItem) -> Unit,
+internal fun AppDrawer(
+    selected: DrawerItem,
+    itemClicked: (DrawerItem) -> Unit,
 ) = Column {
     Text(
         modifier = Modifier
@@ -42,8 +42,8 @@ internal fun NotesDrawer(
         text = stringResource(id = R.string.notes_app_name),
         style = MaterialTheme.typography.h5,
     )
-    NotesDrawerItem.values().forEach { item ->
-        NotesDrawerItem(
+    DrawerItem.values().forEach { item ->
+        DrawerItem(
             item = item,
             selected = item == selected,
             onClick = {
@@ -55,8 +55,8 @@ internal fun NotesDrawer(
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun NotesDrawerItem(
-    item: NotesDrawerItem,
+private fun DrawerItem(
+    item: DrawerItem,
     modifier: Modifier = Modifier,
     selected: Boolean,
     onClick: () -> Unit,
@@ -72,14 +72,9 @@ private fun NotesDrawerItem(
             )
             .clickable { onClick() },
         icon = {
-            IconButton(
-                onClick = {},
-                content = {
-                    Icon(
-                        item.icon, null,
-                        tint = MaterialTheme.colors.onBackground,
-                    )
-                }
+            Icon(
+                item.icon, null,
+                tint = MaterialTheme.colors.onBackground,
             )
         },
         text = {
@@ -94,5 +89,5 @@ private fun NotesDrawerItem(
 @Preview(showBackground = true)
 @Composable
 private fun NotesDrawerPreview() = KNoteTheme {
-    NotesDrawer(itemClicked = {}, selected = NotesDrawerItem.Notes)
+    AppDrawer(itemClicked = {}, selected = DrawerItem.Notes)
 }

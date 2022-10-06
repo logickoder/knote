@@ -33,6 +33,7 @@ compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview"
 compose-ui-test-junit = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose" }
 # Firebase
 firebase-auth = "com.google.firebase:firebase-auth-ktx:21.0.8"
+firebase-auth-google = "com.google.android.gms:play-services-auth:20.3.0"
 firebase-firestore = "com.google.firebase:firebase-firestore-ktx:24.3.1"
 # Hilt
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }

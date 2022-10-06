@@ -6,7 +6,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.outlined.Menu
-import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Restore
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -15,6 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import dev.logickoder.knote.notes.R
 import dev.logickoder.knote.notes.api.NoteAction
+import dev.logickoder.knote.notes.data.domain.NoteScreen
 import dev.logickoder.knote.ui.theme.KNoteTheme
 import dev.logickoder.knote.ui.theme.padding
 
@@ -49,17 +49,6 @@ internal fun NotesAppBar(
                 }
             )
         },
-        trailingIcon = {
-            IconButton(
-                onClick = { /*TODO*/ },
-                content = {
-                    Icon(
-                        imageVector = Icons.Outlined.Person,
-                        contentDescription = null,
-                    )
-                }
-            )
-        }
     )
 }
 
@@ -68,7 +57,7 @@ internal fun NotesAppBar(
 internal fun NotesInSelectionAppBar(
     selected: Int,
     noteCount: Int,
-    screen: NotesDrawerItem,
+    screen: NoteScreen,
     modifier: Modifier = Modifier,
     cancelSelection: () -> Unit,
     performAction: (NoteAction?) -> Unit,
@@ -90,7 +79,7 @@ internal fun NotesInSelectionAppBar(
             Text(text = "$selected/$noteCount")
         },
         actions = {
-            if (screen != NotesDrawerItem.Notes) {
+            if (screen != NoteScreen.Notes) {
                 IconButton(
                     onClick = {
                         performAction(null)
@@ -105,10 +94,10 @@ internal fun NotesInSelectionAppBar(
             }
             NoteAction.values().forEach { action ->
                 when {
-                    action == NoteAction.Archive && screen == NotesDrawerItem.Notes -> {
+                    action == NoteAction.Archive && screen == NoteScreen.Notes -> {
                         action.Button(performAction = performAction)
                     }
-                    action == NoteAction.Trash && screen != NotesDrawerItem.Archive -> {
+                    action == NoteAction.Trash && screen != NoteScreen.Archive -> {
                         action.Button(performAction = performAction)
                     }
                 }
@@ -129,7 +118,7 @@ private fun NoteAction.Button(
         },
         content = {
             Icon(
-                imageVector = NotesDrawerItem.valueOf(name).icon,
+                imageVector = NoteScreen.valueOf(name).icon,
                 contentDescription = stringResource(
                     R.string.notes_perform_action,
                     name
@@ -156,7 +145,7 @@ private fun NotesInSelectionAppBarPreview() = KNoteTheme {
     NotesInSelectionAppBar(
         selected = 1,
         noteCount = 18,
-        screen = NotesDrawerItem.Notes,
+        screen = NoteScreen.Notes,
         modifier = Modifier.fillMaxWidth(),
         cancelSelection = { /*TODO*/ },
         performAction = { /*TODO*/ }
@@ -169,7 +158,7 @@ private fun NotesInReverseSelectionAppBarPreview() = KNoteTheme {
     NotesInSelectionAppBar(
         selected = 1,
         noteCount = 18,
-        screen = NotesDrawerItem.Trash,
+        screen = NoteScreen.Trash,
         modifier = Modifier.fillMaxWidth(),
         cancelSelection = { /*TODO*/ },
         performAction = { /*TODO*/ }

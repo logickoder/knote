@@ -1,5 +1,6 @@
 package dev.logickoder.knote.auth.impl.data.remote
 
+import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -21,6 +22,21 @@ internal class AuthService @Inject constructor() {
                 val result = auth.currentUser?.let {
                     ResultWrapper.Success(DomainMapper.toUserEntity(it))
                 } ?: ResultWrapper.Failure("User not found")
+                cont.resume(result)
+            } else {
+                cont.resume(ResultWrapper.Failure(task.exception ?: Throwable()))
+            }
+        }
+    }
+
+    suspend fun loginWithCredential(
+        credential: AuthCredential,
+    ): ResultWrapper<UserEntity> = suspendCoroutine { cont ->
+        auth.signInWithCredential(credential).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val result = auth.currentUser?.let {
+                    ResultWrapper.Success(DomainMapper.toUserEntity(it))
+                } ?: ResultWrapper.Failure("Invalid credential")
                 cont.resume(result)
             } else {
                 cont.resume(ResultWrapper.Failure(task.exception ?: Throwable()))
@@ -51,6 +67,8 @@ internal class AuthService @Inject constructor() {
             }
         }
     }
+
+    fun logout() = auth.signOut()
 
     companion object {
         private val auth = Firebase.auth
