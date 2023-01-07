@@ -3,8 +3,8 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":common:auth-impl"))
-    implementation(project(":common:notes-impl"))
+    implementation(project(":core:auth-impl"))
+    implementation(project(":core:notes-impl"))
     implementation(project(":features:edit-note"))
     implementation(project(":features:login"))
     implementation(project(":features:notes"))

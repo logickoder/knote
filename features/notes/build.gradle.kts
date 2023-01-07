@@ -1,7 +1,7 @@
 dependencies {
-    api(project(":common:notes-api"))
-    api(project(":common:settings-api"))
-    api(project(":common:ui"))
+    api(project(":core:notes-api"))
+    api(project(":core:settings-api"))
+    api(project(":core:ui"))
 
     // Compose
     implementation(libs.compose.activity)

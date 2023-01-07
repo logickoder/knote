@@ -9,6 +9,6 @@ java {
 }
 
 dependencies {
-    api(project(":common:model"))
+    api(project(":core:model"))
     api(libs.kotlinx.coroutines)
 }

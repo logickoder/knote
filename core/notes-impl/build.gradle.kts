@@ -3,8 +3,8 @@ plugins {
 }
 
 dependencies {
-    api(project(":common:auth-api"))
-    api(project(":common:notes-api"))
+    api(project(":core:auth-api"))
+    api(project(":core:notes-api"))
     // Firebase Firestore
     implementation(libs.firebase.firestore)
     // Room
