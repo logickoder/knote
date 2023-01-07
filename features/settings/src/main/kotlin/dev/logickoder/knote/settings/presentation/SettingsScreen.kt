@@ -6,8 +6,8 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import dev.logickoder.knote.settings.api.SettingsToggle
 import dev.logickoder.knote.settings.api.Theme
+import dev.logickoder.knote.settings.presentation.model.SettingsToggle
 import dev.logickoder.knote.ui.theme.KNoteTheme
 import dev.logickoder.knote.ui.theme.secondaryPadding
 import kotlinx.collections.immutable.ImmutableMap

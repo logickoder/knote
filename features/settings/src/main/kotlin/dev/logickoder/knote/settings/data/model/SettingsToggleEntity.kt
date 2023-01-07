@@ -1,6 +1,6 @@
 package dev.logickoder.knote.settings.data.model
 
-import dev.logickoder.knote.settings.api.SettingsToggle
+import dev.logickoder.knote.settings.presentation.model.SettingsToggle
 import kotlinx.serialization.Serializable
 
 @Serializable

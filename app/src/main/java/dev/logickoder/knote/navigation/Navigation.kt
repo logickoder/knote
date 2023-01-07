@@ -24,8 +24,8 @@ import com.bumble.appyx.navmodel.backstack.operation.replace
 import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackSlider
 import dev.logickoder.knote.domain.drawer
 import dev.logickoder.knote.domain.route
-import dev.logickoder.knote.notes.api.NoteId
 import dev.logickoder.knote.notes.data.domain.NoteScreen
+import dev.logickoder.knote.notes.data.model.NoteId
 import dev.logickoder.knote.presentation.AppDrawer
 import dev.logickoder.knote.presentation.DrawerItem
 import dev.logickoder.knote.presentation.MainViewModel

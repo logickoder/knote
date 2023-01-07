@@ -11,11 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import dev.logickoder.knote.notes.api.Note
 import dev.logickoder.knote.notes.api.NoteAction
-import dev.logickoder.knote.notes.api.NoteId
 import dev.logickoder.knote.notes.data.domain.NoteDomain
 import dev.logickoder.knote.notes.data.domain.NoteScreen
+import dev.logickoder.knote.notes.data.model.Note
+import dev.logickoder.knote.notes.data.model.NoteId
 import dev.logickoder.knote.ui.NoteActionDialog
 import dev.logickoder.knote.ui.theme.KNoteTheme
 import dev.logickoder.knote.ui.theme.padding
@@ -32,11 +32,11 @@ internal fun NotesScreen(
     notes: ImmutableList<NoteDomain>,
     selected: Int,
     screen: NoteScreen,
-    editNote: (NoteId?) -> Unit,
+    editNote: (dev.logickoder.knote.notes.data.model.NoteId?) -> Unit,
     performAction: (NoteAction?) -> Unit,
     openDrawer: () -> Unit,
     onSearch: (String) -> Unit,
-    onSelectedChanged: (NoteId) -> Unit,
+    onSelectedChanged: (dev.logickoder.knote.notes.data.model.NoteId) -> Unit,
     cancelSelection: () -> Unit,
 ) {
     val scaffoldState = rememberScaffoldState()
@@ -136,8 +136,8 @@ private fun NotesScreenPreview() = KNoteTheme {
     NotesScreen(
         notes = (1..10).map {
             NoteDomain(
-                note = Note(
-                    id = NoteId(it.toLong()),
+                note = dev.logickoder.knote.notes.data.model.Note(
+                    id = dev.logickoder.knote.notes.data.model.NoteId(it.toLong()),
                     title = "Title $it",
                     content = "Content $it",
                     dateCreated = LocalDateTime.now(),

@@ -6,14 +6,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import dev.logickoder.knote.notes.api.NoteId
 import dev.logickoder.knote.notes.data.domain.NoteScreen
+import dev.logickoder.knote.notes.data.model.NoteId
 
 @Composable
 fun NotesRoute(
     modifier: Modifier = Modifier,
     screen: NoteScreen,
-    onNoteClick: (NoteId?) -> Unit,
+    onNoteClick: (dev.logickoder.knote.notes.data.model.NoteId?) -> Unit,
     openDrawer: () -> Unit,
 ) {
     val viewModel = viewModel<NotesViewModel>()

@@ -8,7 +8,7 @@ import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.navmodel.backstack.BackStack
 import dev.logickoder.knote.edit_note.presentation.EditNoteRoute
-import dev.logickoder.knote.notes.api.NoteId
+import dev.logickoder.knote.notes.data.model.NoteId
 import dev.logickoder.knote.presentation.MainViewModel
 
 class EditNoteRoute(

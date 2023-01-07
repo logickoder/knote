@@ -7,13 +7,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import dev.logickoder.knote.notes.api.NoteId
+import dev.logickoder.knote.notes.data.model.NoteId
 import dev.logickoder.knote.ui.OnLifecycleEvent
 
 
 @Composable
 fun EditNoteRoute(
-    id: NoteId?,
+    id: dev.logickoder.knote.notes.data.model.NoteId?,
     modifier: Modifier = Modifier,
     navigateBack: () -> Unit,
 ) {

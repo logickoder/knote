@@ -5,11 +5,11 @@ import androidx.lifecycle.viewModelScope
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.operation.replace
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.logickoder.knote.auth.api.AuthRepository
+import dev.logickoder.knote.auth.data.repository.AuthRepository
 import dev.logickoder.knote.navigation.Navigation
 import dev.logickoder.knote.notes.data.domain.NoteScreen
-import dev.logickoder.knote.settings.api.SettingsRepository
 import dev.logickoder.knote.settings.api.Theme
+import dev.logickoder.knote.settings.data.repository.SettingsRepository
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch

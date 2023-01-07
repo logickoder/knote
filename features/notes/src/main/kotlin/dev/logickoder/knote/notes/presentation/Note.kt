@@ -12,9 +12,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.logickoder.knote.model.formatted
-import dev.logickoder.knote.notes.api.Note
-import dev.logickoder.knote.notes.api.NoteId
 import dev.logickoder.knote.notes.data.domain.NoteDomain
+import dev.logickoder.knote.notes.data.model.Note
+import dev.logickoder.knote.notes.data.model.NoteId
 import dev.logickoder.knote.ui.theme.KNoteTheme
 import dev.logickoder.knote.ui.theme.TextColor
 import java.time.LocalDateTime
@@ -25,8 +25,8 @@ internal fun Note(
     modifier: Modifier = Modifier,
     domain: NoteDomain,
     inSelection: Boolean,
-    editNote: (NoteId) -> Unit,
-    selectedChanged: (NoteId) -> Unit,
+    editNote: (dev.logickoder.knote.notes.data.model.NoteId) -> Unit,
+    selectedChanged: (dev.logickoder.knote.notes.data.model.NoteId) -> Unit,
 ) = with(domain) {
     Card(
         modifier = modifier
@@ -81,8 +81,8 @@ internal fun Note(
 private fun NotePreview() = KNoteTheme {
     Note(
         domain = NoteDomain(
-            note = Note(
-                id = NoteId(1L),
+            note = dev.logickoder.knote.notes.data.model.Note(
+                id = dev.logickoder.knote.notes.data.model.NoteId(1L),
                 title = "Title",
                 content = "Content",
                 dateCreated = LocalDateTime.now(),
@@ -101,8 +101,8 @@ private fun NotePreview() = KNoteTheme {
 private fun SelectedNotePreview() = KNoteTheme {
     Note(
         domain = NoteDomain(
-            note = Note(
-                id = NoteId(1L),
+            note = dev.logickoder.knote.notes.data.model.Note(
+                id = dev.logickoder.knote.notes.data.model.NoteId(1L),
                 title = "Title",
                 content = "Content",
                 dateCreated = LocalDateTime.now(),
