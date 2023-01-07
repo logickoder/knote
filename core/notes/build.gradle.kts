@@ -1,5 +1,5 @@
 plugins {
-    id(libs.plugins.ksp.get().pluginId).version(libs.plugins.ksp.get().version.requiredVersion)
+    alias(libs.plugins.ksp)
 }
 
 dependencies {
