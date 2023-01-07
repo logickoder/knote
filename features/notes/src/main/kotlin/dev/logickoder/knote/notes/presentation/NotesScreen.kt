@@ -2,7 +2,6 @@ package dev.logickoder.knote.notes.presentation
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
@@ -12,10 +11,8 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import dev.logickoder.knote.notes.api.NoteAction
-import dev.logickoder.knote.notes.data.domain.NoteDomain
+import dev.logickoder.knote.notes.data.domain.NoteItem
 import dev.logickoder.knote.notes.data.domain.NoteScreen
-import dev.logickoder.knote.notes.data.model.Note
-import dev.logickoder.knote.notes.data.model.NoteId
 import dev.logickoder.knote.ui.NoteActionDialog
 import dev.logickoder.knote.ui.theme.KNoteTheme
 import dev.logickoder.knote.ui.theme.padding
@@ -29,7 +26,7 @@ import java.time.LocalDateTime
 internal fun NotesScreen(
     modifier: Modifier = Modifier,
     search: String,
-    notes: ImmutableList<NoteDomain>,
+    notes: ImmutableList<NoteItem>,
     selected: Int,
     screen: NoteScreen,
     editNote: (dev.logickoder.knote.notes.data.model.NoteId?) -> Unit,
@@ -135,7 +132,7 @@ private fun EmptyNotesScreenPreview() = KNoteTheme {
 private fun NotesScreenPreview() = KNoteTheme {
     NotesScreen(
         notes = (1..10).map {
-            NoteDomain(
+            NoteItem(
                 note = dev.logickoder.knote.notes.data.model.Note(
                     id = dev.logickoder.knote.notes.data.model.NoteId(it.toLong()),
                     title = "Title $it",

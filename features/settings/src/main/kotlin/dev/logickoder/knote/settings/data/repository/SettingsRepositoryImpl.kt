@@ -1,10 +1,14 @@
 package dev.logickoder.knote.settings.data.repository
 
 import androidx.datastore.preferences.core.stringPreferencesKey
-import dev.logickoder.knote.settings.api.Theme
 import dev.logickoder.knote.settings.data.local.SettingsDataStore
-import dev.logickoder.knote.settings.data.model.*
-import dev.logickoder.knote.settings.presentation.model.SettingsToggle
+import dev.logickoder.knote.settings.data.model.SettingsToggle
+import dev.logickoder.knote.settings.data.model.SettingsToggleEntity
+import dev.logickoder.knote.settings.data.model.Theme
+import dev.logickoder.knote.settings.data.model.ThemeEntity
+import dev.logickoder.knote.settings.data.model.toEntity
+import dev.logickoder.knote.settings.data.model.toSettingsToggle
+import dev.logickoder.knote.settings.data.model.toTheme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map

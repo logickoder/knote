@@ -1,6 +1,5 @@
-package dev.logickoder.knote.domain
+package dev.logickoder.knote.navigation
 
-import dev.logickoder.knote.navigation.Navigation
 import dev.logickoder.knote.notes.data.domain.NoteScreen
 import dev.logickoder.knote.presentation.DrawerItem
 
@@ -11,6 +10,7 @@ internal val Navigation.Route.drawer: DrawerItem?
             NoteScreen.Notes -> DrawerItem.Notes
             NoteScreen.Trash -> DrawerItem.Trash
         }
+
         else -> null
     }
 

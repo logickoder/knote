@@ -1,4 +1,4 @@
-package dev.logickoder.knote.notes.data.domain
+package dev.logickoder.knote.notes.data.model
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Archive

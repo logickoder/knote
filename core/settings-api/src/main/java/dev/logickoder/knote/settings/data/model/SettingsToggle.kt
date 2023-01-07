@@ -1,4 +1,4 @@
-package dev.logickoder.knote.settings.presentation.model
+package dev.logickoder.knote.settings.data.model
 
 enum class SettingsToggle {
     AddNewNotesToBottom;

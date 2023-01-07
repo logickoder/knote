@@ -4,12 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.logickoder.knote.notes.api.NoteAction
-import dev.logickoder.knote.notes.data.domain.NoteDomain
+import dev.logickoder.knote.notes.data.domain.NoteItem
 import dev.logickoder.knote.notes.data.domain.NoteScreen
-import dev.logickoder.knote.notes.data.model.Note
-import dev.logickoder.knote.notes.data.model.NoteId
-import dev.logickoder.knote.notes.data.repository.NotesRepository
-import dev.logickoder.knote.settings.data.repository.SettingsRepository
 import dev.logickoder.knote.settings.presentation.model.SettingsToggle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -111,9 +107,9 @@ internal class NotesViewModel @Inject constructor(
         }
     }
 
-    private fun List<dev.logickoder.knote.notes.data.model.Note>.map(selected: List<dev.logickoder.knote.notes.data.model.NoteId>): ImmutableList<NoteDomain> {
+    private fun List<dev.logickoder.knote.notes.data.model.Note>.map(selected: List<dev.logickoder.knote.notes.data.model.NoteId>): ImmutableList<NoteItem> {
         return map {
-            NoteDomain(
+            NoteItem(
                 note = it,
                 selected = it.id in selected
             )

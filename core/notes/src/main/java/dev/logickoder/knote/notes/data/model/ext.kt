@@ -1,7 +1,4 @@
-package dev.logickoder.knote.notes.data.domain
-
-import dev.logickoder.knote.notes.data.model.Note
-import dev.logickoder.knote.notes.data.model.NoteEntity
+package dev.logickoder.knote.notes.data.model
 
 internal fun NoteEntity.toNote() = Note(
     id = id,

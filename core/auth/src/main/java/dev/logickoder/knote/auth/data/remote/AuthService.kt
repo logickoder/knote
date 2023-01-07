@@ -4,8 +4,8 @@ import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import dev.logickoder.knote.auth.data.domain.DomainMapper
 import dev.logickoder.knote.auth.data.model.UserEntity
+import dev.logickoder.knote.auth.data.model.toEntity
 import dev.logickoder.knote.model.ResultWrapper
 import javax.inject.Inject
 import kotlin.coroutines.resume
@@ -20,7 +20,7 @@ internal class AuthService @Inject constructor() {
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val result = auth.currentUser?.let {
-                    ResultWrapper.Success(DomainMapper.toUserEntity(it))
+                    ResultWrapper.Success(it.toEntity())
                 } ?: ResultWrapper.Failure("User not found")
                 cont.resume(result)
             } else {
@@ -35,7 +35,7 @@ internal class AuthService @Inject constructor() {
         auth.signInWithCredential(credential).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val result = auth.currentUser?.let {
-                    ResultWrapper.Success(DomainMapper.toUserEntity(it))
+                    ResultWrapper.Success(it.toEntity())
                 } ?: ResultWrapper.Failure("Invalid credential")
                 cont.resume(result)
             } else {
@@ -55,7 +55,7 @@ internal class AuthService @Inject constructor() {
                 auth.currentUser?.updateProfile(name)?.addOnCompleteListener { nameTask ->
                     if (nameTask.isSuccessful) {
                         val result = auth.currentUser?.let {
-                            ResultWrapper.Success(DomainMapper.toUserEntity(it))
+                            ResultWrapper.Success(it.toEntity())
                         } ?: ResultWrapper.Failure("User not created")
                         cont.resume(result)
                     } else {

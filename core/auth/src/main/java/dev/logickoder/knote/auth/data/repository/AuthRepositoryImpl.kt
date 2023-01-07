@@ -1,10 +1,10 @@
 package dev.logickoder.knote.auth.data.repository
 
 import com.google.firebase.auth.AuthCredential
-import dev.logickoder.knote.auth.data.domain.DomainMapper
 import dev.logickoder.knote.auth.data.local.AuthDataStore
 import dev.logickoder.knote.auth.data.model.User
 import dev.logickoder.knote.auth.data.model.UserEntity
+import dev.logickoder.knote.auth.data.model.toUser
 import dev.logickoder.knote.auth.data.remote.AuthService
 import dev.logickoder.knote.model.ResultWrapper
 import io.github.aakira.napier.Napier
@@ -17,11 +17,7 @@ internal class AuthRepositoryImpl @Inject constructor(
     private val local: AuthDataStore,
 ) : AuthRepository {
     override val currentUser: Flow<User?>
-        get() = local.get().map { user ->
-            user?.let {
-                DomainMapper.toUser(it)
-            }
-        }
+        get() = local.get().map { it?.toUser() }
 
     override suspend fun login(email: String, password: String) = handleResponse(
         remote.login(email, password)

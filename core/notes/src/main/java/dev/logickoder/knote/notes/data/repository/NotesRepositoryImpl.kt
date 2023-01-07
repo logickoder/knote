@@ -1,6 +1,5 @@
 package dev.logickoder.knote.notes.data.repository
 
-import dev.logickoder.knote.auth.data.repository.AuthRepository
 import dev.logickoder.knote.model.ResultWrapper
 import dev.logickoder.knote.notes.api.NoteAction
 import dev.logickoder.knote.notes.data.domain.toEntity
