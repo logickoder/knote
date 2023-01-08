@@ -14,11 +14,11 @@ import kotlin.coroutines.suspendCoroutine
 
 internal class NotesService @Inject constructor() {
 
-    private val dev.logickoder.knote.auth.data.model.UserId.notesPath: DocumentReference
+    private val UserId.notesPath: DocumentReference
         get() = Firebase.firestore.collection("notes").document(id)
 
     suspend fun getNotes(
-        userId: dev.logickoder.knote.auth.data.model.UserId
+        userId: UserId
     ): ResultWrapper<List<NoteEntity>> = suspendCoroutine { cont ->
         userId.notesPath.get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -33,7 +33,7 @@ internal class NotesService @Inject constructor() {
     }
 
     suspend fun updateNotes(
-        userId: dev.logickoder.knote.auth.data.model.UserId,
+        userId: UserId,
         notes: List<NoteEntity>,
     ): ResultWrapper<Unit> = suspendCoroutine { cont ->
         userId.notesPath.set(Notes(notes)).addOnCompleteListener { task ->

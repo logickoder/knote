@@ -13,7 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 internal class LoginViewModel @Inject constructor(
     app: Application,
-    private val repository: dev.logickoder.knote.auth.data.repository.AuthRepository,
+    private val repository: AuthRepository,
 ) : AndroidViewModel(app) {
 
     private val context: Context

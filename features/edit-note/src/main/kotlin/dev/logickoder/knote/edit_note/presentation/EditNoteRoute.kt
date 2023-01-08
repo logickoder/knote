@@ -13,7 +13,7 @@ import dev.logickoder.knote.ui.OnLifecycleEvent
 
 @Composable
 fun EditNoteRoute(
-    id: dev.logickoder.knote.notes.data.model.NoteId?,
+    id: NoteId?,
     modifier: Modifier = Modifier,
     navigateBack: () -> Unit,
 ) {
