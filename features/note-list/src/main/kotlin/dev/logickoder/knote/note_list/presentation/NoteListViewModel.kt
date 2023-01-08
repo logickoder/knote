@@ -1,21 +1,27 @@
-package dev.logickoder.knote.notes.presentation
+package dev.logickoder.knote.note_list.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.logickoder.knote.notes.api.NoteAction
-import dev.logickoder.knote.notes.data.domain.NoteItem
-import dev.logickoder.knote.notes.data.domain.NoteScreen
-import dev.logickoder.knote.settings.presentation.model.SettingsToggle
+import dev.logickoder.knote.note_list.data.model.NoteListItem
+import dev.logickoder.knote.note_list.data.model.NoteListScreen
+import dev.logickoder.knote.notes.data.model.Note
+import dev.logickoder.knote.notes.data.model.NoteAction
+import dev.logickoder.knote.notes.data.model.NoteId
+import dev.logickoder.knote.settings.data.model.SettingsToggle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-internal class NotesViewModel @Inject constructor(
+internal class NoteListViewModel @Inject constructor(
     private val repository: dev.logickoder.knote.notes.data.repository.NotesRepository,
     settings: dev.logickoder.knote.settings.data.repository.SettingsRepository,
 ) : ViewModel() {
@@ -27,7 +33,7 @@ internal class NotesViewModel @Inject constructor(
         initialValue = _search.value,
     )
 
-    private val _selected = MutableStateFlow(listOf<dev.logickoder.knote.notes.data.model.NoteId>())
+    private val _selected = MutableStateFlow(listOf<NoteId>())
     val selected = _selected.map {
         it.size
     }.stateIn(
@@ -36,7 +42,7 @@ internal class NotesViewModel @Inject constructor(
         initialValue = _selected.value.size,
     )
 
-    private val _screen = MutableStateFlow(NoteScreen.Notes)
+    private val _screen = MutableStateFlow(NoteListScreen.Notes)
 
     val notes = combine(
         repository.notes,
@@ -53,7 +59,7 @@ internal class NotesViewModel @Inject constructor(
         viewModelScope.launch {
             val notes = _selected.value.toTypedArray()
             // completely delete the note if the action is delete in the delete screen
-            if (action == NoteAction.Trash && _screen.value == NoteScreen.Trash) {
+            if (action == NoteAction.Trash && _screen.value == NoteListScreen.Trash) {
                 repository.deleteNotes(*notes)
             } else {
                 // else put the note in the trash
@@ -69,7 +75,7 @@ internal class NotesViewModel @Inject constructor(
         }
     }
 
-    fun toggleSelect(id: dev.logickoder.knote.notes.data.model.NoteId) {
+    fun toggleSelect(id: NoteId) {
         viewModelScope.launch {
             if (id in _selected.value) {
                 _selected.emit(_selected.value - id)
@@ -77,7 +83,7 @@ internal class NotesViewModel @Inject constructor(
         }
     }
 
-    fun setScreen(screen: NoteScreen) {
+    fun setScreen(screen: NoteListScreen) {
         viewModelScope.launch {
             _screen.emit(screen)
         }
@@ -89,7 +95,7 @@ internal class NotesViewModel @Inject constructor(
         }
     }
 
-    private fun List<dev.logickoder.knote.notes.data.model.Note>.search(text: String): List<dev.logickoder.knote.notes.data.model.Note> {
+    private fun List<Note>.search(text: String): List<Note> {
         val result = if (text.isNotBlank()) filter {
             it.title.contains(text, ignoreCase = true)
                     || it.content.contains(text, ignoreCase = true)
@@ -97,26 +103,26 @@ internal class NotesViewModel @Inject constructor(
         return result.toImmutableList()
     }
 
-    private fun List<dev.logickoder.knote.notes.data.model.Note>.screen(screen: NoteScreen): List<dev.logickoder.knote.notes.data.model.Note> {
+    private fun List<Note>.screen(screen: NoteListScreen): List<Note> {
         return filter {
             it.action == when (screen) {
-                NoteScreen.Archive -> NoteAction.Archive
-                NoteScreen.Trash -> NoteAction.Trash
-                NoteScreen.Notes -> null
+                NoteListScreen.Archive -> NoteAction.Archive
+                NoteListScreen.Trash -> NoteAction.Trash
+                NoteListScreen.Notes -> null
             }
         }
     }
 
-    private fun List<dev.logickoder.knote.notes.data.model.Note>.map(selected: List<dev.logickoder.knote.notes.data.model.NoteId>): ImmutableList<NoteItem> {
+    private fun List<Note>.map(selected: List<NoteId>): ImmutableList<NoteListItem> {
         return map {
-            NoteItem(
+            NoteListItem(
                 note = it,
                 selected = it.id in selected
             )
         }.toImmutableList()
     }
 
-    private fun List<dev.logickoder.knote.notes.data.model.Note>.sort(settings: Map<SettingsToggle, Boolean>): List<dev.logickoder.knote.notes.data.model.Note> {
+    private fun List<Note>.sort(settings: Map<SettingsToggle, Boolean>): List<Note> {
         return if (settings[SettingsToggle.AddNewNotesToBottom] == true) {
             sortedBy { it.dateModified }
         } else sortedByDescending { it.dateModified }

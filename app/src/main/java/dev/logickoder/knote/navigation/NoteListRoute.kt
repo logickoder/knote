@@ -8,14 +8,14 @@ import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.operation.push
-import dev.logickoder.knote.notes.data.domain.NoteScreen
-import dev.logickoder.knote.notes.presentation.NotesRoute
+import dev.logickoder.knote.note_list.data.model.NoteListScreen
+import dev.logickoder.knote.note_list.presentation.NoteListRoute
 import dev.logickoder.knote.presentation.MainViewModel
 import kotlinx.coroutines.launch
 
-class NotesRoute(
+class NoteListRoute(
     buildContext: BuildContext,
-    private val screen: NoteScreen,
+    private val screen: NoteListScreen,
     private val backStack: BackStack<Navigation.Route>,
     private val openDrawer: suspend () -> Unit,
 ) : Node(buildContext) {
@@ -25,7 +25,7 @@ class NotesRoute(
     override fun View(modifier: Modifier) {
         val viewModel = viewModel<MainViewModel>()
         val scope = rememberCoroutineScope()
-        NotesRoute(
+        NoteListRoute(
             modifier = modifier,
             screen = screen,
             onNoteClick = {

@@ -7,11 +7,15 @@ import com.bumble.appyx.navmodel.backstack.operation.replace
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.logickoder.knote.auth.data.repository.AuthRepository
 import dev.logickoder.knote.navigation.Navigation
-import dev.logickoder.knote.notes.data.domain.NoteScreen
-import dev.logickoder.knote.settings.api.Theme
+import dev.logickoder.knote.note_list.data.model.NoteListScreen
+import dev.logickoder.knote.settings.data.model.Theme
 import dev.logickoder.knote.settings.data.repository.SettingsRepository
 import io.github.aakira.napier.Napier
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,7 +29,7 @@ class MainViewModel @Inject constructor(
 
     val startScreen = authRepository.currentUser.take(1).map { user ->
         val result = user?.let {
-            Navigation.Route.Notes(NoteScreen.Notes)
+            Navigation.Route.NoteList(NoteListScreen.Notes)
         } ?: Navigation.Route.Login
         updateScreen(result)
         result

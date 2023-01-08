@@ -6,8 +6,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.logickoder.knote.notes.api.NoteAction
 import dev.logickoder.knote.notes.data.model.Note
+import dev.logickoder.knote.notes.data.model.NoteAction
 import dev.logickoder.knote.notes.data.model.NoteId
 import dev.logickoder.knote.notes.data.repository.NotesRepository
 import kotlinx.coroutines.flow.first
@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class EditNoteViewModel @Inject constructor(
-    private val repository: dev.logickoder.knote.notes.data.repository.NotesRepository,
+    private val repository: NotesRepository,
 ) : ViewModel() {
 
     var title by mutableStateOf("")
@@ -29,9 +29,9 @@ internal class EditNoteViewModel @Inject constructor(
     var editedAt: LocalDateTime by mutableStateOf(LocalDateTime.now())
         private set
 
-    private var note: dev.logickoder.knote.notes.data.model.Note? = null
+    private var note: Note? = null
 
-    fun getNote(id: dev.logickoder.knote.notes.data.model.NoteId?) {
+    fun getNote(id: NoteId?) {
         viewModelScope.launch {
             note = id?.let {
                 repository.getNote(it).first()

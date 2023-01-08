@@ -1,8 +1,14 @@
-package dev.logickoder.knote.notes.presentation
+package dev.logickoder.knote.note_list.presentation
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
+import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.outlined.Menu
@@ -12,14 +18,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import dev.logickoder.knote.notes.R
-import dev.logickoder.knote.notes.api.NoteAction
-import dev.logickoder.knote.notes.data.domain.NoteScreen
+import dev.logickoder.knote.note_list.R
+import dev.logickoder.knote.note_list.data.model.NoteListScreen
+import dev.logickoder.knote.notes.data.model.NoteAction
 import dev.logickoder.knote.ui.theme.KNoteTheme
 import dev.logickoder.knote.ui.theme.padding
 
 @Composable
-internal fun NotesAppBar(
+internal fun NoteListAppBar(
     search: String,
     modifier: Modifier = Modifier,
     onSearch: (String) -> Unit,
@@ -54,10 +60,10 @@ internal fun NotesAppBar(
 
 
 @Composable
-internal fun NotesInSelectionAppBar(
+internal fun NoteListInSelectionAppBar(
     selected: Int,
     noteCount: Int,
-    screen: NoteScreen,
+    screen: NoteListScreen,
     modifier: Modifier = Modifier,
     cancelSelection: () -> Unit,
     performAction: (NoteAction?) -> Unit,
@@ -79,7 +85,7 @@ internal fun NotesInSelectionAppBar(
             Text(text = "$selected/$noteCount")
         },
         actions = {
-            if (screen != NoteScreen.Notes) {
+            if (screen != NoteListScreen.Notes) {
                 IconButton(
                     onClick = {
                         performAction(null)
@@ -94,10 +100,11 @@ internal fun NotesInSelectionAppBar(
             }
             NoteAction.values().forEach { action ->
                 when {
-                    action == NoteAction.Archive && screen == NoteScreen.Notes -> {
+                    action == NoteAction.Archive && screen == NoteListScreen.Notes -> {
                         action.Button(performAction = performAction)
                     }
-                    action == NoteAction.Trash && screen != NoteScreen.Archive -> {
+
+                    action == NoteAction.Trash && screen != NoteListScreen.Archive -> {
                         action.Button(performAction = performAction)
                     }
                 }
@@ -118,7 +125,7 @@ private fun NoteAction.Button(
         },
         content = {
             Icon(
-                imageVector = NoteScreen.valueOf(name).icon,
+                imageVector = NoteListScreen.valueOf(name).icon,
                 contentDescription = stringResource(
                     R.string.notes_perform_action,
                     name
@@ -130,8 +137,8 @@ private fun NoteAction.Button(
 
 @Preview
 @Composable
-private fun NotesAppBarPreview() = KNoteTheme {
-    NotesAppBar(
+private fun NoteListAppBarPreview() = KNoteTheme {
+    NoteListAppBar(
         search = "",
         onSearch = {},
         openDrawer = {},
@@ -141,11 +148,11 @@ private fun NotesAppBarPreview() = KNoteTheme {
 
 @Preview
 @Composable
-private fun NotesInSelectionAppBarPreview() = KNoteTheme {
-    NotesInSelectionAppBar(
+private fun NoteListInSelectionAppBarPreview() = KNoteTheme {
+    NoteListInSelectionAppBar(
         selected = 1,
         noteCount = 18,
-        screen = NoteScreen.Notes,
+        screen = NoteListScreen.Notes,
         modifier = Modifier.fillMaxWidth(),
         cancelSelection = { /*TODO*/ },
         performAction = { /*TODO*/ }
@@ -154,11 +161,11 @@ private fun NotesInSelectionAppBarPreview() = KNoteTheme {
 
 @Preview
 @Composable
-private fun NotesInReverseSelectionAppBarPreview() = KNoteTheme {
-    NotesInSelectionAppBar(
+private fun NoteListInReverseSelectionAppBarPreview() = KNoteTheme {
+    NoteListInSelectionAppBar(
         selected = 1,
         noteCount = 18,
-        screen = NoteScreen.Trash,
+        screen = NoteListScreen.Trash,
         modifier = Modifier.fillMaxWidth(),
         cancelSelection = { /*TODO*/ },
         performAction = { /*TODO*/ }

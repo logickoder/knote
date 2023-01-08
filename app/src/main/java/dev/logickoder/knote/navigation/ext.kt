@@ -1,14 +1,14 @@
 package dev.logickoder.knote.navigation
 
-import dev.logickoder.knote.notes.data.domain.NoteScreen
+import dev.logickoder.knote.note_list.data.model.NoteListScreen
 import dev.logickoder.knote.presentation.DrawerItem
 
 internal val Navigation.Route.drawer: DrawerItem?
     get() = when (this) {
-        is Navigation.Route.Notes -> when (screen) {
-            NoteScreen.Archive -> DrawerItem.Archive
-            NoteScreen.Notes -> DrawerItem.Notes
-            NoteScreen.Trash -> DrawerItem.Trash
+        is Navigation.Route.NoteList -> when (screen) {
+            NoteListScreen.Archive -> DrawerItem.Archive
+            NoteListScreen.Notes -> DrawerItem.Notes
+            NoteListScreen.Trash -> DrawerItem.Trash
         }
 
         else -> null
@@ -16,9 +16,9 @@ internal val Navigation.Route.drawer: DrawerItem?
 
 internal val DrawerItem.route: Navigation.Route
     get() = when (this) {
-        DrawerItem.Notes -> Navigation.Route.Notes(NoteScreen.Notes)
-        DrawerItem.Archive -> Navigation.Route.Notes(NoteScreen.Archive)
-        DrawerItem.Trash -> Navigation.Route.Notes(NoteScreen.Trash)
+        DrawerItem.Notes -> Navigation.Route.NoteList(NoteListScreen.Notes)
+        DrawerItem.Archive -> Navigation.Route.NoteList(NoteListScreen.Archive)
+        DrawerItem.Trash -> Navigation.Route.NoteList(NoteListScreen.Trash)
         DrawerItem.Settings -> Navigation.Route.Settings
         DrawerItem.Logout -> Navigation.Route.Login
     }

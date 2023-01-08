@@ -1,7 +1,7 @@
 package dev.logickoder.knote.notes.data.repository
 
-import dev.logickoder.knote.notes.api.NoteAction
 import dev.logickoder.knote.notes.data.model.Note
+import dev.logickoder.knote.notes.data.model.NoteAction
 import dev.logickoder.knote.notes.data.model.NoteId
 import kotlinx.coroutines.flow.Flow
 

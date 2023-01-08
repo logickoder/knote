@@ -12,7 +12,7 @@ import dev.logickoder.knote.notes.data.model.NoteId
 import dev.logickoder.knote.presentation.MainViewModel
 
 class EditNoteRoute(
-    private val id: NoteId?,
+    private val noteId: NoteId?,
     buildContext: BuildContext,
     private val backStack: BackStack<Navigation.Route>,
 ) : Node(buildContext) {
@@ -26,7 +26,7 @@ class EditNoteRoute(
         }
         EditNoteRoute(
             modifier = modifier,
-            id = id,
+            id = noteId,
             navigateBack = {
                 viewModel.pop(backStack)
             }

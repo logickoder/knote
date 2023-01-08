@@ -1,10 +1,15 @@
-package dev.logickoder.knote.notes.presentation
+package dev.logickoder.knote.note_list.presentation
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ListItem
+import androidx.compose.material.LocalTextStyle
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -12,7 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.logickoder.knote.model.formatted
-import dev.logickoder.knote.notes.data.domain.NoteItem
+import dev.logickoder.knote.note_list.data.model.NoteListItem
 import dev.logickoder.knote.ui.theme.KNoteTheme
 import dev.logickoder.knote.ui.theme.TextColor
 import java.time.LocalDateTime
@@ -21,7 +26,7 @@ import java.time.LocalDateTime
 @Composable
 internal fun Note(
     modifier: Modifier = Modifier,
-    domain: NoteItem,
+    domain: NoteListItem,
     inSelection: Boolean,
     editNote: (dev.logickoder.knote.notes.data.model.NoteId) -> Unit,
     selectedChanged: (dev.logickoder.knote.notes.data.model.NoteId) -> Unit,
@@ -78,7 +83,7 @@ internal fun Note(
 @Composable
 private fun NotePreview() = KNoteTheme {
     Note(
-        domain = NoteItem(
+        domain = NoteListItem(
             note = dev.logickoder.knote.notes.data.model.Note(
                 id = dev.logickoder.knote.notes.data.model.NoteId(1L),
                 title = "Title",
@@ -98,7 +103,7 @@ private fun NotePreview() = KNoteTheme {
 @Composable
 private fun SelectedNotePreview() = KNoteTheme {
     Note(
-        domain = NoteItem(
+        domain = NoteListItem(
             note = dev.logickoder.knote.notes.data.model.Note(
                 id = dev.logickoder.knote.notes.data.model.NoteId(1L),
                 title = "Title",

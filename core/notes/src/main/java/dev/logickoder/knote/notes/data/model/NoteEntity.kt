@@ -2,7 +2,6 @@ package dev.logickoder.knote.notes.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import dev.logickoder.knote.notes.api.NoteAction
 import java.time.LocalDateTime
 
 @Entity(tableName = "notes")

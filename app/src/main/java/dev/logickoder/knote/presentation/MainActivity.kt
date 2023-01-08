@@ -11,7 +11,7 @@ import com.bumble.appyx.core.integration.NodeHost
 import com.bumble.appyx.core.integrationpoint.NodeActivity
 import dagger.hilt.android.AndroidEntryPoint
 import dev.logickoder.knote.navigation.Navigation
-import dev.logickoder.knote.settings.api.Theme
+import dev.logickoder.knote.settings.data.model.Theme
 import dev.logickoder.knote.ui.theme.KNoteTheme
 
 @AndroidEntryPoint
@@ -38,7 +38,7 @@ class MainActivity : NodeActivity() {
                 content = {
                     screen?.let {
                         NodeHost(
-                            integrationPoint = integrationPoint,
+                            integrationPoint = appyxIntegrationPoint,
                             factory = { context ->
                                 Navigation(
                                     buildContext = context,

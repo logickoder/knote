@@ -1,4 +1,4 @@
-package dev.logickoder.knote.notes.presentation
+package dev.logickoder.knote.note_list.presentation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -6,17 +6,17 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import dev.logickoder.knote.notes.data.domain.NoteScreen
+import dev.logickoder.knote.note_list.data.model.NoteListScreen
 import dev.logickoder.knote.notes.data.model.NoteId
 
 @Composable
-fun NotesRoute(
+fun NoteListRoute(
     modifier: Modifier = Modifier,
-    screen: NoteScreen,
-    onNoteClick: (dev.logickoder.knote.notes.data.model.NoteId?) -> Unit,
+    screen: NoteListScreen,
+    onNoteClick: (NoteId?) -> Unit,
     openDrawer: () -> Unit,
 ) {
-    val viewModel = viewModel<NotesViewModel>()
+    val viewModel = viewModel<NoteListViewModel>()
     val search by viewModel.search.collectAsState()
     val notes by viewModel.notes.collectAsState()
     val selected by viewModel.selected.collectAsState()
@@ -25,7 +25,7 @@ fun NotesRoute(
         viewModel.setScreen(screen)
     })
 
-    NotesScreen(
+    NoteListScreen(
         modifier = modifier,
         notes = notes,
         search = search,

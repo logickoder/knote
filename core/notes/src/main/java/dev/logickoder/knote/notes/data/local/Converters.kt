@@ -1,7 +1,7 @@
 package dev.logickoder.knote.notes.data.local
 
 import androidx.room.TypeConverter
-import dev.logickoder.knote.notes.api.NoteAction
+import dev.logickoder.knote.notes.data.model.NoteAction
 import dev.logickoder.knote.notes.data.model.NoteId
 import java.time.LocalDateTime
 import java.time.ZoneOffset

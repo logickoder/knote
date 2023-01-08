@@ -1,13 +1,13 @@
 package dev.logickoder.knote.notes.data.repository
 
 import dev.logickoder.knote.model.ResultWrapper
-import dev.logickoder.knote.notes.api.NoteAction
-import dev.logickoder.knote.notes.data.domain.toEntity
-import dev.logickoder.knote.notes.data.domain.toNote
 import dev.logickoder.knote.notes.data.local.NotesDao
 import dev.logickoder.knote.notes.data.model.Note
+import dev.logickoder.knote.notes.data.model.NoteAction
 import dev.logickoder.knote.notes.data.model.NoteEntity
 import dev.logickoder.knote.notes.data.model.NoteId
+import dev.logickoder.knote.notes.data.model.toEntity
+import dev.logickoder.knote.notes.data.model.toNote
 import dev.logickoder.knote.notes.data.remote.NotesService
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope

@@ -23,7 +23,14 @@ tasks {
 }
 
 val features = listOf(
-    "edit-note", "notes", "login", "app", "ui", "notes", "auth", "settings"
+    "app",
+    "auth",
+    "edit-note",
+    "login",
+    "notes",
+    "note-list",
+    "settings",
+    "ui",
 )
 
 @Suppress("UnstableApiUsage")
@@ -99,6 +106,7 @@ fun Project.feature() {
                         android(project, isApp)
                     }
             }
+
             is com.android.build.gradle.LibraryPlugin -> {
                 project.extensions
                     .getByType<com.android.build.gradle.LibraryExtension>()

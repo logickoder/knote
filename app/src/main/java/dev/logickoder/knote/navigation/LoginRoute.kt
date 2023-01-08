@@ -8,7 +8,7 @@ import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.operation.newRoot
 import dev.logickoder.knote.login.presentation.LoginRoute
-import dev.logickoder.knote.notes.data.domain.NoteScreen
+import dev.logickoder.knote.note_list.data.model.NoteListScreen
 import dev.logickoder.knote.presentation.MainViewModel
 
 class LoginRoute(
@@ -23,7 +23,7 @@ class LoginRoute(
         LoginRoute(
             modifier = modifier,
             onLogin = {
-                val route = Navigation.Route.Notes(NoteScreen.Notes)
+                val route = Navigation.Route.NoteList(NoteListScreen.Notes)
                 viewModel.updateScreen(route)
                 backStack.newRoot(route)
             }

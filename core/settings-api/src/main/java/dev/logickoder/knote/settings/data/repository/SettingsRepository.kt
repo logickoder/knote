@@ -1,7 +1,7 @@
 package dev.logickoder.knote.settings.data.repository
 
-import dev.logickoder.knote.settings.api.Theme
-import dev.logickoder.knote.settings.presentation.model.SettingsToggle
+import dev.logickoder.knote.settings.data.model.SettingsToggle
+import dev.logickoder.knote.settings.data.model.Theme
 import kotlinx.coroutines.flow.Flow
 
 interface SettingsRepository {
