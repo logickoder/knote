@@ -39,11 +39,14 @@ fun Project.feature() {
     fun com.android.build.gradle.BaseExtension.android(project: Project, isApp: Boolean) {
 
         compileSdkVersion(33)
+
         val name = if (isApp) {
             ""
         } else ".${project.name.replace("-", "_")}"
 
-        namespace = "dev.logickoder.knote$name"
+        val appId = "dev.logickoder.knote"
+
+        namespace = "$appId$name"
 
         if (!isApp) {
             resourcePrefix = "${name.replace(".", "")}_"
@@ -55,7 +58,7 @@ fun Project.feature() {
             versionCode = 1
             versionName = "1.0"
             if (isApp) {
-                applicationId = "dev.logickoder.knote"
+                applicationId = appId
             }
 
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -99,20 +102,10 @@ fun Project.feature() {
 
     fun PluginContainer.setup(isApp: Boolean) = whenPluginAdded {
         when (this) {
-            is com.android.build.gradle.AppPlugin -> {
+            is com.android.build.gradle.AppPlugin, is com.android.build.gradle.LibraryPlugin -> {
                 project.extensions
-                    .getByType<com.android.build.gradle.AppExtension>()
-                    .apply {
-                        android(project, isApp)
-                    }
-            }
-
-            is com.android.build.gradle.LibraryPlugin -> {
-                project.extensions
-                    .getByType<com.android.build.gradle.LibraryExtension>()
-                    .apply {
-                        android(project, isApp)
-                    }
+                    .getByType<com.android.build.gradle.BaseExtension>()
+                    .apply { android(project, isApp) }
             }
         }
     }
