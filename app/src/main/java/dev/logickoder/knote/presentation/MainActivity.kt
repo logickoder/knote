@@ -27,7 +27,6 @@ class MainActivity : NodeActivity() {
 
         setContent {
             val theme by viewModel.theme.collectAsState()
-            val screen by viewModel.startScreen.collectAsState()
 
             KNoteTheme(
                 darkTheme = when (theme) {
@@ -36,18 +35,16 @@ class MainActivity : NodeActivity() {
                     Theme.System -> isSystemInDarkTheme()
                 },
                 content = {
-                    screen?.let {
-                        NodeHost(
-                            integrationPoint = appyxIntegrationPoint,
-                            factory = { context ->
-                                Navigation(
-                                    buildContext = context,
-                                    startingRoute = it,
-                                    viewModel = viewModel,
-                                )
-                            }
-                        )
-                    }
+                    NodeHost(
+                        integrationPoint = appyxIntegrationPoint,
+                        factory = { context ->
+                            Navigation(
+                                buildContext = context,
+                                startingRoute = viewModel.screen.value,
+                                viewModel = viewModel,
+                            )
+                        }
+                    )
                 }
             )
         }
