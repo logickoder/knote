@@ -10,11 +10,9 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
@@ -38,7 +36,7 @@ import kotlin.properties.Delegates
 class Navigation(
     buildContext: BuildContext,
     startingRoute: Route,
-    viewModel: MainViewModel,
+    private val viewModel: MainViewModel,
     private val backStack: BackStack<Route> = BackStack(
         initialElement = startingRoute,
         savedStateMap = buildContext.savedStateMap,
@@ -54,28 +52,25 @@ class Navigation(
         viewModel.watchBackStackChanges(backStack)
     }
 
+    private fun onDrawerItemClicked(item: DrawerItem) {
+        if (item == DrawerItem.Logout) {
+            viewModel.logout()
+        }
+        when (item.route) {
+            Route.Settings, is Route.EditNote -> backStack.push(item.route)
+            else -> backStack.replace(item.route)
+        }
+        scope.launch {
+            scaffoldState.drawerState.close()
+        }
+    }
+
 
     @Composable
     override fun View(modifier: Modifier) {
-        val viewModel = viewModel<MainViewModel>()
         val screen by viewModel.screen.collectAsState()
         scaffoldState = rememberScaffoldState()
         scope = rememberCoroutineScope()
-
-        val drawerItemClicked: (DrawerItem) -> Unit = remember {
-            { item ->
-                if (item == DrawerItem.Logout) {
-                    viewModel.logout()
-                }
-                when (item.route) {
-                    Route.Settings, is Route.EditNote -> backStack.push(item.route)
-                    else -> backStack.replace(item.route)
-                }
-                scope.launch {
-                    scaffoldState.drawerState.close()
-                }
-            }
-        }
 
         Scaffold(
             modifier = modifier,
@@ -84,7 +79,7 @@ class Navigation(
                 {
                     AppDrawer(
                         selected = drawerItem,
-                        itemClicked = drawerItemClicked
+                        itemClicked = ::onDrawerItemClicked
                     )
                 }
             },
