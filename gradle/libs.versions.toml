@@ -3,7 +3,7 @@ accompanist = "0.28.0"
 compose = "1.4.0-alpha03"
 compose-compiler = "1.4.0-alpha02"
 hilt = "2.44"
-kotlin = "1.8.0"
+kotlin = "1.7.21"
 ktor = "2.2.2"
 lifecycle = "2.6.0-alpha03"
 room = "2.5.0-rc01"
@@ -70,4 +70,4 @@ room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 [bundles]
 
 [plugins]
-ksp = { id = "com.google.devtools.ksp", version = "1.8.0-1.0.8" }
+ksp = { id = "com.google.devtools.ksp", version = "1.7.21-1.0.8" }
