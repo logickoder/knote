@@ -1,6 +1,6 @@
 dependencies {
-    api(project(":common:settings-api"))
-    api(project(":common:ui"))
+    api(project(":core:settings-api"))
+    api(project(":core:ui"))
     // Compose
     implementation(libs.compose.activity)
     implementation(libs.compose.constraintlayout)

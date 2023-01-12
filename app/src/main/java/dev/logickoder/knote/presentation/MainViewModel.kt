@@ -3,16 +3,21 @@ package dev.logickoder.knote.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bumble.appyx.navmodel.backstack.BackStack
-import com.bumble.appyx.navmodel.backstack.operation.replace
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.logickoder.knote.auth.api.AuthRepository
+import dev.logickoder.knote.auth.data.repository.AuthRepository
 import dev.logickoder.knote.navigation.Navigation
-import dev.logickoder.knote.notes.data.domain.NoteScreen
-import dev.logickoder.knote.settings.api.SettingsRepository
-import dev.logickoder.knote.settings.api.Theme
+import dev.logickoder.knote.note_list.data.model.NoteListScreen
+import dev.logickoder.knote.settings.data.model.Theme
+import dev.logickoder.knote.settings.data.repository.SettingsRepository
 import io.github.aakira.napier.Napier
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,21 +26,12 @@ class MainViewModel @Inject constructor(
     settingsRepository: SettingsRepository,
 ) : ViewModel() {
 
-    private var backStack: BackStack<Navigation.Route>? = null
-
-    val startScreen = authRepository.currentUser.take(1).map { user ->
-        val result = user?.let {
-            Navigation.Route.Notes(NoteScreen.Notes)
+    private val _screen = runBlocking {
+        val route = authRepository.currentUser.first()?.let {
+            Navigation.Route.NoteList(NoteListScreen.Notes)
         } ?: Navigation.Route.Login
-        updateScreen(result)
-        result
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = null
-    )
-
-    private val _screen = MutableStateFlow<Navigation.Route>(Navigation.Route.Login)
+        MutableStateFlow(route)
+    }
     val screen = _screen.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
@@ -48,27 +44,12 @@ class MainViewModel @Inject constructor(
         initialValue = Theme.System
     )
 
-    fun initNavigation(backStack: BackStack<Navigation.Route>) {
-        this.backStack = backStack
-    }
-
-    fun updateScreen(route: Navigation.Route) {
+    fun watchBackStackChanges(backStack: BackStack<Navigation.Route>) {
         viewModelScope.launch {
-            _screen.emit(route)
-        }
-    }
-
-    fun pop(backStack: BackStack<Navigation.Route>) {
-        kotlin.runCatching {
-            backStack.elements.value.let {
-                val target = it[it.lastIndex - 1].key.navTarget
-                Napier.d("Popping to target: $target")
-                backStack.replace(target)
-                updateScreen(target)
-            }
-        }.also {
-            if (it.isFailure) {
-                Napier.e("Failed to get previous backstack entry", it.exceptionOrNull())
+            backStack.elements.collectLatest { element ->
+                val target = element.last().key.navTarget
+                Napier.d { "Updating target: $target" }
+                _screen.update { target }
             }
         }
     }
@@ -77,10 +58,5 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             authRepository.logout()
         }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        backStack = null
     }
 }

@@ -4,7 +4,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
+import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Scaffold
+import androidx.compose.material.SnackbarResult
+import androidx.compose.material.Text
+import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -12,7 +19,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import dev.logickoder.knote.edit_note.R
-import dev.logickoder.knote.notes.api.NoteAction
+import dev.logickoder.knote.model.formatted
+import dev.logickoder.knote.notes.data.model.NoteAction
 import dev.logickoder.knote.ui.theme.KNoteTheme
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
@@ -21,7 +29,7 @@ import java.time.LocalDateTime
 internal fun EditNoteScreen(
     title: String,
     content: String,
-    editedAt: LocalDateTime,
+    editedAt: String,
     modifier: Modifier = Modifier,
     navigateBack: () -> Unit,
     performAction: (NoteAction?) -> Unit,
@@ -48,6 +56,7 @@ internal fun EditNoteScreen(
                         when (result) {
                             SnackbarResult.Dismissed -> {
                             }
+
                             SnackbarResult.ActionPerformed -> {
                                 performAction(null)
                             }
@@ -110,7 +119,7 @@ private fun EditNoteScreenPreview() = KNoteTheme {
     EditNoteScreen(
         title = "Stub note",
         content = "111111111111111",
-        editedAt = LocalDateTime.now(),
+        editedAt = LocalDateTime.now().formatted,
         navigateBack = {},
         onContentChanged = {},
         onTitleChanged = {},

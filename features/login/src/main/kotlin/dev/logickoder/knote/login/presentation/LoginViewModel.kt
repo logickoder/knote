@@ -5,7 +5,7 @@ import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.logickoder.knote.auth.api.AuthRepository
+import dev.logickoder.knote.auth.data.repository.AuthRepository
 import dev.logickoder.knote.model.ResultWrapper
 import kotlinx.coroutines.launch
 import javax.inject.Inject

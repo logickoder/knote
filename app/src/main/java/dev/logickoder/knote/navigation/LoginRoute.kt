@@ -1,32 +1,31 @@
 package dev.logickoder.knote.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.platform.LocalContext
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
-import com.bumble.appyx.navmodel.backstack.BackStack
-import com.bumble.appyx.navmodel.backstack.operation.newRoot
 import dev.logickoder.knote.login.presentation.LoginRoute
-import dev.logickoder.knote.notes.data.domain.NoteScreen
-import dev.logickoder.knote.presentation.MainViewModel
+import dev.logickoder.knote.notes.worker.NotesSyncWorker
 
 class LoginRoute(
     buildContext: BuildContext,
-    private val backStack: BackStack<Navigation.Route>,
+    private val onLogin: () -> Unit,
 ) : Node(buildContext) {
 
     @Composable
     override fun View(modifier: Modifier) {
-        val viewModel = viewModel<MainViewModel>()
-
+        val context = LocalContext.current
+        val login = remember {
+            {
+                NotesSyncWorker.sync(context)
+                onLogin()
+            }
+        }
         LoginRoute(
             modifier = modifier,
-            onLogin = {
-                val route = Navigation.Route.Notes(NoteScreen.Notes)
-                viewModel.updateScreen(route)
-                backStack.newRoot(route)
-            }
+            onLogin = login,
         )
     }
 }

@@ -13,69 +13,72 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.navmodel.backstack.BackStack
+import com.bumble.appyx.navmodel.backstack.operation.newRoot
+import com.bumble.appyx.navmodel.backstack.operation.pop
 import com.bumble.appyx.navmodel.backstack.operation.push
 import com.bumble.appyx.navmodel.backstack.operation.replace
 import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackSlider
-import dev.logickoder.knote.domain.drawer
-import dev.logickoder.knote.domain.route
-import dev.logickoder.knote.notes.api.NoteId
-import dev.logickoder.knote.notes.data.domain.NoteScreen
+import dev.logickoder.knote.note_list.data.model.NoteListScreen
 import dev.logickoder.knote.presentation.AppDrawer
 import dev.logickoder.knote.presentation.DrawerItem
 import dev.logickoder.knote.presentation.MainViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
+import kotlin.properties.Delegates
 
 class Navigation(
     buildContext: BuildContext,
     startingRoute: Route,
-    viewModel: MainViewModel,
+    private val viewModel: MainViewModel,
     private val backStack: BackStack<Route> = BackStack(
         initialElement = startingRoute,
         savedStateMap = buildContext.savedStateMap,
-    ).also {
-        viewModel.initNavigation(it)
-    },
+    ),
 ) : ParentNode<Navigation.Route>(
     buildContext = buildContext,
     navModel = backStack,
 ) {
-    private var scaffoldState: ScaffoldState? = null
+    private var scaffoldState by Delegates.notNull<ScaffoldState>()
+    private var scope by Delegates.notNull<CoroutineScope>()
+
+    init {
+        viewModel.watchBackStackChanges(backStack)
+    }
+
+    private fun onDrawerItemClicked(item: DrawerItem) {
+        if (item == DrawerItem.Logout) {
+            viewModel.logout()
+        }
+        when (item.route) {
+            Route.Settings, is Route.EditNote -> backStack.push(item.route)
+            else -> backStack.replace(item.route)
+        }
+        scope.launch {
+            scaffoldState.drawerState.close()
+        }
+    }
+
 
     @Composable
     override fun View(modifier: Modifier) {
-        val viewModel = viewModel<MainViewModel>()
         val screen by viewModel.screen.collectAsState()
-        val scope = rememberCoroutineScope()
         scaffoldState = rememberScaffoldState()
+        scope = rememberCoroutineScope()
 
         Scaffold(
             modifier = modifier,
-            scaffoldState = scaffoldState!!,
+            scaffoldState = scaffoldState,
             drawerContent = screen.drawer?.let { drawerItem ->
                 {
                     AppDrawer(
                         selected = drawerItem,
-                        itemClicked = { item ->
-                            val route = item.route
-                            if (item == DrawerItem.Logout) {
-                                viewModel.logout()
-                            }
-                            when (route) {
-                                Route.Settings, is Route.EditNote -> backStack.push(route)
-                                else -> backStack.replace(route)
-                            }
-                            viewModel.updateScreen(route)
-                            scope.launch {
-                                scaffoldState?.drawerState?.close()
-                            }
-                        }
+                        itemClicked = ::onDrawerItemClicked
                     )
                 }
             },
@@ -95,24 +98,31 @@ class Navigation(
         return when (navTarget) {
             Route.Login -> LoginRoute(
                 buildContext = buildContext,
-                backStack = backStack,
+                onLogin = {
+                    backStack.newRoot(Route.NoteList(NoteListScreen.Notes))
+                },
             )
-            is Route.Notes -> NotesRoute(
+
+            is Route.NoteList -> NoteListRoute(
                 buildContext = buildContext,
                 screen = navTarget.screen,
-                backStack = backStack,
+                onNoteClick = {
+                    backStack.push(Route.EditNote(it?.id))
+                },
                 openDrawer = {
-                    scaffoldState?.drawerState?.open()
-                }
+                    scope.launch { scaffoldState.drawerState.open() }
+                },
             )
+
             is Route.EditNote -> EditNoteRoute(
-                id = navTarget.id?.let { NoteId(it) },
+                noteId = navTarget.id,
                 buildContext = buildContext,
-                backStack = backStack,
+                onBack = { backStack.pop() },
             )
+
             Route.Settings -> SettingsRoute(
                 buildContext = buildContext,
-                backStack = backStack,
+                onBack = { backStack.pop() },
             )
         }
     }
@@ -123,7 +133,7 @@ class Navigation(
         object Login : Route()
 
         @Parcelize
-        data class Notes(val screen: NoteScreen) : Route()
+        data class NoteList(val screen: NoteListScreen) : Route()
 
         @Parcelize
         data class EditNote(val id: Long?) : Route()

@@ -3,9 +3,9 @@ package dev.logickoder.knote.settings.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.logickoder.knote.settings.api.SettingsRepository
-import dev.logickoder.knote.settings.api.SettingsToggle
-import dev.logickoder.knote.settings.api.Theme
+import dev.logickoder.knote.settings.data.model.SettingsToggle
+import dev.logickoder.knote.settings.data.model.Theme
+import dev.logickoder.knote.settings.data.repository.SettingsRepository
 import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.flow.SharingStarted

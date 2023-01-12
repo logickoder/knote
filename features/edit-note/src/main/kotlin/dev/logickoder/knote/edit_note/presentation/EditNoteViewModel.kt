@@ -6,10 +6,11 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.logickoder.knote.notes.api.Note
-import dev.logickoder.knote.notes.api.NoteAction
-import dev.logickoder.knote.notes.api.NoteId
-import dev.logickoder.knote.notes.api.NotesRepository
+import dev.logickoder.knote.model.formatted
+import dev.logickoder.knote.notes.data.model.Note
+import dev.logickoder.knote.notes.data.model.NoteAction
+import dev.logickoder.knote.notes.data.model.NoteId
+import dev.logickoder.knote.notes.data.repository.NotesRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
@@ -26,7 +27,7 @@ internal class EditNoteViewModel @Inject constructor(
     var content by mutableStateOf("")
         private set
 
-    var editedAt: LocalDateTime by mutableStateOf(LocalDateTime.now())
+    var editedAt: String by mutableStateOf(LocalDateTime.now().formatted)
         private set
 
     private var note: Note? = null
@@ -38,7 +39,7 @@ internal class EditNoteViewModel @Inject constructor(
             } ?: repository.createNote()
             title = note?.title ?: ""
             content = note?.content ?: ""
-            editedAt = note?.dateModified ?: LocalDateTime.now()
+            editedAt = (note?.dateModified ?: LocalDateTime.now()).formatted
         }
     }
 

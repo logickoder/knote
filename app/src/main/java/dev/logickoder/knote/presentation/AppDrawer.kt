@@ -17,7 +17,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import dev.logickoder.knote.notes.R
+import dev.logickoder.knote.R
 import dev.logickoder.knote.ui.theme.KNoteTheme
 import dev.logickoder.knote.ui.theme.padding
 import dev.logickoder.knote.ui.theme.secondaryPadding
@@ -39,7 +39,7 @@ internal fun AppDrawer(
         modifier = Modifier
             .padding(vertical = secondaryPadding())
             .padding(start = padding()),
-        text = stringResource(id = R.string.notes_app_name),
+        text = stringResource(id = R.string.app_name),
         style = MaterialTheme.typography.h5,
     )
     DrawerItem.values().forEach { item ->

@@ -9,8 +9,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import dev.logickoder.knote.settings.R
-import dev.logickoder.knote.settings.api.SettingsToggle
-import dev.logickoder.knote.settings.api.Theme
+import dev.logickoder.knote.settings.data.model.SettingsToggle
+import dev.logickoder.knote.settings.data.model.Theme
 import dev.logickoder.knote.ui.theme.KNoteTheme
 
 @Composable

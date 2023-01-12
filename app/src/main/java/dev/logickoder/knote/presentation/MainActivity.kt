@@ -11,7 +11,8 @@ import com.bumble.appyx.core.integration.NodeHost
 import com.bumble.appyx.core.integrationpoint.NodeActivity
 import dagger.hilt.android.AndroidEntryPoint
 import dev.logickoder.knote.navigation.Navigation
-import dev.logickoder.knote.settings.api.Theme
+import dev.logickoder.knote.notes.worker.NotesSyncWorker
+import dev.logickoder.knote.settings.data.model.Theme
 import dev.logickoder.knote.ui.theme.KNoteTheme
 
 @AndroidEntryPoint
@@ -22,12 +23,13 @@ class MainActivity : NodeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        NotesSyncWorker.sync(this)
+
         // Handle the splash screen transition.
         installSplashScreen()
 
         setContent {
             val theme by viewModel.theme.collectAsState()
-            val screen by viewModel.startScreen.collectAsState()
 
             KNoteTheme(
                 darkTheme = when (theme) {
@@ -36,20 +38,23 @@ class MainActivity : NodeActivity() {
                     Theme.System -> isSystemInDarkTheme()
                 },
                 content = {
-                    screen?.let {
-                        NodeHost(
-                            integrationPoint = integrationPoint,
-                            factory = { context ->
-                                Navigation(
-                                    buildContext = context,
-                                    startingRoute = it,
-                                    viewModel = viewModel,
-                                )
-                            }
-                        )
-                    }
+                    NodeHost(
+                        integrationPoint = appyxIntegrationPoint,
+                        factory = { context ->
+                            Navigation(
+                                buildContext = context,
+                                startingRoute = viewModel.screen.value,
+                                viewModel = viewModel,
+                            )
+                        }
+                    )
                 }
             )
         }
+    }
+
+    override fun onDestroy() {
+        NotesSyncWorker.sync(this)
+        super.onDestroy()
     }
 }

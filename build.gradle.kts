@@ -5,7 +5,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:7.3.0")
+        classpath("com.android.tools.build:gradle:7.3.1")
         classpath("com.google.gms:google-services:4.3.14")
 
         val kotlin = libs.versions.kotlin.get()
@@ -23,7 +23,14 @@ tasks {
 }
 
 val features = listOf(
-    "edit-note", "notes", "login", "app", "ui", "notes-impl", "auth-impl", "settings"
+    "app",
+    "auth",
+    "edit-note",
+    "login",
+    "notes",
+    "note-list",
+    "settings",
+    "ui",
 )
 
 @Suppress("UnstableApiUsage")
@@ -32,11 +39,14 @@ fun Project.feature() {
     fun com.android.build.gradle.BaseExtension.android(project: Project, isApp: Boolean) {
 
         compileSdkVersion(33)
+
         val name = if (isApp) {
             ""
         } else ".${project.name.replace("-", "_")}"
 
-        namespace = "dev.logickoder.knote$name"
+        val appId = "dev.logickoder.knote"
+
+        namespace = "$appId$name"
 
         if (!isApp) {
             resourcePrefix = "${name.replace(".", "")}_"
@@ -48,7 +58,7 @@ fun Project.feature() {
             versionCode = 1
             versionName = "1.0"
             if (isApp) {
-                applicationId = "dev.logickoder.knote"
+                applicationId = appId
             }
 
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -92,19 +102,10 @@ fun Project.feature() {
 
     fun PluginContainer.setup(isApp: Boolean) = whenPluginAdded {
         when (this) {
-            is com.android.build.gradle.AppPlugin -> {
+            is com.android.build.gradle.AppPlugin, is com.android.build.gradle.LibraryPlugin -> {
                 project.extensions
-                    .getByType<com.android.build.gradle.AppExtension>()
-                    .apply {
-                        android(project, isApp)
-                    }
-            }
-            is com.android.build.gradle.LibraryPlugin -> {
-                project.extensions
-                    .getByType<com.android.build.gradle.LibraryExtension>()
-                    .apply {
-                        android(project, isApp)
-                    }
+                    .getByType<com.android.build.gradle.BaseExtension>()
+                    .apply { android(project, isApp) }
             }
         }
     }
@@ -152,7 +153,20 @@ fun Project.feature() {
 
         tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
             kotlinOptions {
-                freeCompilerArgs = listOf("-opt-in=kotlin.RequiresOptIn")
+                freeCompilerArgs = mutableListOf<String>().apply {
+                    // ./gradlew assembleRelease -PcomposeCompilerReports=true
+                    add("-opt-in=kotlin.RequiresOptIn")
+                    val extra = if (project.findProperty("composeCompilerReports") == "true") {
+                        "reportsDestination"
+                    } else if (project.findProperty("composeCompilerMetrics") == "true") {
+                        "metricsDestination"
+                    } else null
+                    val location = "${project.buildDir.absolutePath}/compose"
+                    if (extra != null) {
+                        add("-P")
+                        add("plugin:androidx.compose.compiler.plugins.kotlin:$extra=$location")
+                    }
+                }
                 jvmTarget = "11"
             }
         }

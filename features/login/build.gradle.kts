@@ -1,6 +1,6 @@
 dependencies {
-    api(project(":common:auth-api"))
-    api(project(":common:ui"))
+    api(project(":core:auth-api"))
+    api(project(":core:ui"))
 
     // Compose
     implementation(libs.compose.activity)
