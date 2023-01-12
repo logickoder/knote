@@ -153,7 +153,20 @@ fun Project.feature() {
 
         tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
             kotlinOptions {
-                freeCompilerArgs = listOf("-opt-in=kotlin.RequiresOptIn")
+                freeCompilerArgs = mutableListOf<String>().apply {
+                    // ./gradlew assembleRelease -PcomposeCompilerReports=true
+                    add("-opt-in=kotlin.RequiresOptIn")
+                    val extra = if (project.findProperty("composeCompilerReports") == "true") {
+                        "reportsDestination"
+                    } else if (project.findProperty("composeCompilerMetrics") == "true") {
+                        "metricsDestination"
+                    } else null
+                    val location = "${project.buildDir.absolutePath}/compose"
+                    if (extra != null) {
+                        add("-P")
+                        add("plugin:androidx.compose.compiler.plugins.kotlin:$extra=$location")
+                    }
+                }
                 jvmTarget = "11"
             }
         }

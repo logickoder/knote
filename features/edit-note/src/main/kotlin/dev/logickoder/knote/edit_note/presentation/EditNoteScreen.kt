@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import dev.logickoder.knote.edit_note.R
+import dev.logickoder.knote.model.formatted
 import dev.logickoder.knote.notes.data.model.NoteAction
 import dev.logickoder.knote.ui.theme.KNoteTheme
 import kotlinx.coroutines.launch
@@ -28,7 +29,7 @@ import java.time.LocalDateTime
 internal fun EditNoteScreen(
     title: String,
     content: String,
-    editedAt: LocalDateTime,
+    editedAt: String,
     modifier: Modifier = Modifier,
     navigateBack: () -> Unit,
     performAction: (NoteAction?) -> Unit,
@@ -55,6 +56,7 @@ internal fun EditNoteScreen(
                         when (result) {
                             SnackbarResult.Dismissed -> {
                             }
+
                             SnackbarResult.ActionPerformed -> {
                                 performAction(null)
                             }
@@ -117,7 +119,7 @@ private fun EditNoteScreenPreview() = KNoteTheme {
     EditNoteScreen(
         title = "Stub note",
         content = "111111111111111",
-        editedAt = LocalDateTime.now(),
+        editedAt = LocalDateTime.now().formatted,
         navigateBack = {},
         onContentChanged = {},
         onTitleChanged = {},

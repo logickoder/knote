@@ -15,9 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import dev.logickoder.knote.edit_note.R
-import dev.logickoder.knote.model.formatted
 import dev.logickoder.knote.notes.data.model.NoteAction
-import java.time.LocalDateTime
 
 @Composable
 internal fun EditNoteAppBar(
@@ -63,7 +61,7 @@ internal fun EditNoteAppBar(
 
 @Composable
 fun EditNoteBottomBar(
-    editedAt: LocalDateTime,
+    editedAt: String,
     modifier: Modifier = Modifier,
 ) {
     BottomAppBar(
@@ -71,7 +69,7 @@ fun EditNoteBottomBar(
         content = {
             Spacer(modifier = Modifier.weight(1f))
             Text(
-                stringResource(R.string.edit_note_edited_at, editedAt.formatted),
+                stringResource(R.string.edit_note_edited_at, editedAt),
                 style = MaterialTheme.typography.overline,
             )
             Spacer(modifier = Modifier.weight(1f))

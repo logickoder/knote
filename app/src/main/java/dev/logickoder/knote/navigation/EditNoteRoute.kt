@@ -5,10 +5,9 @@ import androidx.compose.ui.Modifier
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import dev.logickoder.knote.edit_note.presentation.EditNoteRoute
-import dev.logickoder.knote.notes.data.model.NoteId
 
 class EditNoteRoute(
-    private val noteId: NoteId?,
+    private val noteId: Long?,
     buildContext: BuildContext,
     private val onBack: () -> Unit,
 ) : Node(buildContext) {

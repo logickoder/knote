@@ -24,7 +24,6 @@ import com.bumble.appyx.navmodel.backstack.operation.push
 import com.bumble.appyx.navmodel.backstack.operation.replace
 import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackSlider
 import dev.logickoder.knote.note_list.data.model.NoteListScreen
-import dev.logickoder.knote.notes.data.model.NoteId
 import dev.logickoder.knote.presentation.AppDrawer
 import dev.logickoder.knote.presentation.DrawerItem
 import dev.logickoder.knote.presentation.MainViewModel
@@ -116,7 +115,7 @@ class Navigation(
             )
 
             is Route.EditNote -> EditNoteRoute(
-                noteId = navTarget.id?.let { NoteId(it) },
+                noteId = navTarget.id,
                 buildContext = buildContext,
                 onBack = { backStack.pop() },
             )

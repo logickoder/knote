@@ -13,7 +13,7 @@ import dev.logickoder.knote.ui.OnLifecycleEvent
 
 @Composable
 fun EditNoteRoute(
-    id: NoteId?,
+    id: Long?,
     modifier: Modifier = Modifier,
     navigateBack: () -> Unit,
 ) {
@@ -26,7 +26,7 @@ fun EditNoteRoute(
     }
 
     LaunchedEffect(key1 = id, block = {
-        viewModel.getNote(id)
+        viewModel.getNote(id?.let { NoteId(it) })
     })
 
     BackHandler {

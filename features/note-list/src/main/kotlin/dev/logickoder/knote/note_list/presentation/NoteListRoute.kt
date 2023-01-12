@@ -32,9 +32,7 @@ fun NoteListRoute(
         selected = selected,
         screen = screen,
         editNote = onNoteClick,
-        performAction = {
-            viewModel.performAction(it)
-        },
+        performAction = viewModel::performAction,
         openDrawer = openDrawer,
         onSearch = viewModel::search,
         onSelectedChanged = viewModel::toggleSelect,
