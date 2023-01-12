@@ -11,6 +11,7 @@ import com.bumble.appyx.core.integration.NodeHost
 import com.bumble.appyx.core.integrationpoint.NodeActivity
 import dagger.hilt.android.AndroidEntryPoint
 import dev.logickoder.knote.navigation.Navigation
+import dev.logickoder.knote.notes.worker.NotesSyncWorker
 import dev.logickoder.knote.settings.data.model.Theme
 import dev.logickoder.knote.ui.theme.KNoteTheme
 
@@ -21,6 +22,8 @@ class MainActivity : NodeActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        NotesSyncWorker.sync(this)
 
         // Handle the splash screen transition.
         installSplashScreen()
@@ -48,5 +51,10 @@ class MainActivity : NodeActivity() {
                 }
             )
         }
+    }
+
+    override fun onDestroy() {
+        NotesSyncWorker.sync(this)
+        super.onDestroy()
     }
 }

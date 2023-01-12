@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import dagger.hilt.android.HiltAndroidApp
-import dev.logickoder.knote.notes.worker.NotesSyncWorker
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
 import javax.inject.Inject
@@ -23,6 +22,5 @@ class KNoteApplication : Application(), Configuration.Provider {
     override fun onCreate() {
         super.onCreate()
         Napier.base(DebugAntilog())
-        NotesSyncWorker.sync(this)
     }
 }

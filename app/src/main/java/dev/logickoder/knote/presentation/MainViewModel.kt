@@ -1,14 +1,12 @@
 package dev.logickoder.knote.presentation
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bumble.appyx.navmodel.backstack.BackStack
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.logickoder.knote.auth.data.repository.AuthRepository
 import dev.logickoder.knote.navigation.Navigation
 import dev.logickoder.knote.note_list.data.model.NoteListScreen
-import dev.logickoder.knote.notes.worker.NotesSyncWorker
 import dev.logickoder.knote.settings.data.model.Theme
 import dev.logickoder.knote.settings.data.repository.SettingsRepository
 import io.github.aakira.napier.Napier
@@ -26,8 +24,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     settingsRepository: SettingsRepository,
-    app: Application,
-) : AndroidViewModel(app) {
+) : ViewModel() {
 
     private val _screen = runBlocking {
         val route = authRepository.currentUser.first()?.let {
@@ -61,10 +58,5 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             authRepository.logout()
         }
-    }
-
-    override fun onCleared() {
-        NotesSyncWorker.sync(getApplication())
-        super.onCleared()
     }
 }

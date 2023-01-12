@@ -7,9 +7,9 @@ import dev.logickoder.knote.notes.data.model.NoteAction
  */
 internal data class NoteNetwork(
     val id: Long = 0L,
-    val title: String,
-    val content: String,
-    val dateCreated: Long,
+    val title: String = "",
+    val content: String = "",
+    val dateCreated: Long = id,
     val dateModified: Long = dateCreated,
     val action: NoteAction? = null,
 )
