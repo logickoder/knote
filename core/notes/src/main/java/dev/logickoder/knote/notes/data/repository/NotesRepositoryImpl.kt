@@ -7,6 +7,7 @@ import dev.logickoder.knote.notes.data.model.NoteAction
 import dev.logickoder.knote.notes.data.model.NoteEntity
 import dev.logickoder.knote.notes.data.model.NoteId
 import dev.logickoder.knote.notes.data.model.toEntity
+import dev.logickoder.knote.notes.data.model.toNetwork
 import dev.logickoder.knote.notes.data.model.toNote
 import dev.logickoder.knote.notes.data.remote.NotesService
 import kotlinx.coroutines.async
@@ -49,7 +50,7 @@ internal class NotesRepositoryImpl @Inject constructor(
             }
         } else {
             // update the notes in the server with the local notes
-            remote.updateNotes(userId, notes.map { it.toEntity() })
+            remote.updateNotes(userId, notes.map { it.toNetwork() })
         }
     }
 
