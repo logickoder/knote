@@ -31,17 +31,25 @@ internal class NotesRepositoryImpl @Inject constructor(
         it.toNote()
     }
 
-    override suspend fun refreshNotes() {
-        val userId = authRepository.currentUser.first()?.id ?: return
-        val result = remote.getNotes(userId)
-        if (result is ResultWrapper.Success) {
-            val newNotes = result.data
-            // filter out notes not found in the new notes
-            val notesToRemove = local.getNotes().first().filterNot { it in newNotes }
-            // remove the previous notes not found in the server
-            local.delete(*notesToRemove.toTypedArray())
-            // save the new notes from the server
-            local.save(*newNotes.toTypedArray())
+    override suspend fun sync(): ResultWrapper<Unit> {
+        val userId = authRepository.currentUser.first()?.id ?: return ResultWrapper.Failure(
+            Throwable()
+        )
+        val notes = notes.first()
+        return if (notes.isEmpty()) {
+            // fetch the notes from the server and save it in the device
+            when (val result = remote.getNotes(userId)) {
+                is ResultWrapper.Success -> {
+                    // save the new notes from the server
+                    local.save(*result.data.toTypedArray())
+                    ResultWrapper.Success(Unit)
+                }
+
+                is ResultWrapper.Failure -> ResultWrapper.Failure(result.error)
+            }
+        } else {
+            // update the notes in the server with the local notes
+            remote.updateNotes(userId, notes.map { it.toEntity() })
         }
     }
 

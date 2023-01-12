@@ -1,5 +1,6 @@
 package dev.logickoder.knote.notes.data.repository
 
+import dev.logickoder.knote.model.ResultWrapper
 import dev.logickoder.knote.notes.data.model.Note
 import dev.logickoder.knote.notes.data.model.NoteAction
 import dev.logickoder.knote.notes.data.model.NoteId
@@ -10,7 +11,7 @@ interface NotesRepository {
 
     suspend fun getNote(noteId: NoteId): Flow<Note>
 
-    suspend fun refreshNotes()
+    suspend fun sync(): ResultWrapper<Unit>
 
     suspend fun performAction(action: NoteAction?, vararg noteId: NoteId)
 

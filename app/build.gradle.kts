@@ -28,6 +28,9 @@ dependencies {
     androidTestImplementation(libs.compose.ui.test.junit)
     // Preferences datastore
     implementation(rootProject.libs.datastore)
+    // Worker
+    implementation(libs.worker)
+    implementation(libs.worker.hilt)
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
