@@ -76,4 +76,4 @@ worker-testing = { module = "androidx.work:work-testing", version.ref = "worker"
 [bundles]
 
 [plugins]
-ksp = { id = "com.google.devtools.ksp", version = "1.7.21-1.0.8" }
+ksp = { id = "com.google.devtools.ksp", version = "1.8.20-1.0.11" }
